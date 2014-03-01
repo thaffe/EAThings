@@ -9,7 +9,6 @@ class ANN:
         inputs = {}
         for key in weights:
             inputs[key] = Input(self.neurons[key], weights[key])
-        # inputs = [ Input(self.neurons[key], weights[key]) for key in weights ]
         self.neurons[name] = Neuron(name, inputs, pre_update, post_update, always_update, data)
 
     def update(self, step_counter):
