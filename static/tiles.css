@@ -1,0 +1,50 @@
+.controller{
+    font-size:24px;
+}
+.tile{
+    width:100%;
+    height:100%;
+    background-repeat:no-repeat;
+    background-size:cover;
+}
+
+#map{
+    width:100%;
+    float:left;
+    position:relative;
+}
+
+.grass{
+    position:relative;
+    background-image:url(imgs/grass.png);
+    display:inline-block;
+    margin-bottom:-11.5%
+}
+
+.object{
+    position:absolute;
+    top:-2%;
+    background-size:40% 40%;
+    background-position: center;
+    background-repeat:no-repeat;
+}
+.food{
+    background-image:url(imgs/food.png);
+}
+
+.poison{
+    background-image:url(imgs/poison.png);
+}
+
+.bot{
+    position:absolute;
+    background-image:url(imgs/bot.png);
+    -webkit-transition: all 0.3s; /* For Safari 3.1 to 6.0 */
+    transition: all 0.3s;
+    margin-top:-2%;
+}
+
+td,table,tr{
+ margin:0;
+ padding:0
+}
