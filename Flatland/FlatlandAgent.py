@@ -1,6 +1,6 @@
-from ANN import ANN, ANN_Individual
+from ANN import ANN_Individual
 from EA import *
-from FlatLand import FlatLand
+from Flatland.Flatland import Flatland
 
 
 class FlatlandAgent(EA):
@@ -13,7 +13,7 @@ class FlatlandIndividual(ANN_Individual):
 
     def __init__(self, genotype):
         ANN_Individual.__init__(self, genotype)
-        self.flat_land = FlatLand()
+        self.flat_land = Flatland()
 
     def generate_phenotype(self):
 
