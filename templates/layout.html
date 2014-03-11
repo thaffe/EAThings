@@ -4,11 +4,11 @@ $def with (content)
 <head>
     <title>$content.title</title>
     $if content.cssfiles:
-        $for f in content.cssfiles.split():
-            <link rel="stylesheet" href="$f" type="text/css" media="screen" charset="utf-8"/>
+
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" type="text/css"/>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" type="text/css"/>
-
+    $for f in content.cssfiles.split():
+        <link rel="stylesheet" href="$f" type="text/css" charset="utf-8"/>
 </head>
 <body>
 $:content
