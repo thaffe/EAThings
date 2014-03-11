@@ -75,7 +75,7 @@ class FlatLand:
         return [front_smell, left_smell, right_smell]
 
     def get_cell(self, pos):
-        return 0 if pos[0] > self.M or pos[0] < 0 or pos[1] > self.N or pos[1] < 0 else self.map[tuple(pos)]
+        return 0 if pos[0] >= self.M or pos[0] < 0 or pos[1] >= self.N or pos[1] < 0 else self.map[tuple(pos)]
 
     @property
     def legitimate_position(self):
