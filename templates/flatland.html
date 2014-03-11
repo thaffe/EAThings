@@ -1,0 +1,67 @@
+$def with(maps, generations)
+$var title: Flatland Agent
+$var cssfiles: static/tiles.css
+$var jsfiles: static/flatland.js
+<div class="row">
+    <div class="col-xs-8">
+        <h1>Flatland</h1>
+
+        <div id="map">
+
+        </div>
+    </div>
+
+    <div class="col-xs-4">
+        <center>
+            <p>
+
+            <div class="btn-group controller">
+                <button type="button" class="btn btn-default" data-type="begin"><i class="fa fa-fast-backward"></i>
+                </button>
+                <button type="button" class="btn btn-default" data-type="back"><i class="fa fa-backward"></i></button>
+                <button type="button" class="btn btn-default" data-type="play"><i id="play" class="fa fa-play"></i>
+                </button>
+                <button type="button" class="btn btn-default" data-type="forward"><i class="fa fa-forward"></i></button>
+                <button type="button" class="btn btn-default" data-type="end"><i class="fa fa-fast-forward"></i>
+                </button>
+            </div>
+            </p>
+            <h3>
+                Step:<span id="time-counter">0</span>
+            </h3>
+
+            <h3>
+                <span class="text-success"><i class="fa fa-check-circle"></i>: <span id="food-counter">0</span></span>&nbsp;&nbsp;
+                <span class="text-danger"><i class="fa fa-times-circle"></i>: <span id="poison-counter">0</span></span>
+            </h3>
+
+            <p class="form-group form-inline">
+                <label>Playback</label>
+                <select id="playback" class="form-control">
+                    <option value="1">1x</option>
+                    <option value="2">2x</option>
+                    <option value="3">3x</option>
+                    <option value="4">4x</option>
+                    <option value="5">5x</option>
+                </select>
+            </p>
+        </center>
+        <div class="list-group" id="maps">
+            $for map in maps:
+            <a href="#" class="list-group-item" id="map-$loop.index0">
+                <h4 class="list-group-item-heading">Map $loop.index</h4>
+
+                <p class="list-group-item-text">Score for this thingy</p>
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    window.maps = $:maps;
+    window.botPos = [2,2];
+
+
+
+
+
+</script>
