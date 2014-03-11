@@ -20,8 +20,6 @@ class flatland_web:
         flatlands = [FlatLand.FlatLand() for _ in xrange(5)]
         maps = [x.map.tolist() for x in flatlands]
         print(flatlands[0].smell())
-
-        b = "test"
         return render.flatland(maps, [flatlands[0].agent_pos[0], flatlands[0].agent_pos[1]])
 
 
@@ -32,3 +30,4 @@ class beeragent_web:
 
 if __name__ == "__main__":
     app.run()
+
