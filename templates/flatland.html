@@ -1,4 +1,4 @@
-$def with(maps, generations)
+$def with(maps, pos)
 $var title: Flatland Agent
 $var cssfiles: static/tiles.css
 $var jsfiles: static/flatland.js
@@ -58,7 +58,7 @@ $var jsfiles: static/flatland.js
 </div>
 <script>
     window.maps = $:maps;
-    window.botPos = [2,2];
+    window.botPos = $:pos;
 
 
 
