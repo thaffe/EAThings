@@ -11,10 +11,9 @@ class BeerObject:
 class BeerStateManager:
 
     def __init__(self):
-        self.
+        self.states =[]
 
 
-
-b1 = BeerObject([1,2],1)
-b2= BeerObject([1,2],1)
+    def store(self, timePased, objects):
+        self.states.append("THINGS AND STUFF")
 
