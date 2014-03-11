@@ -39,13 +39,13 @@ class ANN:
     def __init__(self):
         self.neurons = {}
 
-    def append(self, name, weights=None, pre_update=None, post_update=None, always_update=False, data=None):
+    def append(self, name, weights=None, pre_update=None, post_update=None, always_update=False, data=None, tau=1.0, g=1.0, bias=0.0):
         if not weights:
             weights = []
         inputs = {}
         for key in weights:
             inputs[key] = Input(self.neurons[key], weights[key])
-        self.neurons[name] = Neuron(name, inputs, pre_update, post_update, always_update, data)
+        self.neurons[name] = Neuron(name, inputs, pre_update, post_update, always_update, data, tau, g, bias)
 
     def update(self, step_counter):
         for neuron in self.neurons:
@@ -59,30 +59,37 @@ class ANN:
 
 class Neuron:
 
-    def __init__(self, name, inputs, pre_update=None, post_update=None, always_update=False, data=None, memory=0.0):
+    def __init__(self, name, inputs, pre_update=None, post_update=None, always_update=False, data=None, tau=1.0, g=1.0, bias=0.0):
         self.name = name
         self.inputs = inputs
         self.pre_update = pre_update
         self.post_update = post_update
         self.always_update = always_update
         self.data = data
-        self.memory = memory
         self.step_counter = 0
-        self.x = 0
+
+        self.tau = tau
+        self.g = g
+        self.bias = bias
+
+        self.si = 0
+        self.y = self.bias
         self.output = 0
 
     def update(self, step_counter):
         if self.pre_update:
             self.pre_update(self)
 
-        self.x *= self.memory
+        si = 0
         for key in self.inputs:
             input = self.inputs[key]
             if input.neuron.step_counter != step_counter:
                 input.neuron.update(step_counter)
-            self.x += input.neuron.output * input.weight
+            si += input.neuron.output * input.weight
 
-        self.output = 2 / (1 + math.exp(-self.x)) - 1
+        dy = (-self.y + si + self.bias) / self.tau
+        self.y += dy
+        self.output = 1 / (1 + math.exp(-self.g * self.y))
         self.step_counter = step_counter
 
         if self.post_update:
