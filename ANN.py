@@ -1,11 +1,47 @@
+from abc import abstractmethod
 import math
+from EA import Individual
+
+
+class ANN_Individual(Individual):
+
+    ann = None
+
+    def __init__(self, genotype=None):
+        if not genotype:
+            genotype = []
+            for neuron in self.ann.neurons:
+                genotype.append(0)
+                for _ in neuron.inputs:
+                    genotype.append(0)
+            self.phenotype = self.ann
+
+        Individual.__init__(self, genotype)
+
+    def generate_phenotype(self):
+        index = 0
+        for neuron in self.ann.neurons:
+            neuron.memory = self.genotype[index]
+            index += 1
+            for input in neuron.inputs:
+                input.weight = self.genotype[index]
+                index += 1
+
+    @abstractmethod
+    def calculate_fitness(self):
+        pass
+
+    def phenotype_str(self):
+        pass
 
 
 class ANN:
     def __init__(self):
         self.neurons = {}
 
-    def append(self, name, weights=[], pre_update=None, post_update=None, always_update=False, data=None):
+    def append(self, name, weights=None, pre_update=None, post_update=None, always_update=False, data=None):
+        if not weights:
+            weights = []
         inputs = {}
         for key in weights:
             inputs[key] = Input(self.neurons[key], weights[key])
@@ -23,12 +59,12 @@ class ANN:
 
 class Neuron:
 
-    def __init__(self, name, inputs, pre_update=None, post_update=None, always_uppdate=False, data=None, memory=0.0):
+    def __init__(self, name, inputs, pre_update=None, post_update=None, always_update=False, data=None, memory=0.0):
         self.name = name
         self.inputs = inputs
         self.pre_update = pre_update
         self.post_update = post_update
-        self.always_update = always_uppdate
+        self.always_update = always_update
         self.data = data
         self.memory = memory
         self.step_counter = 0

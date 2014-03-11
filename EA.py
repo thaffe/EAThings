@@ -93,7 +93,7 @@ class EA():
             current_parents = [iter.next() for _ in xrange(self.number_of_parents)]
             #initiates empty genotypes for the children
             genotypes = [x[:] for x in [[0] * Individual.number_of_gens] * self.number_of_parents]
-            #Loop over parens gens to map them to the children
+            #Loop over parents gens to map them to the children
             for bit in xrange(gens):
                 if random() < self.crossover_rate:
                     current_parents = current_parents[-1:] + current_parents[:-1]
@@ -130,14 +130,14 @@ class EA():
 
 
 class Individual():
-    fitness = 0
-    exp_val = 0
     number_of_gens = 40
     number_of_gene_symbols = 2
     mutation_rate = 0.01
-    phenotype = None
 
     def __init__(self, genotype=None):
+        self.fitness = 0
+        self.exp_val = 0
+
         self.genotype = genotype if not genotype is None else self.get_random_genotype()
         # self.mutate()
         self.phenotype = self.generate_phenotype()

@@ -42,18 +42,22 @@ class FlatLand:
 
         self.food_gathered = 0
         self.poisoned = 0
+        self.history = []
 
     def move(self, move):
         if move == 'f':
             self.agent_pos += self.agent_direction
+            self.history.append(self.agent_direction)
         elif move == 'l':
             self.agent_direction.turn_left()
             self.agent_pos += self.agent_direction
+            self.history.append(self.agent_direction)
         elif move == 'r':
             self.agent_direction.turn_right()
             self.agent_pos += self.agent_direction
+            self.history.append(self.agent_direction)
         elif move == 'n':
-            pass
+            self.history.append(None)
         else:
             raise AttributeError
 
