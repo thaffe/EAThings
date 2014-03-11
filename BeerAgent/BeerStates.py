@@ -1,19 +1,20 @@
-class BeerObject:
-    globalID = 0
-
-    def __init__(self, pos, type):
-        self.pos = pos
-        self.type = type
-        self.id = BeerObject.globalID
-        BeerObject.globalID += 1
-
-
-class BeerStateManager:
-
+class BeerStates:
     def __init__(self):
-        self.states =[]
+        self.states = []
+        self.object_pos = []
+        self.catcher_pos = []
 
+    def save_pos(self, object_pos, agent_pos):
+        self.object_pos.append(object_pos)
+        self.catcher_pos.append(agent_pos)
 
-    def store(self, timePased, objects):
-        self.states.append("THINGS AND STUFF")
+    def save_state(self, object_size):
+        self.states.append({
+            'size': object_size,
+            'o': self.object_pos,
+            'c': self.catcher_pos
+        })
+
+        self.object_pos = []
+        self.catcher_pos = []
 
