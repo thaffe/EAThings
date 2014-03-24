@@ -2,31 +2,10 @@ from random import *
 from numpy import array
 
 
-class Direction:
-    def __init__(self):
-        d = randint(-1, 1)
-        self.val = array([d, 0 if d else 1 if random() < 0.5 else -1])
-
-    def turn_left(self):
-        if self.val[0]:
-            self.val[1] = self.val[0]
-            self.val[0] = 0
-        else:
-            self.val[0] = -self.val[1]
-            self.val[1] = 0
-
-    def turn_right(self):
-        if self.val[0]:
-            self.val[1] = -self.val[0]
-            self.val[0] = 0
-        else:
-            self.val[0] = self.val[1]
-            self.val[1] = 0
-
-
 class Flatland:
     N = 8
     M = 8
+
     def __init__(self, N=8, M=8, f=0.5, p=0.5):
         self.map = array([
             ['f' if random() < f else 'p' if random() < p else 0 for _ in xrange(M)] for _ in xrange(N)
@@ -38,6 +17,13 @@ class Flatland:
         self.food_gathered = 0
         self.poisoned = 0
         self.history = []
+
+    def play(self, agent):
+        while len(self.history) < 100 and self.poisoned < 3:
+            move_list = agent.get_move_priorities(self.smell())
+            i = 0
+            while not self.move(move_list(i)):
+                i += 1
 
     def move(self, move):
         if move == 'f':
@@ -80,6 +66,28 @@ class Flatland:
     @property
     def legitimate_position(self):
         return 0 < self.agent_pos[0] < len(self.map) and 0 < self.agent_pos[1] < len(self.map[self.agent_pos[0]])
+
+
+class Direction:
+    def __init__(self):
+        d = randint(-1, 1)
+        self.val = array([d, 0 if d else 1 if random() < 0.5 else -1])
+
+    def turn_left(self):
+        if self.val[0]:
+            self.val[1] = self.val[0]
+            self.val[0] = 0
+        else:
+            self.val[0] = -self.val[1]
+            self.val[1] = 0
+
+    def turn_right(self):
+        if self.val[0]:
+            self.val[1] = -self.val[0]
+            self.val[0] = 0
+        else:
+            self.val[0] = self.val[1]
+            self.val[1] = 0
 
 
 Flatland()

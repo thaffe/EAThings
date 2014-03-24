@@ -1,27 +1,38 @@
 from abc import abstractmethod
+from copy import deepcopy
 import math
-from EA import Individual
+from Individual import Individual
+from GeneFloat import GeneFloat, GeneFloatSource
 
 
-class ANN_Individual(Individual):
+class AnnIndividual(Individual):
 
-    ann = None
+    source = None
 
-    def __init__(self, genotype=None):
-        if not genotype:
-            genotype = []
-            for neuron in self.ann.neurons:
-                genotype.append(0)
-                for _ in neuron.inputs:
-                    genotype.append(0)
-            self.phenotype = self.ann
+    tau_source = GeneFloatSource(0.01, 100, True)
+    g_source = GeneFloatSource(0.01, 100, True)
+    bias_source = GeneFloatSource(-1.0, 1.0, False)
+    weight_source = GeneFloatSource(-1, 1, False)
 
-        Individual.__init__(self, genotype)
+    def random_genotype(self):
+        self.genotype = []
+        for neuron in self.source.neurons:
+            self.genotype.append(GeneFloat(source=self.tau_source))
+            self.genotype.append(GeneFloat(source=self.g_source))
+            self.genotype.append(GeneFloat(source=self.bias_source))
+            for _ in neuron.inputs:
+                self.genotype.append(GeneFloat(source=self.weight_source))
 
     def generate_phenotype(self):
         index = 0
-        for neuron in self.ann.neurons:
-            neuron.memory = self.genotype[index]
+        # TODO: Uvisst om man er nødt til å gjøre mer her, for at ikke pheno (ann) bare blir static.
+        self.ann = deepcopy(self.source)
+        for key, neuron in self.ann.neurons:
+            neuron.tau = self.genotype[index]
+            index += 1
+            neuron.g = self.genotype[index]
+            index += 1
+            neuron.bias = self.genotype[index]
             index += 1
             for input in neuron.inputs:
                 input.weight = self.genotype[index]
@@ -36,8 +47,11 @@ class ANN_Individual(Individual):
 
 
 class ANN:
-    def __init__(self):
+    def __init__(self, neurons=None):
         self.neurons = {}
+        if neurons:
+            for neuron in neurons:
+                self.append(neuron)
 
     def append(self, name, weights=None, pre_update=None, post_update=None, always_update=False, data=None, tau=1.0, g=1.0, bias=0.0):
         if not weights:
