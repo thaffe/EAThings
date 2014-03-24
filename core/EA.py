@@ -19,7 +19,7 @@ class EA():
     sd = 0
     mean = 0
 
-    def __init__(self, fitness_goal=0.0):
+    def __init__(self, fitness_goal=0):
         self.parent_selection_strategy = Strategies.fitness
         self.fitness_goal = fitness_goal
         self.means = []
@@ -41,7 +41,7 @@ class EA():
         self.current_generation = 0
         self.update_stats(children)
         print("Starting Evolution")
-        while self.current_generation < self.max_generations and 0 < self.fitness_goal > self.best_individual.fitness:
+        while self.current_generation < self.max_generations and (not self.fitness_goal or self.fitness_goal > self.best_individual.fitness):
             sys.stdout.write(
                 "\r Generation:%d/%d BestFittness:%f" % (
                 self.current_generation, self.max_generations, self.best_individual.fitness))

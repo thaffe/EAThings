@@ -1,4 +1,4 @@
-$def with(maps, pos,test)
+$def with(maps)
 $var title: Flatland Agent
 $var cssfiles: static/tiles.css
 $var jsfiles: static/flatland.js
@@ -57,12 +57,6 @@ $var jsfiles: static/flatland.js
     </div>
 </div>
 <script>
-    window.maps = $:maps;
-    window.botPos = $:pos;
-    window.test = $:test;
-
-
-
-
-
+    window.maps = $:[flatland.map.toList() for flatland in maps];
+    window.botPos = [0,0];
 </script>

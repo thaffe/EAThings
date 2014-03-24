@@ -24,7 +24,9 @@ class FlatlandEA(EA):
                     test_map = deepcopy(map)
                     test_map.play(individual)
                     individual.fitness += test_map.food_gathered - 10 * test_map.poisoned
-                    if individual.fitness > self.best_individual.fitness:
+
+                if individual.fitness > self.best_individual.fitness:
+                    for map in self.maps:
                         temp = test_map.history
                         test_map = deepcopy(map)
                         test_map.history = temp
