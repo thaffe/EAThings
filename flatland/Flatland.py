@@ -17,42 +17,46 @@ class Flatland:
         self.food_gathered = 0
         self.poisoned = 0
         self.history = []
+        self.best_fitness = 0
 
     def play(self, agent):
-        while len(self.history) < 100 and self.poisoned < 3:
-            move_list = agent.get_move_priorities(self.smell())
+        while len(self.history) < 40 and self.poisoned < 3:
+            move_list = agent.get_move_priorities(self.smell(), len(self.history))
             i = 0
-            while not self.move(move_list(i)):
+            while not self.move(move_list[i]):
                 i += 1
+                if i == len(move_list):
+                    print "move_list:", move_list
 
     def move(self, move):
         if move == 'f':
-            self.agent_pos += self.agent_direction.val
+            self.agent_pos = tuple(self.agent_pos + self.agent_direction.val)
         elif move == 'l':
             self.agent_direction.turn_left()
-            self.agent_pos += self.agent_direction.val
+            self.agent_pos = tuple(self.agent_pos + self.agent_direction.val)
         elif move == 'r':
             self.agent_direction.turn_right()
-            self.agent_pos += self.agent_direction.val
+            self.agent_pos = tuple(self.agent_pos + self.agent_direction.val)
         elif move == 'n':
-            self.history.append(None)
+            pass
         else:
             raise AttributeError
 
         if not self.legitimate_position:
-            self.agent_pos -= self.agent_direction.val
+            self.agent_pos = tuple(self.agent_pos - self.agent_direction.val)
             return False
-        elif self.map[self.agent_pos] == 'f':
-            self.map[self.agent_pos] = None
-            self.food_gathered += 1
-        elif self.map[self.agent_pos] == 'p':
-            self.poisoned += 1
+        else:
+            self.history.append(move)
+            if self.map[self.agent_pos] == 'f':
+                self.map[self.agent_pos] = 0
+                self.food_gathered += 1
+            elif self.map[self.agent_pos] == 'p':
+                self.poisoned += 1
 
         return True
 
     def smell(self):
         direction = self.agent_direction
-        print(self.agent_pos, direction.val,tuple(self.agent_pos + direction.val))
         front_smell = self.get_cell(self.agent_pos + direction.val)
         direction.turn_left()
         left_smell = self.get_cell(self.agent_pos + direction.val)
@@ -65,7 +69,7 @@ class Flatland:
 
     @property
     def legitimate_position(self):
-        return 0 < self.agent_pos[0] < len(self.map) and 0 < self.agent_pos[1] < len(self.map[self.agent_pos[0]])
+        return 0 <= self.agent_pos[0] < len(self.map) and 0 <= self.agent_pos[1] < len(self.map[self.agent_pos[0]])
 
 
 class Direction:

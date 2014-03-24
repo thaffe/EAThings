@@ -19,8 +19,8 @@ class Individual():
         else:
             self.random_genotype()
 
-        for gene in self.genotype:
-            self.gene_count += gene.gene_size
+        for _ in self.genotype:
+            self.gene_count += 1
 
         self.phenotype = self.generate_phenotype()
 

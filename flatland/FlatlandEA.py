@@ -8,26 +8,34 @@ class FlatlandEA(EA):
 
     dynamic = False
 
+    def __init__(self, fitness_goal=0):
+        EA.__init__(self, fitness_goal=0)
+        self.maps = [Flatland() for _ in xrange(5)]
+        self.old_maps = []
+
     def create_individual(self, genotype=None):
         return FlatlandAgent(genotype)
 
     def run_fitness_tests(self, individuals):
         if self.dynamic or not self.maps:
-            self.maps = []
             for _ in xrange(5):
                 self.maps.append(Flatland())
 
         for individual in individuals:
-            if self.dynamic or not individual.maps:
-                individual.maps = []
-                for map in self.maps:
-                    test_map = deepcopy(map)
-                    test_map.play(individual)
-                    individual.fitness += test_map.food_gathered - 10 * test_map.poisoned
+            if self.dynamic:
+                self.old_maps.append(self.maps)
+                self.maps = [Flatland() for _ in xrange(5)]
 
-                if individual.fitness > self.best_individual.fitness:
-                    for map in self.maps:
-                        temp = test_map.history
-                        test_map = deepcopy(map)
-                        test_map.history = temp
-                        individual.maps.append(test_map)
+            temp = []
+            for map in self.maps:
+                test_map = deepcopy(map)
+                test_map.play(individual)
+                temp.append(test_map.history)
+                map_fitness = test_map.food_gathered - 10 * test_map.poisoned
+                individual.fitness += map_fitness
+                if map_fitness > map.best_fitness:
+                    map.best_solution = test_map.history
+
+            if individual.fitness > self.best_individual.fitness:
+                for i in xrange(len(self.maps)):
+                    self.maps[i].history = temp[i]

@@ -8,8 +8,8 @@ class AnnIndividual(Individual):
 
     source = None
 
-    tau_source = GeneFloatSource(0.01, 100, True)
-    g_source = GeneFloatSource(0.01, 100, True)
+    tau_source = GeneFloatSource(1, 1, True)
+    g_source = GeneFloatSource(0.1, 10, True)
     bias_source = GeneFloatSource(-1.0, 1.0, False)
     weight_source = GeneFloatSource(-1, 1, False)
 
@@ -27,14 +27,14 @@ class AnnIndividual(Individual):
         # TODO: Mebbi something wrong here...
         self.ann = deepcopy(self.source)
         for key, neuron in self.ann.neurons.items():
-            neuron.tau = self.genotype[index]
+            neuron.tau = self.genotype[index].value
             index += 1
-            neuron.g = self.genotype[index]
+            neuron.g = self.genotype[index].value
             index += 1
-            neuron.bias = self.genotype[index]
+            neuron.bias = self.genotype[index].value
             index += 1
             for key, input in neuron.inputs.items():
-                input.weight = self.genotype[index]
+                input.weight = self.genotype[index].value
                 index += 1
 
     @abstractmethod

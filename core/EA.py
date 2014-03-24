@@ -91,7 +91,7 @@ class EA():
             next_crossover = int(self.crossover_rate.next())
             while prev_crossover < gene_count:
                 for j in xrange(self.number_of_parents):
-                    for i in xrange(prev_crossover, max(next_crossover, gene_count)):
+                    for i in xrange(prev_crossover, min(next_crossover, gene_count)):
                         genotypes[j].append((current_parents[(parent_index+j) %
                                                              self.number_of_parents].get_child_gene(i)))
                 parent_index = (parent_index + 1) % self.number_of_parents

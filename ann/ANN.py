@@ -9,7 +9,7 @@ class ANN:
 
     def append(self, name, weights=None, pre_update=None, post_update=None, always_update=False, data=None, tau=1.0, g=1.0, bias=0.0):
         if not weights:
-            weights = []
+            weights = {}
         inputs = {}
         for key in weights:
             inputs[key] = Input(self.neurons[key], weights[key])

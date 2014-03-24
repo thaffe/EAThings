@@ -41,12 +41,12 @@ class FlatlandAgent(AnnIndividual):
         self.ann.neurons["pr"].output = 0.0
         self.ann.neurons["pr"].stepcounter = step
 
-        if smell[0]:
-            self.ann.neurons["f" + smell[0]].output = 1.0
-        if smell[1]:
-            self.ann.neurons["f" + smell[1]].output = 1.0
-        if smell[2]:
-            self.ann.neurons["f" + smell[2]].output = 1.0
+        if smell[0] and smell[0] != '0':
+            self.ann.neurons[smell[0] + "f"].output = 1.0
+        if smell[1] and smell[1] != '0':
+            self.ann.neurons[smell[1] + "l"].output = 1.0
+        if smell[2] and smell[2] != '0':
+            self.ann.neurons[smell[2] + "r"].output = 1.0
 
         move_strengths = [self.ann.neurons["f"].update(step), self.ann.neurons["l"].update(step),
                           self.ann.neurons["r"].update(step)]
