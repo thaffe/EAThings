@@ -1,6 +1,7 @@
 from random import random
 import math
-from Gene import Gene
+
+from core.Gene import Gene
 
 
 class GeneFloat(Gene):

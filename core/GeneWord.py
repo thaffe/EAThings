@@ -1,5 +1,6 @@
 from random import randint, random
-from Gene import Gene
+
+from core import Gene
 
 
 class GeneWord(Gene):

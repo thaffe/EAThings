@@ -1,8 +1,9 @@
 from random import *
 from abc import *
 import sys
+
 import Strategies
-from normdist import NormDist
+from core.NormDist import NormDist
 
 
 class EA():
@@ -80,7 +81,7 @@ class EA():
         iter = cycle_random(individuals)
         #iterate to the childpool is filled up
         while len(childpool) < self.child_pool_size:
-            # TODO: Kjøre roulette? (Inkludere expval)
+            # TODO: Drive roulette? (Inkludere expval)
             current_parents = [iter.next() for _ in xrange(self.number_of_parents)]
             #initiates empty genotypes for the children
 

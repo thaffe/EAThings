@@ -1,10 +1,13 @@
 from copy import deepcopy
-from ANN import *
-from EA import *
-from Flatland.Flatland import Flatland
+from ann.ANN import *
+from core.AnnIndividual import AnnIndividual
+from core.EA import *
+from Flatland import Flatland
 
 
 class FlatlandEA(EA):
+
+    dynamic = False
 
     def create_individual(self, genotype=None):
         return FlatlandAgent(genotype)
@@ -21,13 +24,17 @@ class FlatlandEA(EA):
                 for map in self.maps:
                     test_map = deepcopy(map)
                     test_map.play(individual)
-                    individual.maps.append(test_map)
                     individual.fitness += test_map.food_gathered - 10 * test_map.poisoned
+                    if individual.fitness > self.best_individual.fitness:
+                        temp = test_map.history
+                        test_map = deepcopy(map)
+                        test_map.history = temp
+                        individual.maps.append(test_map)
 
 
 class FlatlandAgent(AnnIndividual):
 
-    ann = ANN(neurons=[
+    source = ANN(neurons=[
         {"name": "ff", "pre_update": None, "data": None},
         {"name": "fl", "pre_update": None, "data": None},
         {"name": "fr", "pre_update": None, "data": None},
@@ -92,3 +99,6 @@ class FlatlandAgent(AnnIndividual):
         moves.append('n')
 
         return moves
+
+
+FlatlandEA().run()

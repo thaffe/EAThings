@@ -6,6 +6,7 @@ class Gene():
     size = 1
 
     def __init__(self, replica=None, source=None):
+        self.gene_size = 1
         if replica:
             self.genotype = deepcopy(replica)
             self.mutate()

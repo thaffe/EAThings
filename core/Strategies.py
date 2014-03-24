@@ -1,7 +1,7 @@
 from operator import attrgetter
 import math
 
-from EA import *
+from core.EA import *
 
 
 GENERATION_REPLACEMENT = 0

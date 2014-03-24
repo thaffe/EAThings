@@ -1,6 +1,6 @@
 import web
 
-from Flatland.Flatland import Flatland
+from flatland.Flatland import Flatland
 
 urls = (
     '/', 'index',

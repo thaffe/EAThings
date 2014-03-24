@@ -1,6 +1,7 @@
 from abc import abstractmethod
 from copy import deepcopy
-from normdist import NormDist
+
+from core.NormDist import NormDist
 
 
 class Individual():
@@ -21,8 +22,7 @@ class Individual():
         for gene in self.genotype:
             self.gene_count += gene.gene_size
 
-        if not self.phenotype:
-            self.phenotype = self.generate_phenotype()
+        self.phenotype = self.generate_phenotype()
 
     def __repr__(self):
         return "{Fitness:%f  exp:%f gen:%s}\n" % (self.fitness, self.exp_val, "".join(str(x) for x in self.genotype))
