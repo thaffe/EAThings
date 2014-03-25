@@ -1,21 +1,21 @@
 var bot,map,tiles;
 var blockWidth = 100.0/8,blockHeight = 100.0/8 * 1.69;
-var activeMap = window.maps[0];
+var activeMap, currentPos, currentMapIndex, lookDir;
 var playback = 1;
 var counter = {
     food:0,poison:0,time:0
 }
 $(function(){
      map = $("#map");
-     map.css({maxWidth:activeMap.length*100});
+     map.css({maxWidth:window.maps[0].length*100});
      $(window).resize(function(){
             map.height(map.width());
             updateBot();
      });
 
      $("#maps a").click(function(){
-        activeMap = window.maps[$("#maps a").index(this)];
-        updateMap();
+        var index = $("#maps a").index(this);
+        setMap(index);
      });
 
      $(".controller button").click(function(){
@@ -31,15 +31,49 @@ $(function(){
 
     tiles = createMap(map, window.maps.length, window.maps.length);
     map.append(bot);
-    updateMap();
+    setMap(0);
     $(window).resize();
+
 });
 
-function move(dir){
-    window.botPos[0] += dir[0];
-    window.botPos[1] += dir[1]
+function setMap(index){
+    counter.time = 0;
+    activeMap = window.maps[index].slice(0);
+    currentPos = window.botPos[index].slice(0);
+    lookDir = window.botDir[index].slice(0);
+    currentMapIndex = index;
+    updateMap();
+    updateBot();
+}
 
-    tiles[window.botPos[0]][window.botPos[1]].children().fadeOut(300,function(){
+function move(){
+    var dir = window.hists[currentMapIndex][counter.time];
+    console.log("Move in:"+dir)
+    if(dir == 'n') return;
+
+    switch(dir){
+        case 'l':
+        if(lookDir[0]){
+            lookDir[1] = lookDir[0];
+            lookDir[0] = 0;
+        }else{
+            lookDir[0] = -lookDir[1];
+            lookDir[1] = 0;
+        }
+        break;
+        case 'r':
+        if(lookDir[0]){
+            lookDir[1] = -lookDir[0];
+            lookDir[0] = 0;
+        }else{
+            lookDir[0] = lookDir[1];
+            lookDir[1] = 0;
+        }
+    }
+    currentPos[0] += lookDir[0];
+    currentPos[1] += lookDir[1]
+
+    tiles[currentPos[0]][currentPos[1]].children().fadeOut(300,function(){
         counter[$(this).hasClass('food') ? 'food' : 'poison']+=1;
         updateStats();
         $(this).remove();
@@ -55,8 +89,8 @@ function updateStats(){
 }
 
 function updateMap(){
-    for(var i = 0; i < activeMap.length; i++){
-        for(var j = 0; j < activeMap[0].length; j++){
+    for(var i = 0; i < window.maps[0].length; i++){
+        for(var j = 0; j < window.maps[0][0].length; j++){
             if(activeMap[i][j]){
                 tiles[i][j].html('<div class="'+map_class[activeMap[i][j]]+'"></div>')
             }
@@ -65,14 +99,14 @@ function updateMap(){
 }
 
 function updateBot(){
-    bot.css(tiles[window.botPos[0]][window.botPos[1]].position());
+    bot.css(tiles[currentPos[0]][currentPos[1]].position());
 }
 
 function createMap(mapholder){
     var m = [];
-    for(var i = 0; i < activeMap.length; i++){
+    for(var i = 0; i < window.maps[0].length; i++){
         row = [];
-        for(var j = 0; j < activeMap[0].length; j++){
+        for(var j = 0; j < window.maps[0][0].length; j++){
             div = $("<div class='tile grass' style='width:"+blockWidth+"%;height:"+blockHeight+"%'></div>");
             row.push(div);
             mapholder.append(div);
@@ -94,9 +128,9 @@ var actions = {
 
     forward:function(click){
         if(click) actions.clear();
-        counter.time++;
+        move();
         updateStats();
-        move([1,0]);
+        counter.time++;
         if(this.counter >= 50){
             actions.clear();
         }
@@ -106,12 +140,11 @@ var actions = {
         if(click) actions.clear();
         counter.time--;
         updateStats();
-        move([-1,0]);
+        move();
     },
 
     begin:function(){
-        counter.time=0;
-        updateStats();
+        setMap(currentIndex);
         actions.clear();
     },
 

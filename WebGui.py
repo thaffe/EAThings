@@ -25,7 +25,7 @@ class flatland_web:
         ea.run()
 
         print ea.best_individual
-        return render.flatland(ea.best_individual.maps)
+        return render.flatland(ea.maps);
 
 
 class beeragent_web:
