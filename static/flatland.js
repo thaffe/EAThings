@@ -2,6 +2,7 @@ var bot,map,tiles;
 var blockWidth = 100.0/8,blockHeight = 100.0/8 * 1.69;
 var activeMap, currentPos, currentMapIndex, lookDir;
 var playback = 1;
+var moveHist;
 var counter = {
     food:0,poison:0,time:0
 }
@@ -39,58 +40,74 @@ $(function(){
 function setMap(index){
     counter.time = 0;
     activeMap = window.maps[index].slice(0);
-    currentPos = window.botPos[index].slice(0);
-    lookDir = window.botDir[index].slice(0);
+    moveHist = getHistSteps(index);
+    currentPos = moveHist[0];
     currentMapIndex = index;
+
     updateMap();
     updateBot();
 }
 
-function move(){
-    var dir = window.hists[currentMapIndex][counter.time];
-    console.log("Move in:"+dir)
-    if(dir == 'n') return;
-
-    switch(dir){
-        case 'l':
-        if(lookDir[0]){
-            lookDir[1] = lookDir[0];
-            lookDir[0] = 0;
-        }else{
-            lookDir[0] = -lookDir[1];
-            lookDir[1] = 0;
+function getHistSteps(index){
+    var h = window.hists[index];
+    var l = window.botDir[index].slice(0);
+    var p = window.botPos[index].slice(0);
+    var res = [{pos:p.slice(0),dir:"dir"+l[0]+""+l[1]}];
+    console.log("StartLook:"+l, "StartPos:"+p);
+    for(var i = 0; i < h.length; i++){
+        var dir = h[i];
+        switch(dir){
+            case 'l':
+            if(l[0]){
+                l[1] = -l[0];
+                l[0] = 0;
+            }else{
+                l[0] = l[1];
+                l[1] = 0;
+            }
+            break;
+            case 'r':
+            if(l[0]){
+                l[1] = l[0];
+                l[0] = 0;
+            }else{
+                l[0] = -l[1];
+                l[1] = 0;
+            }
         }
-        break;
-        case 'r':
-        if(lookDir[0]){
-            lookDir[1] = -lookDir[0];
-            lookDir[0] = 0;
-        }else{
-            lookDir[0] = lookDir[1];
-            lookDir[1] = 0;
+        t = p.slice(0);
+        if(dir != 'n'){
+            p[0] += l[0];
+            p[1] += l[1];
         }
+        console.log("Move:"+dir,"From:"+t, "To:"+p, "Look:"+l)
+        res.push({
+            pos:p.slice(0),
+            dir:"dir"+l[0]+""+l[1]
+        });
     }
-    currentPos[0] += lookDir[0];
-    currentPos[1] += lookDir[1]
+    return res;
+}
 
-    tiles[currentPos[0]][currentPos[1]].children().fadeOut(300,function(){
-        counter[$(this).hasClass('food') ? 'food' : 'poison']+=1;
-        updateStats();
-        $(this).remove();
-    });
+function step(forward){
+    var index = forward && counter.time < moveHist.length - 1? ++counter.time :
+        counter.time > 0 ? --counter.time : 0;
+    currentPos = moveHist[index];
+
+    tiles[currentPos.pos[0]][currentPos.pos[1]].children()[forward ? "fadeOut" : "fadeIn"](300,updateStats);
     updateBot();
 }
 
 function updateStats(){
-    console.log(counter);
-    $("#food-counter").text(counter.food);
-    $("#poison-counter").text(counter.poison);
+    console.log("Food:"+$(".food:hidden").length, "Poison:"+$(".poison:hidden").length)
+    $("#food-counter").text($(".food:hidden").length);
+    $("#poison-counter").text($(".poison:hidden").length);
     $("#time-counter").text(counter.time);
 }
 
 function updateMap(){
-    for(var i = 0; i < window.maps[0].length; i++){
-        for(var j = 0; j < window.maps[0][0].length; j++){
+    for(var i = 0; i < activeMap.length; i++){
+        for(var j = 0; j < activeMap[0].length; j++){
             if(activeMap[i][j]){
                 tiles[i][j].html('<div class="'+map_class[activeMap[i][j]]+'"></div>')
             }
@@ -99,7 +116,8 @@ function updateMap(){
 }
 
 function updateBot(){
-    bot.css(tiles[currentPos[0]][currentPos[1]].position());
+    bot.attr("class","bot "+currentPos.dir);
+    bot.css(tiles[currentPos.pos[1]][currentPos.pos[0]].position());
 }
 
 function createMap(mapholder){
@@ -128,9 +146,8 @@ var actions = {
 
     forward:function(click){
         if(click) actions.clear();
-        move();
+        step(true);
         updateStats();
-        counter.time++;
         if(this.counter >= 50){
             actions.clear();
         }
@@ -138,19 +155,20 @@ var actions = {
 
     back:function(click){
         if(click) actions.clear();
-        counter.time--;
         updateStats();
-        move();
+        step(false);
     },
 
     begin:function(){
-        setMap(currentIndex);
+        counter.time = -1;
+        step(true);
         actions.clear();
     },
 
     end:function(){
         counter.time=50;
         updateStats();
+
         actions.clear();
     },
 

@@ -22,10 +22,13 @@ class flatland_web:
 
 
         ea = FlatlandEA()
+        ea.child_pool_size = 10
+        ea.parent_pool_size = 10
+        ea.adult_pool_size = 5
         ea.run()
 
-        print ea.best_individual
-        return render.flatland(ea.maps);
+        print ea.maps[0].agent_pos, ea.maps[0].agent_direction.val
+        return render.flatland(ea.maps)
 
 
 class beeragent_web:

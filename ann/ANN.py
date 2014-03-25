@@ -57,7 +57,7 @@ class Neuron:
 
         dy = (-self.y + si + self.bias) / self.tau
         self.y += dy
-        self.output = 1 / (1 + math.exp(-self.g * self.y))
+        self.output = 1 / (1 + math.exp(max(-150,min(-self.g * self.y, 300))))
         self.step_counter = step_counter
 
         if self.post_update:
