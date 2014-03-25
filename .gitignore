@@ -1,5 +1,5 @@
 *.iws
-/.idea/workspace.xml
-/.idea/misc.xml
-/.idea/tasks.xml
+.idea/workspace.xml
+.idea/misc.xml
+.idea/tasks.xml
 *.pyc

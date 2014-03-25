@@ -57,6 +57,8 @@ $var jsfiles: static/flatland.js
     </div>
 </div>
 <script>
-    window.maps = $:[flatland.map.toList() for flatland in maps];
-    window.botPos = [0,0];
+   window.maps = $:[flatland.map.tolist() for flatland in maps];
+   window.botPos = $:[list(flatland.agent_pos) for flatland in maps];
+   window.hists = $:[flatland.history for flatland in maps];
+   window.botDir = $:[flatland.agent_direction.val.tolist() for flatland in maps];
 </script>

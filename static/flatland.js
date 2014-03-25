@@ -1,21 +1,22 @@
 var bot,map,tiles;
 var blockWidth = 100.0/8,blockHeight = 100.0/8 * 1.69;
-var activeMap = window.maps[0];
+var activeMap, currentPos, currentMapIndex, lookDir;
 var playback = 1;
+var moveHist;
 var counter = {
     food:0,poison:0,time:0
 }
 $(function(){
      map = $("#map");
-     map.css({maxWidth:activeMap.length*100});
+     map.css({maxWidth:window.maps[0].length*100});
      $(window).resize(function(){
             map.height(map.width());
             updateBot();
      });
 
      $("#maps a").click(function(){
-        activeMap = window.maps[$("#maps a").index(this)];
-        updateMap();
+        var index = $("#maps a").index(this);
+        setMap(index);
      });
 
      $(".controller button").click(function(){
@@ -31,26 +32,76 @@ $(function(){
 
     tiles = createMap(map, window.maps.length, window.maps.length);
     map.append(bot);
-    updateMap();
+    setMap(0);
     $(window).resize();
+
 });
 
-function move(dir){
-    window.botPos[0] += dir[0];
-    window.botPos[1] += dir[1]
+function setMap(index){
+    counter.time = 0;
+    activeMap = window.maps[index].slice(0);
+    moveHist = getHistSteps(index);
+    currentPos = moveHist[0];
+    currentMapIndex = index;
 
-    tiles[window.botPos[0]][window.botPos[1]].children().fadeOut(300,function(){
-        counter[$(this).hasClass('food') ? 'food' : 'poison']+=1;
-        updateStats();
-        $(this).remove();
-    });
+    updateMap();
+    updateBot();
+}
+
+function getHistSteps(index){
+    var h = window.hists[index];
+    var l = window.botDir[index].slice(0);
+    var p = window.botPos[index].slice(0);
+    var res = [{pos:p.slice(0),dir:"dir"+l[0]+""+l[1]}];
+    console.log("StartLook:"+l, "StartPos:"+p);
+    for(var i = 0; i < h.length; i++){
+        var dir = h[i];
+        switch(dir){
+            case 'l':
+            if(l[0]){
+                l[1] = -l[0];
+                l[0] = 0;
+            }else{
+                l[0] = l[1];
+                l[1] = 0;
+            }
+            break;
+            case 'r':
+            if(l[0]){
+                l[1] = l[0];
+                l[0] = 0;
+            }else{
+                l[0] = -l[1];
+                l[1] = 0;
+            }
+        }
+        t = p.slice(0);
+        if(dir != 'n'){
+            p[0] += l[0];
+            p[1] += l[1];
+        }
+        console.log("Move:"+dir,"From:"+t, "To:"+p, "Look:"+l)
+        res.push({
+            pos:p.slice(0),
+            dir:"dir"+l[0]+""+l[1]
+        });
+    }
+    return res;
+}
+
+function step(forward){
+    var index = forward && counter.time < moveHist.length - 1? ++counter.time :
+        counter.time > 0 ? --counter.time : 0;
+    currentPos = moveHist[index];
+
+    tiles[currentPos.pos[0]][currentPos.pos[1]].children()[forward ? "fadeOut" : "fadeIn"](300,updateStats);
     updateBot();
 }
 
 function updateStats(){
-    console.log(counter);
-    $("#food-counter").text(counter.food);
-    $("#poison-counter").text(counter.poison);
+    console.log("Food:"+$(".food:hidden").length, "Poison:"+$(".poison:hidden").length)
+    $("#food-counter").text($(".food:hidden").length);
+    $("#poison-counter").text($(".poison:hidden").length);
     $("#time-counter").text(counter.time);
 }
 
@@ -65,14 +116,15 @@ function updateMap(){
 }
 
 function updateBot(){
-    bot.css(tiles[window.botPos[0]][window.botPos[1]].position());
+    bot.attr("class","bot "+currentPos.dir);
+    bot.css(tiles[currentPos.pos[1]][currentPos.pos[0]].position());
 }
 
 function createMap(mapholder){
     var m = [];
-    for(var i = 0; i < activeMap.length; i++){
+    for(var i = 0; i < window.maps[0].length; i++){
         row = [];
-        for(var j = 0; j < activeMap[0].length; j++){
+        for(var j = 0; j < window.maps[0][0].length; j++){
             div = $("<div class='tile grass' style='width:"+blockWidth+"%;height:"+blockHeight+"%'></div>");
             row.push(div);
             mapholder.append(div);
@@ -94,9 +146,8 @@ var actions = {
 
     forward:function(click){
         if(click) actions.clear();
-        counter.time++;
+        step(true);
         updateStats();
-        move([1,0]);
         if(this.counter >= 50){
             actions.clear();
         }
@@ -104,20 +155,20 @@ var actions = {
 
     back:function(click){
         if(click) actions.clear();
-        counter.time--;
         updateStats();
-        move([-1,0]);
+        step(false);
     },
 
     begin:function(){
-        counter.time=0;
-        updateStats();
+        counter.time = -1;
+        step(true);
         actions.clear();
     },
 
     end:function(){
         counter.time=50;
         updateStats();
+
         actions.clear();
     },
 

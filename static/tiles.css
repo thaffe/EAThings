@@ -51,9 +51,21 @@ body{
 .bot{
     position:absolute;
     background-image:url(imgs/bot.png);
-    -webkit-transition: all 0.3s; /* For Safari 3.1 to 6.0 */
-    transition: all 0.3s;
+    background-size:contain;
+    -webkit-transition: top 0.3s, right 0.3; /* For Safari 3.1 to 6.0 */
+    transition: top 0.3s, right 0.3;
     margin-top:-2%;
+}
+
+.bot.dir-10{
+  background-image:url(imgs/bot_left.png);
+}
+
+.bot.dir0-1{
+  background-image:url(imgs/bot_back.png);
+}
+.bot.dir10{
+    background-image:url(imgs/bot_right.png);
 }
 
 td,table,tr{
