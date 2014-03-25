@@ -1,4 +1,4 @@
-from beeragent.BeerAgent import BeerAgent
+from beer.BeerAgent import BeerAgent
 from core.EA import EA
 
 

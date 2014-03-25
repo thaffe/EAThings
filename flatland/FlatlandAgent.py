@@ -21,9 +21,6 @@ class FlatlandAgent(AnnIndividual):
         AnnIndividual.__init__(self, genotype)
         self.flat_land = Flatland()
 
-    def calculate_fitness(self):
-        return 0
-
     def phenotype_str(self):
         return "IM a flatland dude"
 

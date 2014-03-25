@@ -5,7 +5,7 @@ from flatland.FlatlandEA import *
 urls = (
     '/', 'index',
     '/flatland', 'flatland_web',
-    '/beeragent', 'beeragent_web'
+    '/beer', 'beeragent_web'
 )
 app = web.application(urls, globals())
 render = web.template.render('templates/',base='layout')

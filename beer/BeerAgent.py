@@ -16,14 +16,11 @@ class BeerAgent(Individual):
         {"name": "o1", "weights": {"h0": 0, "h1": 0}, "post_update": None, "data": None}
     ])
 
-    def calculate_fitness(self):
-        pass
-
-    def generate_phenotype(self):
-        pass
-
-    def random_genotype(self):
-        pass
-
     def phenotype_str(self):
         return "I'm a BeerAgent!"
+
+    def output(self, shadows):
+        for i in xrange(5):
+            self.ann.neurons["s" + i].output = shadows[i]
+
+        
