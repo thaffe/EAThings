@@ -49,6 +49,7 @@ function setMap(index){
 }
 
 function getHistSteps(index){
+    var max = 7;
     var h = window.hists[index];
     var l = window.botDir[index].slice(0);
     var p = window.botPos[index].slice(0);
@@ -80,6 +81,10 @@ function getHistSteps(index){
             p[0] += l[0];
             p[1] += l[1];
         }
+
+        if(p[0] > max) p[0] = 0;
+        if(p[1] > max) p[1] = 0;
+
         console.log("Move:"+dir,"From:"+t, "To:"+p, "Look:"+l)
         res.push({
             pos:p.slice(0),

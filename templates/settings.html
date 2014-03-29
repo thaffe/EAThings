@@ -1,0 +1,83 @@
+$def with(settings, hidden)
+$var title: $settings['game'] settings
+$var cssfiles:0
+$var jsfiles:0
+
+$code:
+    def inputField(label,name,value,span,placeholder):
+        x = '<div class="col-md-'+str(span)+' form-group"><label for="'+name+'">'+label+'</label>'
+        x+= '<input class="form-control" id="'+name+'" name="'+name+'" placeholder="'+placeholder+'" value="'+str(value)+'"></div>'
+        return x
+
+    def getNormalDist(name):
+        span = 2
+        n = settings[name]
+        x = '<div class="row">'
+        x+= inputField('Rate',name,n[0],span,'Rate')
+        x+= inputField('Sigma',name,n[1],span,'Sigma')
+        x+= inputField('Min',name,n[2],span,'Min value')
+        x+= inputField('Max',name,n[3],span,'Max value')
+        x+= '</div>'
+        return x
+
+<div id="settings"
+$if hidden:
+        class="popup"
+>
+    <div class="container">
+    <h1>Evolution Algorithm</h1>
+
+    <form role="form" method="get" action="/$settings['game']">
+        <input type="hidden" value="$settings['game']" name="game"/>
+        <div class="row">
+            $:inputField('Max generation steps', 'generations',settings['generations'], 4, 'Max generations')
+        </div>
+        <legend><small>Strategies</small></legend>
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label for="adultStrategy">Adult Selection</label>
+                <select class="form-control" name="adultStrategy" id="adultStrategy">
+                    $for i in adultStrat:
+                        <option value="$loop.index0"
+                        $if settings['adultStrategy'] == loop.index0:
+                            selected
+                        > $i</option>
+                </select>
+
+
+            </div>
+            <div class="form-group col-md-3">
+                <label for="parentStrategy">Parent Selection Strategy</label>
+                <select class="form-control" name="parentStrategy" id="parentStrategy">
+                    $for i in parentStrat:
+                        <option value="$loop.index0"
+                        $if settings['parentStrategy'] == loop.index0:
+                            selected
+                        >$i[0]</option>
+                </select>
+            </div>
+        </div>
+        <div class="row hide" id="4-parent-opts">
+            $:inputField('Tournament K', 'tournament', settings['tournament'][0], 3 , 'Group Size')
+            $:inputField('Tournament Random', 'tournament',settings['tournament'][1],3, 'Random Picking')
+        </div>
+        <div class="row hide" id="3-parent-opts">
+            $:inputField('Rank Min Value', 'rank',settings['rank'][0],3, 'Min Value')
+            $:inputField('Rank Max Value', 'rank',settings['rank'][1],3, 'Max Value')
+        </div>
+
+        <legend><small>Pools</small></legend>
+        <div class="row">
+            $:inputField('Child Pool Size', 'childPool',settings['childPool'],2, 'Child Pool')
+            $:inputField('Adult Pool Size', 'adultPool',settings['adultPool'],2, 'Adult Pool')
+            $:inputField('Parent Pool Size', 'parentPool',settings['parentPool'],2, 'Parent Pool')
+        </div>
+        <legend><small>Mutation</small></legend>
+        $:getNormalDist('mutation')
+
+        <legend><small>Crossover</small></legend>
+        $:getNormalDist('crossover')
+        <button type="submit" class="btn btn-primary btn-lg">Run Evolution</button>
+    </form>
+    </div>
+</div>
