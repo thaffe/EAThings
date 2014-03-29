@@ -23,11 +23,15 @@ class FlatlandEA(EA):
 
         individuals = self.children if not self.dynamic else self.children + self.adults
         for individual in individuals:
-            temp = []
+            temp_hist = []
+            temp_food_gathered = []
+            temp_poisoned = []
             for map in self.maps:
                 test_map = deepcopy(map)
                 test_map.play(individual)
-                temp.append(test_map.history)
+                temp_hist.append(test_map.history)
+                temp_food_gathered.append(test_map.food_gathered)
+                temp_poisoned.append(test_map.poisoned)
                 map_fitness = test_map.food_gathered - 10 * test_map.poisoned
                 individual.fitness += map_fitness
                 if map_fitness > map.best_fitness:
@@ -37,4 +41,6 @@ class FlatlandEA(EA):
 
             if individual.fitness > self.best_individual.fitness:
                 for i in xrange(len(self.maps)):
-                    self.maps[i].history = temp[i]
+                    self.maps[i].history = temp_hist[i]
+                    self.maps[i].food_gathered = temp_food_gathered[i]
+                    self.maps[i].poisoned = temp_poisoned[i]
