@@ -88,7 +88,6 @@ class flatland_web:
     def GET(self):
         i = web.input(tournament=[], rank=[], mutation=[], crossover=[])
         setup_ea(i)
-        print i.items()
         self.ea.run()
         return render.flatland(self.ea, i)
 
