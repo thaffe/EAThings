@@ -1,0 +1,23 @@
+$def with (ea)
+$var title: 0
+$var cssfiles: 0
+$var jsfiles: 0
+<script>
+        var sds = $ea.sds;
+        var means = $ea.means;
+        var bests = $ea.bests;
+        var fitnessGoal = $ea.fitness_goal;
+    </script>
+<div id="chartHolder" class="popup">
+<div class="container">
+    <div class="chart">
+        <canvas id="chart"></canvas>
+    </div>
+    <center>
+        <span class="label label-primary">SD</span>
+        <span class="label label-success">Mean</span>
+        <span class="label label-danger">Best</span>
+    </center>
+</div>
+</div>
+

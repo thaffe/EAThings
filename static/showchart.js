@@ -48,6 +48,7 @@ $(function () {
     options.animation = false;
 
     $(window).resize(function () {
+        console.log("drawChart")
         drawChart();
     });
 

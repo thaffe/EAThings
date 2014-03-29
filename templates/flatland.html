@@ -1,10 +1,11 @@
-$def with(maps, settings)
+$def with(ea, settings)
 $:render.settings(settings,True)
+$:render.chart(ea)
 $var title: Flatland Agent
 $var cssfiles: static/tiles.css
 $var jsfiles: static/flatland.js
 
-
+<div class="container-fluid">
 <div class="row">
     <div class="col-xs-8">
         <h1>Flatland</h1>
@@ -50,18 +51,24 @@ $var jsfiles: static/flatland.js
             </p>
         </center>
         <div class="list-group" id="maps">
-            $for map in maps:
+            $for map in ea.maps:
             <a href="#" class="list-group-item" id="map-$loop.index0">
                 <h4 class="list-group-item-heading">Map $loop.index</h4>
 
                 <p class="list-group-item-text">Score for this thingy</p>
             </a>
         </div>
+        <center>
+            <button class="btn btn-primary btn-lg settings-toggle"><i class="fa fa-gear"></i></button>
+            <button class="btn btn-primary btn-lg chart-toggle"><i class="fa fa-signal"></i></button>
+        </center>
     </div>
 </div>
+</div>
 <script>
-   window.maps = $:[flatland.map.tolist() for flatland in maps];
-   window.botPos = $:[list(flatland.agent_pos) for flatland in maps];
-   window.hists = $:[flatland.history for flatland in maps];
-   window.botDir = $:[flatland.agent_direction.val.tolist() for flatland in maps];
+   window.maps = $:[flatland.map.tolist() for flatland in ea.maps];
+   window.botPos = $:[list(flatland.agent_pos) for flatland in ea.maps];
+   window.hists = $:[flatland.history for flatland in ea.maps];
+   window.botDir = $:[flatland.agent_direction.val.tolist() for flatland in ea.maps];
 </script>
+

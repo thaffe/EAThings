@@ -39,7 +39,7 @@ urls = (
 )
 app = web.application(urls, globals())
 render = web.template.render('templates/', base='layout')
-web.template.Template.globals['render'] = render
+web.template.Template.globals['render'] =  web.template.render('templates/')
 web.template.Template.globals['str'] = str
 
 web.template.Template.globals['adultStrat'] = adultStrat
@@ -86,7 +86,7 @@ class flatland_web:
         print i.items()
         ea = FlatlandEA()
         ea.run()
-        return render.settings(i,False)
+        return render.flatland(ea,i)
 
 
 class beeragent_web:

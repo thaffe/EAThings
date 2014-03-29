@@ -12,9 +12,26 @@ $(function(){
    $("#puzzle").trigger('change');
    $("#parentStrategy").trigger('change');
 
-   $(".settings-toggle").click(function(){
-        $("#settings").toggle(300);
-   })
+   $(".popup").click(function(e){
+        e.stopPropagation();
+   });
+
+   $("html").click(function(){
+        $(".popup.show").removeClass("show");
+   });
+
+   $(".chart-toggle").click(function(e){
+        $("#chartHolder").addClass('show');
+        setTimeout(function(){
+            $(window).resize();
+        },500);
+
+        e.stopPropagation();
+   });
+   $(".settings-toggle").click(function(e){
+        $("#settings").addClass("show");
+        e.stopPropagation();
+   });
 });
 
 
