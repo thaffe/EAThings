@@ -107,7 +107,7 @@ function step(forward){
 }
 
 function fadeTile(pos, fadeOut){
-    tiles[pos[1]][pos[0]].children()[fadeOut ? "fadeOut" : "fadeIn"](300, updateStats);
+    tiles[pos[0]][pos[1]].children()[fadeOut ? "fadeOut" : "fadeIn"](300, updateStats);
 }
 
 function updateStats(){
@@ -129,7 +129,7 @@ function updateMap(){
 
 function updateBot(){
     bot.attr("class","bot "+currentPos.dir);
-    bot.css(tiles[currentPos.pos[1]][currentPos.pos[0]].position());
+    bot.css(tiles[currentPos.pos[0]][currentPos.pos[1]].position());
 }
 
 function createMap(mapholder){
