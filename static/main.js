@@ -11,6 +11,10 @@ $(function(){
 
    $("#puzzle").trigger('change');
    $("#parentStrategy").trigger('change');
+
+   $(".settings-toggle").click(function(){
+        $("#settings").toggle(300);
+   })
 });
 
 

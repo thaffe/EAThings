@@ -4,20 +4,36 @@ $def with (content)
 <head>
     <title>$content.title</title>
     $if content.cssfiles:
+        $for f in content.cssfiles.split():
+            <link rel="stylesheet" href="$f" type="text/css" charset="utf-8"/>
 
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" type="text/css"/>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" type="text/css"/>
-    $for f in content.cssfiles.split():
-        <link rel="stylesheet" href="$f" type="text/css" charset="utf-8"/>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"
+          type="text/css"/>
+    <style>
+        body,html{
+        background:#EDEDED;
+        }
+        .container{
+        background:white;
+        padding:30px;
+        box-shadow: 0 0 10px #BBB;
+        height:100%;
+        }
+
+    </style>
 </head>
 <body>
 $:content
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
 <script src="static/main.js"></script>
+<script src="static/showchart.js"></script>
 $if content.cssfiles:
     $for f in content.jsfiles.split():
         <script src="$f"></script>
+
 </body>
 </html>
