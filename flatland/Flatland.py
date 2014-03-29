@@ -1,5 +1,5 @@
 from random import *
-from numpy import array
+from numpy import array, remainder
 
 
 class Flatland:
@@ -21,30 +21,24 @@ class Flatland:
 
     def play(self, agent):
         while len(self.history) < 40 and self.poisoned < 3:
-            move_list = agent.get_move_priorities(self.smell(), len(self.history))
-            i = 0
-            while not self.move(move_list[i]):
-                i += 1
-                if i == len(move_list):
-                    print "move_list:", move_list
+            self.move(agent.get_move_priorities(self.smell(), len(self.history)))
 
     def move(self, move):
         if move == 'f':
-            self.agent_pos = tuple(self.agent_pos + self.agent_direction.val)
+            self.agent_pos = tuple(remainder(self.agent_pos + self.agent_direction.val, (len(self.map), len(self.map[0]))))
         elif move == 'l':
             self.agent_direction.turn_left()
-            self.agent_pos = tuple(self.agent_pos + self.agent_direction.val)
+            self.agent_pos = tuple(remainder(self.agent_pos + self.agent_direction.val, (len(self.map), len(self.map[0]))))
         elif move == 'r':
             self.agent_direction.turn_right()
-            self.agent_pos = tuple(self.agent_pos + self.agent_direction.val)
+            self.agent_pos = tuple(remainder(self.agent_pos + self.agent_direction.val, (len(self.map), len(self.map[0]))))
         elif move == 'n':
             pass
         else:
             raise AttributeError
 
         if not self.legitimate_position:
-            self.agent_pos = tuple(self.agent_pos - self.agent_direction.val)
-            return False
+            raise AttributeError
         else:
             self.history.append(move)
             if self.map[self.agent_pos] == 'f':
@@ -52,8 +46,6 @@ class Flatland:
                 self.food_gathered += 1
             elif self.map[self.agent_pos] == 'p':
                 self.poisoned += 1
-
-        return True
 
     def smell(self):
         direction = self.agent_direction

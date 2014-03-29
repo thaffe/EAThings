@@ -1,8 +1,8 @@
 from ann.ANN import ANN
-from core.Individual import Individual
+from core.AnnIndividual import AnnIndividual
 
 
-class BeerAgent(Individual):
+class BeerAgent(AnnIndividual):
 
     source = ANN(neurons=[
         {"name": "s0", "pre_update": None, "data": None},
@@ -16,11 +16,12 @@ class BeerAgent(Individual):
         {"name": "o1", "weights": {"h0": 0, "h1": 0}, "post_update": None, "data": None}
     ])
 
+    def calculate_fitness(self):
+        pass
+
     def phenotype_str(self):
         return "I'm a BeerAgent!"
 
     def output(self, shadows):
         for i in xrange(5):
-            self.ann.neurons["s" + i].output = shadows[i]
-
-        
+            self.ann.neurons["s" + str(i)].output = shadows[i]

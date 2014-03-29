@@ -45,25 +45,39 @@ class FlatlandAgent(AnnIndividual):
         if smell[2] and smell[2] != '0':
             self.ann.neurons[smell[2] + "r"].output = 1.0
 
-        move_strengths = [self.ann.neurons["f"].update(step), self.ann.neurons["l"].update(step),
-                          self.ann.neurons["r"].update(step)]
-        moves = []
-        best = 0
-        if move_strengths[0] > 0.5:
-            moves.append('f')
-        if move_strengths[1] > 0.5:
-            if move_strengths[1] > move_strengths[0]:
-                moves.insert(0, 'l')
-                best = 1
-            else:
-                moves.append('l')
-        if move_strengths[2] > 0.5:
-            if move_strengths[2] > move_strengths[best]:
-                moves.insert(0, 'r')
-            elif move_strengths[2] > move_strengths[1 - best]:
-                moves.insert(1, 'r')
-            else:
-                moves.append('r')
-        moves.append('n')
+        move = "n"
+        best = 0.5
+        if self.ann.neurons["f"].update(step) > best:
+            move = "f"
+            best = self.ann.neurons["f"].update(step)
+        if self.ann.neurons["l"].update(step) > best:
+            move = "l"
+            best = self.ann.neurons["l"].update(step)
+        if self.ann.neurons["r"].update(step) > best:
+            move = "r"
 
-        return moves
+        # move_strengths = [self.ann.neurons["f"].update(step), self.ann.neurons["l"].update(step),
+        #                   self.ann.neurons["r"].update(step)]
+        #
+        #
+        #
+        # moves = []
+        # move = 0
+        # if move_strengths[0] > 0.5:
+        #     moves.append('f')
+        # if move_strengths[1] > 0.5:
+        #     if move_strengths[1] > move_strengths[0]:
+        #         moves.insert(0, 'l')
+        #         move = 1
+        #     else:
+        #         moves.append('l')
+        # if move_strengths[2] > 0.5:
+        #     if move_strengths[2] > move_strengths[move]:
+        #         moves.insert(0, 'r')
+        #     elif move_strengths[2] > move_strengths[1 - move]:
+        #         moves.insert(1, 'r')
+        #     else:
+        #         moves.append('r')
+        # moves.append('n')
+
+        return move
