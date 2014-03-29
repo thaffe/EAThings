@@ -32,6 +32,8 @@ class FlatlandEA(EA):
                 individual.fitness += map_fitness
                 if map_fitness > map.best_fitness:
                     map.best_solution = test_map.history
+                    map.food_gathered_by_best = test_map.food_gathered
+                    map.poisoned_by_best = test_map.poisoned
 
             if individual.fitness > self.best_individual.fitness:
                 for i in xrange(len(self.maps)):
