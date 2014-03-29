@@ -84,6 +84,8 @@ function getHistSteps(index){
 
         if(p[0] > max) p[0] = 0;
         if(p[1] > max) p[1] = 0;
+        if(p[0] < 0) p[0] = max;
+        if(p[1] < 0) p[1] = max;
 
         console.log("Move:"+dir,"From:"+t, "To:"+p, "Look:"+l)
         res.push({
@@ -174,6 +176,7 @@ var actions = {
     begin:function(){
         counter.time = -1;
         step(true);
+        $(".poison,.food").fadeIn();
         actions.clear();
     },
 
