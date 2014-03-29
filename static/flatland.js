@@ -95,12 +95,19 @@ function getHistSteps(index){
 }
 
 function step(forward){
-    var index = forward && counter.time < moveHist.length - 1? ++counter.time :
-        counter.time > 0 ? --counter.time : 0;
-    currentPos = moveHist[index];
+    if(forward && counter.time < moveHist.length - 1) counter.time++;
+    else if(!forward && counter.time) counter.time--;
 
-    tiles[currentPos.pos[0]][currentPos.pos[1]].children()[forward ? "fadeOut" : "fadeIn"](300,updateStats);
+    if(!forward)fadeTile(currentPos.pos,forward);
+
+    currentPos = moveHist[counter.time];
+
+    if(forward) fadeTile(currentPos.pos,forward);
     updateBot();
+}
+
+function fadeTile(pos, fadeOut){
+    tiles[pos[1]][pos[0]].children()[fadeOut ? "fadeOut" : "fadeIn"](300, updateStats);
 }
 
 function updateStats(){
