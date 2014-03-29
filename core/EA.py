@@ -50,7 +50,7 @@ class EA():
             sys.stdout.flush()
             self.run_fitness_tests()
             sys.stdout.write(
-                "\r Generation:%d/%d BestFittness:%f ... Adult selection" % (
+                "\r Generation:%d/%d  BestFittness:%f ... Adult selection" % (
                 self.current_generation, self.max_generations, self.best_individual.fitness))
             sys.stdout.flush()
             self.adults = self.parent_selection(

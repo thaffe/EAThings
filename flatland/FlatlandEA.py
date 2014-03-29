@@ -39,6 +39,7 @@ class FlatlandEA(EA):
                     map.food_gathered_by_best = test_map.food_gathered
                     map.poisoned_by_best = test_map.poisoned
 
+            individual.fitness = max(individual.fitness, 0)
             if individual.fitness > self.best_individual.fitness:
                 for i in xrange(len(self.maps)):
                     self.maps[i].history = temp_hist[i]
