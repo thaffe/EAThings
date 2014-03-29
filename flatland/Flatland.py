@@ -5,6 +5,7 @@ from numpy import array, remainder
 class Flatland:
     N = 8
     M = 8
+    step_count = 15
 
     def __init__(self, N=8, M=8, f=0.5, p=0.5):
         self.map = array([
@@ -20,7 +21,7 @@ class Flatland:
         self.best_fitness = 0
 
     def play(self, agent):
-        while len(self.history) < 40 and self.poisoned < 3:
+        while len(self.history) < self.step_count and self.poisoned < 3:
             self.move(agent.get_move_priorities(self.smell(), len(self.history)))
 
     def move(self, move):

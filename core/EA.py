@@ -36,21 +36,29 @@ class EA():
         pass
 
     def run(self, plot=False):
-        children = [self.create_individual() for _ in xrange(self.adult_pool_size)]
-        adults = None
+        self.children = [self.create_individual() for _ in xrange(self.adult_pool_size)]
+        self.adults = None
         self.current_generation = 0
-        self.update_stats(children)
+        self.update_stats()
         print("Starting Evolution")
         while self.current_generation < self.max_generations and (not self.fitness_goal or self.fitness_goal > self.best_individual.fitness):
             sys.stdout.write(
-                "\r Generation:%d/%d BestFittness:%f" % (
+                "\r Generation:%d/%d BestFittness:%f ... Testing fitness" % (
                 self.current_generation, self.max_generations, self.best_individual.fitness))
             sys.stdout.flush()
-            self.run_fitness_tests(children)
+            self.run_fitness_tests()
+            sys.stdout.write(
+                "\r Generation:%d/%d BestFittness:%f ... Adult selection" % (
+                self.current_generation, self.max_generations, self.best_individual.fitness))
+            sys.stdout.flush()
             adults = self.parent_selection(
-                self.adult_selection(adults, children)
+                self.adult_selection()
             )
-            children = self.reproduction(adults)
+            sys.stdout.write(
+                "\r Generation:%d/%d BestFittness:%f ... Reproduction" % (
+                self.current_generation, self.max_generations, self.best_individual.fitness))
+            sys.stdout.flush()
+            self.children = self.reproduction(adults)
 
             self.current_generation += 1
 
@@ -59,7 +67,7 @@ class EA():
             self.plot()
 
     def parent_selection(self, individuals):
-        self.update_stats(individuals)
+        self.update_stats()
         exp_sum = self.parent_selection_strategy(self, individuals)
 
         #if parent selection strategy returns list then no need to spin roulette wheel
@@ -67,13 +75,13 @@ class EA():
 
         return [x for x in roulette(individuals, self.parent_pool_size, exp_sum)]
 
-    def adult_selection(self, parents, children):
+    def adult_selection(self):
         if self.adult_selection_mode == Strategies.GENERATION_REPLACEMENT or parents is None:
             #over producion
-            return self.get_best(children, self.adult_pool_size)
+            return self.get_best(self.children, self.adult_pool_size)
         else:
             #generation mixing
-            return self.get_best(parents + children, self.adult_pool_size)
+            return self.get_best(self.adults + self.children, self.adult_pool_size)
 
     def reproduction(self, individuals):
         childpool = []
@@ -88,7 +96,7 @@ class EA():
             genotypes = [[] for _ in xrange(self.number_of_parents)]
             parent_index = 0
             prev_crossover = 0
-            next_crossover = int(self.crossover_rate.next())
+            next_crossover = int(self.crossover_rate.next()*gene_count)
             while prev_crossover < gene_count:
                 for j in xrange(self.number_of_parents):
                     for i in xrange(prev_crossover, min(next_crossover, gene_count)):
@@ -96,7 +104,7 @@ class EA():
                                                              self.number_of_parents].get_child_gene(i)))
                 parent_index = (parent_index + 1) % self.number_of_parents
                 prev_crossover = next_crossover
-                next_crossover += int(self.crossover_rate.next())
+                next_crossover += max(int(self.crossover_rate.next()*gene_count), 1)
 
             #Initiate the children
             for genotype in genotypes:
@@ -109,7 +117,8 @@ class EA():
     def get_best(self, individuals, size):
         return sorted(individuals, lambda x, y: cmp(y.fitness, x.fitness))[:size]
 
-    def update_stats(self, individuals):
+    def update_stats(self):
+        individuals = self.children if not self.adults else self.children + self.adults
         self.mean = 0
         best = individuals[0]
         for i in individuals:
@@ -127,8 +136,8 @@ class EA():
         self.means.append(self.mean)
         self.sds.append(self.sd)
 
-    def run_fitness_tests(self, children):
-        for child in children:
+    def run_fitness_tests(self):
+        for child in self.children:
             child.calculate_fitness()
 
 

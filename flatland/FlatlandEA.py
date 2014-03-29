@@ -16,16 +16,13 @@ class FlatlandEA(EA):
     def create_individual(self, genotype=None):
         return FlatlandAgent(genotype)
 
-    def run_fitness_tests(self, individuals):
+    def run_fitness_tests(self):
         if self.dynamic or not self.maps:
-            for _ in xrange(5):
-                self.maps.append(Flatland())
+            self.old_maps.append(self.maps)
+            self.maps = [Flatland() for _ in xrange(5)]
 
+        individuals = self.children if not self.dynamic else self.children + self.adults
         for individual in individuals:
-            if self.dynamic:
-                self.old_maps.append(self.maps)
-                self.maps = [Flatland() for _ in xrange(5)]
-
             temp = []
             for map in self.maps:
                 test_map = deepcopy(map)
