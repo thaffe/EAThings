@@ -28,6 +28,9 @@ class EA():
         self.best_individual = None
         self.current_generation = 0
 
+        self.adults = None
+        self.children = None
+
     def set_parent_strategy(self, strategy):
         self.parent_selection_strategy = strategy
 
@@ -35,9 +38,8 @@ class EA():
     def create_individual(self, genotype=None):
         pass
 
-    def run(self, plot=False):
+    def run(self):
         self.children = [self.create_individual() for _ in xrange(self.adult_pool_size)]
-        self.adults = None
         self.current_generation = 0
         self.update_stats()
         print("Starting Evolution")
@@ -51,20 +53,18 @@ class EA():
                 "\r Generation:%d/%d BestFittness:%f ... Adult selection" % (
                 self.current_generation, self.max_generations, self.best_individual.fitness))
             sys.stdout.flush()
-            adults = self.parent_selection(
+            self.adults = self.parent_selection(
                 self.adult_selection()
             )
             sys.stdout.write(
                 "\r Generation:%d/%d BestFittness:%f ... Reproduction" % (
                 self.current_generation, self.max_generations, self.best_individual.fitness))
             sys.stdout.flush()
-            self.children = self.reproduction(adults)
+            self.children = self.reproduction(self.adults)
 
             self.current_generation += 1
 
         print(self.best_individual)
-        if plot:
-            self.plot()
 
     def parent_selection(self, individuals):
         self.update_stats()
@@ -76,7 +76,7 @@ class EA():
         return [x for x in roulette(individuals, self.parent_pool_size, exp_sum)]
 
     def adult_selection(self):
-        if self.adult_selection_mode == Strategies.GENERATION_REPLACEMENT or parents is None:
+        if self.adult_selection_mode == Strategies.GENERATION_REPLACEMENT or self.adults is None:
             #over producion
             return self.get_best(self.children, self.adult_pool_size)
         else:
