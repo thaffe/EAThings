@@ -5,12 +5,12 @@ from core.NormDist import NormDist
 
 
 class Individual():
-    mutation_rate = NormDist(0.01, 0.1, 0, 1)
 
-    def __init__(self, genotype=None):
+    def __init__(self, mutation_rate, genotype=None):
         self.fitness = 0
         self.exp_val = 0
         self.gene_count = 0
+        self.mutation_rate = mutation_rate
 
         if genotype:
             self.genotype = genotype
@@ -31,7 +31,7 @@ class Individual():
         return deepcopy(self.genotype[gene_index])
 
     def mutate(self):
-        for i in xrange(self.number_of_genes):
+        for i in xrange(self.gene_count):
             self.genotype[i].mutate(self.mutation_rate)
 
     @abstractmethod

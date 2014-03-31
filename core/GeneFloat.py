@@ -7,7 +7,10 @@ from core.Gene import Gene
 class GeneFloat(Gene):
 
     def mutate(self, mutation_rate):
-        self.value *= max(min(mutation_rate.next(), self.source.min), self.source.max)
+        temp = self.value
+        sign = 1 if random() > 0.5 else -1
+        self.value *= 1 + sign * min(max(mutation_rate.next(), self.source.min), self.source.max)
+        print self.value - temp
 
     def random_value(self, source):
         self.source = source

@@ -17,8 +17,8 @@ class FlatlandAgent(AnnIndividual):
         {"name": "r", "weights": {"fr": 0, "pr": 0}, "post_update": None, "data": None}
     ])
 
-    def __init__(self, genotype):
-        AnnIndividual.__init__(self, genotype)
+    def __init__(self, mutation_rate, genotype=None):
+        AnnIndividual.__init__(self, mutation_rate, genotype)
         self.flat_land = Flatland()
 
     def phenotype_str(self):
@@ -55,29 +55,5 @@ class FlatlandAgent(AnnIndividual):
             best = self.ann.neurons["l"].update(step)
         if self.ann.neurons["r"].update(step) > best:
             move = "r"
-
-        # move_strengths = [self.ann.neurons["f"].update(step), self.ann.neurons["l"].update(step),
-        #                   self.ann.neurons["r"].update(step)]
-        #
-        #
-        #
-        # moves = []
-        # move = 0
-        # if move_strengths[0] > 0.5:
-        #     moves.append('f')
-        # if move_strengths[1] > 0.5:
-        #     if move_strengths[1] > move_strengths[0]:
-        #         moves.insert(0, 'l')
-        #         move = 1
-        #     else:
-        #         moves.append('l')
-        # if move_strengths[2] > 0.5:
-        #     if move_strengths[2] > move_strengths[move]:
-        #         moves.insert(0, 'r')
-        #     elif move_strengths[2] > move_strengths[1 - move]:
-        #         moves.insert(1, 'r')
-        #     else:
-        #         moves.append('r')
-        # moves.append('n')
 
         return move

@@ -43,9 +43,10 @@ class Flatland:
         else:
             self.history.append(move)
             if self.map[self.agent_pos] == 'f':
-                self.map[self.agent_pos] = 0
+                self.map[self.agent_pos] = '0'
                 self.food_gathered += 1
             elif self.map[self.agent_pos] == 'p':
+                self.map[self.agent_pos] = '0'
                 self.poisoned += 1
 
     def smell(self):
@@ -86,9 +87,3 @@ class Direction:
         else:
             self.val[0] = self.val[1]
             self.val[1] = 0
-
-#
-# f = Flatland()
-# f.get_move_from_smell = lambda smell: 'f'
-# f.play({"get_move_from_smell": lambda (smell): return 'f'})
-

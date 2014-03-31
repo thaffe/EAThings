@@ -14,7 +14,7 @@ class FlatlandEA(EA):
         self.old_maps = []
 
     def create_individual(self, genotype=None):
-        return FlatlandAgent(genotype)
+        return FlatlandAgent(self.mutation_rate, genotype)
 
     def run_fitness_tests(self):
         if self.dynamic or not self.maps:
