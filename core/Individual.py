@@ -22,7 +22,7 @@ class Individual():
         for _ in self.genotype:
             self.gene_count += 1
 
-        self.phenotype = self.generate_phenotype()
+        self.generate_phenotype()
 
     def __repr__(self):
         return "{Fitness:%f  exp:%f gen:%s}\n" % (self.fitness, self.exp_val, "".join(str(x) for x in self.genotype))

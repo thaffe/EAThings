@@ -24,6 +24,7 @@ class FlatlandAgent(AnnIndividual):
         return "IM a flatland dude"
 
     def get_move_from_smell(self, smell, step):
+        # print [[input.weight for _, input in neuron.inputs.items()] for _, neuron in self.ann.neurons.items()]
         for node in ["ff", "fl", "fr", "pf", "pr", "pl"]:
             self.ann.neurons[node].output = 0.0
             self.ann.neurons[node].step_counter = step

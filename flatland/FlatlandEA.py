@@ -23,7 +23,7 @@ class FlatlandEA(EA):
 
         individuals = self.children if not self.dynamic else self.children + self.adults
         for individual in individuals:
-            # print "lol", len(self.children)
+            # print [[input.weight for _, input in neuron.inputs.items()] for _, neuron in individual.ann.neurons.items()]
             temp_hist = []
             temp_food_gathered = []
             temp_poisoned = []
@@ -41,6 +41,7 @@ class FlatlandEA(EA):
                     map.poisoned_by_best = test_map.poisoned
 
             individual.fitness = max(individual.fitness, 0.01)
+            # print individual.fitness
             if individual.fitness > self.best_individual.fitness:
                 for i in xrange(len(self.maps)):
                     self.maps[i].history = temp_hist[i]
