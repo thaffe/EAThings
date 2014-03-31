@@ -4,7 +4,6 @@ from flatland.Flatland import Flatland
 
 
 class FlatlandAgent(AnnIndividual):
-
     source = ANN(neurons=[
         {"name": "ff", "pre_update": None, "data": None},
         {"name": "fl", "pre_update": None, "data": None},
@@ -25,18 +24,10 @@ class FlatlandAgent(AnnIndividual):
         return "IM a flatland dude"
 
     def get_move_from_smell(self, smell, step):
-        self.ann.neurons["ff"].output = 0.0
-        self.ann.neurons["ff"].stepcounter = step
-        self.ann.neurons["fl"].output = 0.0
-        self.ann.neurons["fl"].stepcounter = step
-        self.ann.neurons["fr"].output = 0.0
-        self.ann.neurons["fr"].stepcounter = step
-        self.ann.neurons["pf"].output = 0.0
-        self.ann.neurons["pf"].stepcounter = step
-        self.ann.neurons["pl"].output = 0.0
-        self.ann.neurons["pl"].stepcounter = step
-        self.ann.neurons["pr"].output = 0.0
-        self.ann.neurons["pr"].stepcounter = step
+        for node in ["ff", "fl", "fr", "pf", "pr", "pl"]:
+            self.ann.neurons[node].output = 0.0
+            self.ann.neurons[node].stepcounter = step
+
 
         if smell[0] and smell[0] != '0':
             self.ann.neurons[smell[0] + "f"].output = 1.0
@@ -47,6 +38,8 @@ class FlatlandAgent(AnnIndividual):
 
         move = "n"
         best = 0.5
+        print step, smell,[self.ann.neurons[i].update(step) for i in ["f", "l", "r"]]
+
         if self.ann.neurons["f"].update(step) > best:
             move = "f"
             best = self.ann.neurons["f"].update(step)
