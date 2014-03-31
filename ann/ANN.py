@@ -21,8 +21,11 @@ class ANN:
             if n.step_counter != step_counter and n.always_update:
                 n.update(step_counter)
 
-    def set_weight(self, neuron_name, input_name, weight):
+    def set_weight(self, neuron_name, input_name, weight=0):
         self.neurons[neuron_name].inputs[input_name].weight = weight
+
+    def add_input(self, neuron_name, input_name, weight=0, use_previous=False):
+        self.neurons[neuron_name].inputs[input_name] = Input(self.neurons[input_name], weight, use_previous)
 
 
 class Neuron:
@@ -51,7 +54,7 @@ class Neuron:
         si = 0
         for key in self.inputs:
             input = self.inputs[key]
-            if input.neuron.step_counter != step_counter:
+            if input.neuron.step_counter != step_counter and not input.use_previous: # and input.neuron.step_counter == step_counter - 1):
                 input.neuron.update(step_counter)
             si += input.neuron.output * input.weight
 
@@ -66,7 +69,7 @@ class Neuron:
 
 
 class Input:
-    def __init__(self, neuron, weight):
+    def __init__(self, neuron, weight, use_previous=False):
         self.neuron = neuron
         self.weight = weight
-        self.activated = True
+        self.use_previous = use_previous

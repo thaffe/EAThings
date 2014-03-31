@@ -7,6 +7,7 @@ from core.Individual import Individual
 class AnnIndividual(Individual):
 
     source = None
+    source_appends = None
 
     tau_source = GeneFloatSource(0.1, 10, True)
     g_source = GeneFloatSource(0.1, 10, True)
@@ -15,6 +16,10 @@ class AnnIndividual(Individual):
 
     def __init__(self, mutation_rate, genotype=None):
         self.ann = ANN(self.source)
+        if self.source_appends:
+            for neuron in self.source_appends:
+                for key, weight in neuron["weights"].items():
+                    self.ann.add_input(neuron["name"], key, weight, True)
         Individual.__init__(self, mutation_rate, genotype)
 
     def random_genotype(self):
