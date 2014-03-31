@@ -26,7 +26,7 @@ class FlatlandAgent(AnnIndividual):
     def get_move_from_smell(self, smell, step):
         for node in ["ff", "fl", "fr", "pf", "pr", "pl"]:
             self.ann.neurons[node].output = 0.0
-            self.ann.neurons[node].stepcounter = step
+            self.ann.neurons[node].step_counter = step
 
         if smell[0] and smell[0] != '0':
             self.ann.neurons[smell[0] + "f"].output = 1.0
@@ -36,7 +36,7 @@ class FlatlandAgent(AnnIndividual):
             self.ann.neurons[smell[2] + "r"].output = 1.0
 
         move = "n"
-        best = 0.5
+        best = -0.5
 
         if self.ann.neurons["f"].update(step) > best:
             move = "f"

@@ -1,13 +1,23 @@
 from abc import abstractmethod
-from copy import deepcopy
 from ann.ANN import ANN
+from NormDist import NormDist
 from core.GeneFloat import GeneFloat, GeneFloatSource
 from core.Individual import Individual
 
 
 class AnnIndividual(Individual):
 
-    source = None
+    source = [
+        {"name": "ff", "pre_update": None, "data": None},
+        {"name": "fl", "pre_update": None, "data": None},
+        {"name": "fr", "pre_update": None, "data": None},
+        {"name": "pf", "pre_update": None, "data": None},
+        {"name": "pl", "pre_update": None, "data": None},
+        {"name": "pr", "pre_update": None, "data": None},
+        {"name": "f", "weights": {"ff": 0, "pf": 0}, "post_update": None, "data": None},
+        {"name": "l", "weights": {"fl": 0, "pl": 0}, "post_update": None, "data": None},
+        {"name": "r", "weights": {"fr": 0, "pr": 0}, "post_update": None, "data": None}
+    ]
 
     tau_source = GeneFloatSource(1, 1, True)
     g_source = GeneFloatSource(1, 1, True)
