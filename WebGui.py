@@ -36,7 +36,7 @@ urls = (
     '/', 'index',
     '/settings', 'settings',
     '/flatland', 'flatland_web',
-    '/beer', 'beeragent_web'
+    '/beeragent', 'beeragent_web'
 )
 app = web.application(urls, globals())
 render = web.template.render('templates/', base='layout')
@@ -91,13 +91,12 @@ class flatland_web:
 
 class beeragent_web:
 
-    def __init__(self):
-        self.ea = BeerEA()
-
     def GET(self):
-        i = web.input()
-
-        return render.beeragent([])
+        i = web.input(tournament=[], rank=[], mutation=[], crossover=[])
+        setup_ea(i)
+        ea = BeerEA()
+        ea.run()
+        return render.beeragent(ea,i)
 
 
 if __name__ == "__main__":

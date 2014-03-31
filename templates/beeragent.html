@@ -1,13 +1,72 @@
-$def with(states)
+$def with(ea, settings)
+$:render.settings(settings,True)
+$:render.chart(ea)
+$:render.ann(ea)
+
 $var title: BeerAgent
 $var cssfiles: static/tiles.css
 $var jsfiles: static/beerlands.js
-<div class="container block" id="game">
-    $for i in range(15*30):
-        <div class="brick index$(loop.index0 % 2 + (loop.index0/30) % 2)"></div>
-    <img id="catcher" src="/static/imgs/beercatcher.png" alt=""/>
-    <img id="object" src="/static/imgs/poison.png" alt="">
+
+        <div class="container block" id="game">
+            $for i in range(15*30):
+                <div class="brick index$(loop.index0 % 2 + (loop.index0/30) % 2)"></div>
+            <img id="catcher" src="/static/imgs/beercatcher.png" alt=""/>
+            <img id="object" src="/static/imgs/poison.png" alt="">
+        </div>
+       <div class="controllers">
+        <center>
+            <p>
+
+            <div class="btn-group controller">
+                <button type="button" class="btn btn-default" data-type="begin"><i class="fa fa-fast-backward"></i>
+                </button>
+                <button type="button" class="btn btn-default" data-type="back"><i class="fa fa-backward"></i>
+                </button>
+                <button type="button" class="btn btn-default" data-type="play"><i id="play" class="fa fa-play"></i>
+                </button>
+                <button type="button" class="btn btn-default" data-type="forward"><i class="fa fa-forward"></i>
+                </button>
+                <button type="button" class="btn btn-default" data-type="end"><i class="fa fa-fast-forward"></i>
+                </button>
+            </div>
+            </p>
+            <h3>
+                Step:<span id="time-counter">0</span>
+            </h3>
+
+            <h3>
+                <span id="movedone"></span>
+            </h3>
+
+            <h3>
+                    <span class="text-success"><i class="fa fa-check-circle"></i>: <span
+                            id="food-counter">0</span></span>&nbsp;&nbsp;
+                    <span class="text-danger"><i class="fa fa-times-circle"></i>: <span
+                            id="poison-counter">0</span></span>
+            </h3>
+
+            <p class="form-group form-inline">
+                <label>Playback</label>
+                <select id="playback" class="form-control">
+                    <option value="1">1x</option>
+                    <option value="2">2x</option>
+                    <option value="3">3x</option>
+                    <option value="4">4x</option>
+                    <option value="5">5x</option>
+                </select>
+            </p>
+            <h3>Individual Fittness: $ea.best_individual.fitness</h3>
+        </center>
+        <center>
+            <button class="btn btn-primary btn-lg showpopup" data-target="settings"><i class="fa fa-gear"></i></button>
+            <button class="btn btn-primary btn-lg chart-toggle" data-target="chartHolder"><i class="fa fa-signal"></i></button>
+            <button class="btn btn-primary btn-lg showpopup" data-target="historyPopup"><i class="fa fa-book"></i></button>
+            <button class="btn btn-primary btn-lg showpopup" data-target="annHolder"><i class="fa fa-eye"></i></button>
+        </center>
+    </div>
+
+
 </div>
 <script>
-    window.gameState = $:states
+    window.gameState = $:ea.best_history.states
 </script>
