@@ -32,8 +32,14 @@ $(function(){
         $("#settings").addClass("show");
         e.stopPropagation();
    });
+
+   $(".showpopup").click(showPopup);
 });
 
+function showPopup(e){
+      $("#"+$(this).attr("data-target")).addClass("show");
+      e.stopPropagation();
+}
 
 
 function show(id, hide){
