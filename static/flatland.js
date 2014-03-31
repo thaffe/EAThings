@@ -38,6 +38,7 @@ $(function(){
 });
 
 function setMap(index){
+    $("#maps a:eq("+index+")").addClass("active").siblings().removeClass("active");
     counter.time = 0;
     activeMap = window.maps[index].slice(0);
     moveHist = getHistSteps(index);

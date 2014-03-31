@@ -12,6 +12,7 @@ class FlatlandEA(EA):
         EA.__init__(self, fitness_goal=0)
         self.maps = [Flatland() for _ in xrange(5)]
         self.old_maps = []
+        self.best_maps = deepcopy(self.maps)
 
     def create_individual(self, genotype=None):
         return FlatlandAgent(self.mutation_rate, genotype)
@@ -23,18 +24,16 @@ class FlatlandEA(EA):
 
         individuals = self.children if not self.dynamic else self.children + self.adults
         for individual in individuals:
-            # print [[input.weight for _, input in neuron.inputs.items()] for _, neuron in individual.ann.neurons.items()]
-            temp_hist = []
-            temp_food_gathered = []
-            temp_poisoned = []
+
+            # print "lol", len(self.children)
+            temp_maps = []
             for map in self.maps:
                 test_map = deepcopy(map)
+                temp_maps.append(test_map)
                 test_map.play(individual)
-                temp_hist.append(test_map.history)
-                temp_food_gathered.append(test_map.food_gathered)
-                temp_poisoned.append(test_map.poisoned)
                 map_fitness = test_map.food_gathered - test_map.poisoned
                 individual.fitness += map_fitness
+
                 if map_fitness > map.best_fitness:
                     map.best_solution = test_map.history
                     map.food_gathered_by_best = test_map.food_gathered
@@ -44,6 +43,6 @@ class FlatlandEA(EA):
             # print individual.fitness
             if individual.fitness > self.best_individual.fitness:
                 for i in xrange(len(self.maps)):
-                    self.maps[i].history = temp_hist[i]
-                    self.maps[i].food_gathered = temp_food_gathered[i]
-                    self.maps[i].poisoned = temp_poisoned[i]
+                    self.best_maps[i].history = temp_maps[i].history
+                    self.best_maps[i].food_gathered = temp_maps[i].food_gathered
+                    self.best_maps[i].poisoned = temp_maps[i].poisoned
