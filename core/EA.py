@@ -97,7 +97,6 @@ class EA():
         iter = cycle_random(individuals)
         #iterate to the childpool is filled up
         while len(childpool) < self.child_pool_size:
-            # TODO: Drive roulette? (Inkludere expval)
             current_parents = [iter.next() for _ in xrange(self.number_of_parents)]
             #initiates empty genotypes for the children
 
