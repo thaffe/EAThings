@@ -13,7 +13,7 @@ class EA():
     adult_selection_mode = Strategies.GENERATION_REPLACEMENT
     number_of_parents = 2
     crossover_rate = NormDist(2, 5, 1, 20)
-    mutation_rate = NormDist(0.01, 0.1, 0.0, 0.5)
+    mutation_rate = NormDist(0.3, 0.1, 0.0, 0.5)
     max_generations = 100
 
     sd = 0
@@ -39,11 +39,19 @@ class EA():
         pass
 
     def run(self):
-        self.children = [self.create_individual() for _ in xrange(self.adult_pool_size)]
+        self.children = [self.create_individual() for _ in xrange(self.child_pool_size)]
         self.current_generation = 0
         self.update_stats()
         print("Starting Evolution")
         while self.current_generation < self.max_generations and (not self.fitness_goal or self.fitness_goal > self.best_individual.fitness):
+            diff = 0
+            for i in xrange(self.child_pool_size):
+                for j in xrange(self.child_pool_size):
+                    if not i == j:
+                        diff += self.children[i].compare(self.children[j])
+            diff /= (self.child_pool_size * (self.child_pool_size - 1))
+            if diff == 0:
+                raise AttributeError
             sys.stdout.write(
                 "\r Generation:%d/%d BestFittness:%f ... Testing fitness" % (
                 self.current_generation, self.max_generations, self.best_individual.fitness))

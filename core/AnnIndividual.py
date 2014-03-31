@@ -9,8 +9,8 @@ class AnnIndividual(Individual):
     source = None
 
     tau_source = GeneFloatSource(1, 1, True)
-    g_source = GeneFloatSource(0.1, 10, True)
-    bias_source = GeneFloatSource(-1.0, 1.0, False)
+    g_source = GeneFloatSource(1, 1, True)
+    bias_source = GeneFloatSource(0.0, 0.0, False)
     weight_source = GeneFloatSource(-1.0, 1.0, False)
 
     def random_genotype(self):
@@ -24,7 +24,6 @@ class AnnIndividual(Individual):
 
     def generate_phenotype(self):
         index = 0
-        # TODO: Mebbi something wrong here...
         self.ann = deepcopy(self.source)
         for key, neuron in self.ann.neurons.items():
             neuron.tau = self.genotype[index].value

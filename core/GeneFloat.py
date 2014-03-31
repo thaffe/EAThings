@@ -14,7 +14,7 @@ class GeneFloat(Gene):
             self.value = min(max(self.value + (self.source.max - self.source.min) * sign * mutation_rate.next(), self.source.min), self.source.max)
 
     def compare(self, other):
-        return abs(self.value - other.value) / (self.source.max - self.source.min)
+        return 0 if self.value - other.value == 0 else abs(self.value - other.value) / (self.source.max - self.source.min)
 
     def random_value(self, source):
         self.source = source
