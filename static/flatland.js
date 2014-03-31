@@ -58,7 +58,7 @@ function getHistSteps(index){
     for(var i = 0; i < h.length; i++){
         var dir = h[i];
         switch(dir){
-            case 'l':
+            case 'r':
             if(l[0]){
                 l[1] = -l[0];
                 l[0] = 0;
@@ -67,7 +67,7 @@ function getHistSteps(index){
                 l[1] = 0;
             }
             break;
-            case 'r':
+            case 'l':
             if(l[0]){
                 l[1] = l[0];
                 l[0] = 0;
