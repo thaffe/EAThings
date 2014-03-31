@@ -5,7 +5,18 @@ $(function () {
     if(!$chart.length) return;
 
     labels = [];
-    steps = Math.ceil(bests.length / 10)
+    steps = Math.ceil(bests.length / 10.0)
+    console.log(steps);
+
+    var highest = 0;
+    for(var i = 0; i <= bests.length; i++){
+        if(bests[i] > highest) highest = bests[i];
+        if(means[i] > highest) highest = means[i];
+        if(sds[i] > highest) highest = sds[i];
+    }
+
+    var stepsize = highest/15.0;
+
     for (var i = 1; i <= bests.length; i++) {
         labels.push(i % steps == 0 ? i : "");
     }
@@ -38,8 +49,9 @@ $(function () {
     var options = {
         pointDot: false,
         scaleOverride: true,
-        scaleSteps: Math.ceil(fitnessGoal / 2),
-        scaleStepWidth: 2
+        scaleSteps: 15,
+        scaleStepWidth: stepsize
+
     };
     var ctx = $chart.get(0).getContext("2d");
 
