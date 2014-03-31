@@ -19,6 +19,17 @@ $(function(){
         playback = parseInt(this.value);
      });
     $("#play").parent().click();
+
+    var s = 0,m = 0, f = 0;
+    for(var i = 0; i < window.gameState.length; i++){
+        var res = window.gameState[i].res;
+        if(res == 0) m++;
+        else if(res < 0) f++;
+        else if(res > 0) s++;
+    }
+    $("#fail-total").text(f);
+    $("#success-total").text(s);
+    $("#miss-total").text(m);
 });
 
 
@@ -39,7 +50,6 @@ function updateStats(){
     var s = 0, m = 0, f = 0;
 
     for(var i = 0; i < currentIndex; i++){
-
         var res = window.gameState[i].res;
         if(res == 0) m++;
         else if(res < 0) f++;
