@@ -1,5 +1,6 @@
 from ann.ANN import ANN
 from core.AnnIndividual import AnnIndividual
+from core.GeneFloat import GeneFloatSource
 from flatland.Flatland import Flatland
 
 
@@ -15,6 +16,11 @@ class FlatlandAgent(AnnIndividual):
         {"name": "l", "weights": {"fl": 0, "pl": 0}, "post_update": None, "data": None},
         {"name": "r", "weights": {"fr": 0, "pr": 0}, "post_update": None, "data": None}
     ]
+
+    tau_source = GeneFloatSource(1, 1, True)
+    g_source = GeneFloatSource(1, 1, True)
+    bias_source = GeneFloatSource(0.0, 0.0, False)
+    weight_source = GeneFloatSource(-1.0, 1.0, False)
 
     def __init__(self, mutation_rate, genotype=None):
         AnnIndividual.__init__(self, mutation_rate, genotype)

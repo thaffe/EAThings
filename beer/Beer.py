@@ -14,8 +14,8 @@ class Beer:
     def shadows(self):
         return [self.object_pos <= self.agent_pos + i <= self.object_pos + self.object_size for i in xrange(self.AgentSize)]
 
-    def timestep(self):
-        self.agent_pos += self.agent.getmove(self.shadows())
+    def timestep(self, step):
+        self.agent_pos += self.agent.getmove(self.shadows(), step)
         self.object_pos += self.vx
         self.history.save_pos(self.object_pos, self.agent_pos)
 
@@ -25,8 +25,8 @@ class Beer:
         self.object_size = test.object_size
         self.vx = test.vx
 
-        for _ in xrange(0, 15):
-            self.timestep()
+        for step in xrange(0, 15):
+            self.timestep(step)
         res = 0
         if self.object_size < 5:
             if self.agent_pos <= self.object_pos <= self.agent_pos + self.AgentSize - self.object_size:
@@ -54,3 +54,4 @@ class BeerTest:
         self.object_size = randint(1, 6)
         self.object_pos = randint(0, Beer.Width - self.object_size)
         self.agent_pos = randint(0, Beer.Width - Beer.AgentSize)
+        self.vx = 1
