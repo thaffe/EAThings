@@ -1,5 +1,6 @@
 from ann.ANN import ANN
 from core.AnnIndividual import AnnIndividual
+from core.GeneFloat import GeneFloatSource
 
 
 class BeerAgent(AnnIndividual):
@@ -20,6 +21,11 @@ class BeerAgent(AnnIndividual):
         {"name": "h0", "weights": {"h1": 0}},
         {"name": "o0", "weights": {"o1": 0}}
     ]
+
+    tau_source = GeneFloatSource(1, 2, False)
+    g_source = GeneFloatSource(1, 5, False)
+    bias_source = GeneFloatSource(-10, 0, False)
+    weight_source = GeneFloatSource(-5, 5, False)
 
     def calculate_fitness(self):
         pass
