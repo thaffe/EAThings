@@ -54,7 +54,7 @@ function getHistSteps(index){
     var l = window.botDir[index].slice(0);
     var p = window.botPos[index].slice(0);
     var res = [{pos:p.slice(0),dir:"dir"+l[0]+""+l[1]}];
-    console.log("StartLook:"+l, "StartPos:"+p);
+    console.log("StartLook:"+l, "StartPos:"+p, "Histlength:"+h.length);
     for(var i = 0; i < h.length; i++){
         var dir = h[i];
         switch(dir){
@@ -117,6 +117,9 @@ function updateStats(){
     $("#food-counter").text($(".food:hidden").length);
     $("#poison-counter").text($(".poison:hidden").length);
     $("#time-counter").text(counter.time);
+    var done = counter.time - 1 >= 0 ? window.hists[currentMapIndex][counter.time - 1] : "First";
+    var next = window.hists[currentMapIndex][counter.time];
+    $("#movedone").text("Move:"+done+" Next:"+next);
 }
 
 function updateMap(){

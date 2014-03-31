@@ -67,7 +67,6 @@ def setup_ea(input):
 
     return "T"
 
-
 class index:
     def GET(self):
         return render.index()
@@ -82,14 +81,12 @@ class settings:
 
 class flatland_web:
 
-    def __init__(self):
-        self.ea = FlatlandEA()
-
     def GET(self):
         i = web.input(tournament=[], rank=[], mutation=[], crossover=[])
         setup_ea(i)
-        self.ea.run()
-        return render.flatland(self.ea, i)
+        ea = FlatlandEA()
+        ea.run()
+        return render.flatland(ea, i)
 
 
 class beeragent_web:

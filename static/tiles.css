@@ -76,14 +76,14 @@ body{
     margin-top:-2%;
 }
 
-.bot.dir-10{
+.bot.dir0-1{
   background-image:url(imgs/bot_left.png);
 }
 
-.bot.dir0-1{
+.bot.dir-10{
   background-image:url(imgs/bot_back.png);
 }
-.bot.dir10{
+.bot.dir01{
     background-image:url(imgs/bot_right.png);
 }
 
