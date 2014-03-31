@@ -18,5 +18,9 @@ class Gene():
         pass
 
     @abstractmethod
+    def compare(self, other):
+        pass
+
+    @abstractmethod
     def random_value(self, source):
         pass

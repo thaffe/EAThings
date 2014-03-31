@@ -34,6 +34,13 @@ class Individual():
         for i in xrange(self.gene_count):
             self.genotype[i].mutate(self.mutation_rate)
 
+    def compare(self, other):
+        diff = 0
+        for i in xrange(len(self.genotype)):
+            diff += self.genotype[i].compare(other.genotype[i])
+        diff /= len(self.genotype)
+        return diff
+
     @abstractmethod
     def random_genotype(self):
         raise NotImplementedError

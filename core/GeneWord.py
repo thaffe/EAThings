@@ -10,6 +10,14 @@ class GeneWord(Gene):
             if random() < mutation_rate:
                 self.letters[i] = randint(0, self.alphabet_size)
 
+    def compare(self, other):
+        diff = 0
+        for i in xrange(len(self.letters)):
+            if self.letters[i] != other.letters[i]:
+                diff += 1
+        diff /= len(self.letters)
+        return diff
+
     def random_value(self, source):
         self.letters = []
         self.alphabet_size = source.alphabet_size
