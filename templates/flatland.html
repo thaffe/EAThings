@@ -1,6 +1,8 @@
 $def with(ea, settings)
 $:render.settings(settings,True)
 $:render.chart(ea)
+$:render.ann(ea)
+
 $var title: Flatland Agent
 $var cssfiles: static/tiles.css
 $var jsfiles: static/flatland.js
@@ -70,6 +72,7 @@ $var jsfiles: static/flatland.js
                 <button class="btn btn-primary btn-lg showpopup" data-target="settings"><i class="fa fa-gear"></i></button>
                 <button class="btn btn-primary btn-lg chart-toggle" data-target="chartHolder"><i class="fa fa-signal"></i></button>
                 <button class="btn btn-primary btn-lg showpopup" data-target="historyPopup"><i class="fa fa-book"></i></button>
+                <button class="btn btn-primary btn-lg showpopup" data-target="annHolder"><i class="fa fa-eye"></i></button>
             </center>
         </div>
         <div id="historyPopup" class="popup">

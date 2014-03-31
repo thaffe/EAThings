@@ -1,0 +1,31 @@
+$def with (ea)
+$var title: 0
+$var cssfiles: 0
+$var jsfiles: 0
+<script>
+
+</script>
+<div id="annHolder" class="popup">
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                $for key, neuron in ea.best_individual.ann.neurons.iteritems():
+                    <th>$key</th>
+                </tr>
+            </thead>
+                $for key1, neuron1 in ea.best_individual.ann.neurons.iteritems():
+                    <tr>
+                        <th>$key1</th>
+                        $for key2, neuron2 in ea.best_individual.ann.neurons.iteritems():
+                            <td>
+                            $for check, input in neuron1.inputs.iteritems():
+                                $if key2 == check:
+                                    $input.weight
+                            </td>
+                    </tr>
+        </table>
+    </div>
+</div>
+
