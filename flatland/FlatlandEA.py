@@ -32,7 +32,7 @@ class FlatlandEA(EA):
                 temp_hist.append(test_map.history)
                 temp_food_gathered.append(test_map.food_gathered)
                 temp_poisoned.append(test_map.poisoned)
-                map_fitness = test_map.food_gathered - 10 * test_map.poisoned
+                map_fitness = test_map.food_gathered - test_map.poisoned
                 individual.fitness += map_fitness
                 if map_fitness > map.best_fitness:
                     map.best_solution = test_map.history

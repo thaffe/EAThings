@@ -22,7 +22,7 @@ class Flatland:
 
     def play(self, agent):
         while len(self.history) < self.step_count and self.poisoned < 3:
-            self.move(agent.get_move_priorities(self.smell(), len(self.history)))
+            self.move(agent.get_move_from_smell(self.smell(), len(self.history)))
 
     def move(self, move):
         if move == 'f':
@@ -54,6 +54,7 @@ class Flatland:
         direction.turn_left()
         left_smell = self.get_cell(self.agent_pos + direction.val)
         right_smell = self.get_cell(self.agent_pos - direction.val)
+        direction.turn_right()
 
         return [front_smell, left_smell, right_smell]
 
@@ -86,5 +87,8 @@ class Direction:
             self.val[0] = self.val[1]
             self.val[1] = 0
 
+#
+# f = Flatland()
+# f.get_move_from_smell = lambda smell: 'f'
+# f.play({"get_move_from_smell": lambda (smell): return 'f'})
 
-Flatland()

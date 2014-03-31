@@ -24,7 +24,7 @@ class FlatlandAgent(AnnIndividual):
     def phenotype_str(self):
         return "IM a flatland dude"
 
-    def get_move_priorities(self, smell, step):
+    def get_move_from_smell(self, smell, step):
         self.ann.neurons["ff"].output = 0.0
         self.ann.neurons["ff"].stepcounter = step
         self.ann.neurons["fl"].output = 0.0
