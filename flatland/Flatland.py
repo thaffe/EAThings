@@ -23,6 +23,8 @@ class Flatland:
     def play(self, agent):
         while len(self.history) < self.step_count and self.poisoned < 3:
             self.move(agent.get_move_from_smell(self.smell(), len(self.history)))
+            print self.smell()
+            print agent.get_move_from_smell(self.smell(), len())
 
     def move(self, move):
         if move == 'f':
@@ -60,7 +62,7 @@ class Flatland:
         return [front_smell, left_smell, right_smell]
 
     def get_cell(self, pos):
-        return 0 if pos[0] >= self.M or pos[0] < 0 or pos[1] >= self.N or pos[1] < 0 else self.map[tuple(pos)]
+        return self.map[pos[0] % self.N][pos[1] % self.M]
 
     @property
     def legitimate_position(self):

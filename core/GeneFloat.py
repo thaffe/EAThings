@@ -9,8 +9,10 @@ class GeneFloat(Gene):
     def mutate(self, mutation_rate):
         temp = self.value
         sign = 1 if random() > 0.5 else -1
-        self.value *= 1 + sign * min(max(mutation_rate.next(), self.source.min), self.source.max)
-        print self.value - temp
+        if self.source.logarithmic:
+            self.value = min(max(self.value + (self.source.max - self.source.min) * sign * mutation_rate.next(), self.source.min), self.source.max)
+        else:
+            self.value = min(max(self.value + (self.source.max - self.source.min) * sign * mutation_rate.next(), self.source.min), self.source.max)
 
     def random_value(self, source):
         self.source = source

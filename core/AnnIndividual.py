@@ -11,7 +11,7 @@ class AnnIndividual(Individual):
     tau_source = GeneFloatSource(1, 1, True)
     g_source = GeneFloatSource(0.1, 10, True)
     bias_source = GeneFloatSource(-1.0, 1.0, False)
-    weight_source = GeneFloatSource(-1, 1, False)
+    weight_source = GeneFloatSource(-1.0, 1.0, False)
 
     def random_genotype(self):
         self.genotype = []
