@@ -7,13 +7,13 @@ $var title: BeerAgent
 $var cssfiles: static/tiles.css
 $var jsfiles: static/beerlands.js
 
-        <div class="container block" id="game">
+        <div class="block" id="game">
             $for i in range(15*30):
                 <div class="brick index$(loop.index0 % 2 + (loop.index0/30) % 2)"></div>
             <img id="catcher" src="/static/imgs/beercatcher.png" alt=""/>
             <img id="object" src="/static/imgs/poison.png" alt="">
         </div>
-       <div class="controllers">
+       <div class="controllers block">
         <center>
             <p>
 
@@ -30,9 +30,7 @@ $var jsfiles: static/beerlands.js
                 </button>
             </div>
             </p>
-            <h3>
-                Step:<span id="time-counter">0</span>
-            </h3>
+            <p id="stats"></p>
 
             <h3>
                 <span id="movedone"></span>
@@ -40,9 +38,11 @@ $var jsfiles: static/beerlands.js
 
             <h3>
                     <span class="text-success"><i class="fa fa-check-circle"></i>: <span
-                            id="food-counter">0</span></span>&nbsp;&nbsp;
+                            id="success">0</span></span>&nbsp;&nbsp;
+                    <span class="text-info"><i class="fa fa-question-circle"></i>: <span
+                            id="miss">0</span></span>
                     <span class="text-danger"><i class="fa fa-times-circle"></i>: <span
-                            id="poison-counter">0</span></span>
+                            id="fail">0</span></span>
             </h3>
 
             <p class="form-group form-inline">
