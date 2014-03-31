@@ -44,7 +44,7 @@ class FlatlandAgent(AnnIndividual):
             self.ann.neurons[smell[1] + "l"].output = 1.0
         if smell[2] and smell[2] != '0':
             self.ann.neurons[smell[2] + "r"].output = 1.0
-            
+
         move = "n"
         best = 0.5
         # print step, smell, [self.ann.neurons[i].update(step) for i in ["f", "r", "l"]]
