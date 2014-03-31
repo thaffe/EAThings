@@ -9,10 +9,10 @@ class AnnIndividual(Individual):
     source = None
     source_appends = None
 
-    tau_source = GeneFloatSource(0.1, 10, True)
-    g_source = GeneFloatSource(0.1, 10, True)
+    tau_source = GeneFloatSource(0.4, 2.5, True)
+    g_source = GeneFloatSource(-4, 4, False)
     bias_source = GeneFloatSource(-1, 1, False)
-    weight_source = GeneFloatSource(-1.0, 1.0, False)
+    weight_source = GeneFloatSource(-1, 1, False)
 
     def __init__(self, mutation_rate, genotype=None):
         self.ann = ANN(self.source)

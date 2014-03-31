@@ -17,8 +17,8 @@ class FlatlandAgent(AnnIndividual):
         {"name": "r", "weights": {"fr": 0, "pr": 0}, "post_update": None, "data": None}
     ]
 
-    tau_source = GeneFloatSource(1, 1, True)
-    g_source = GeneFloatSource(1, 1, True)
+    tau_source = GeneFloatSource(1, 1, False)
+    g_source = GeneFloatSource(1, 1, False)
     bias_source = GeneFloatSource(0.0, 0.0, False)
     weight_source = GeneFloatSource(-1.0, 1.0, False)
 

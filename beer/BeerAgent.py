@@ -31,5 +31,5 @@ class BeerAgent(AnnIndividual):
         for i in xrange(5):
             self.ann.neurons["s" + str(i)].output = shadows[i]
 
-        return - self.ann.neurons["o0"].output if self.ann.neurons["o0"].update(step) > self.ann.neurons["o1"].update(step) \
-            else self.ann.neurons["o1"].output
+        sign = 1 if self.ann.neurons["o0"].update(step) > 0.5 else -1
+        return self.ann.neurons["o1"].update(step) * sign
