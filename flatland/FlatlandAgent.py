@@ -4,7 +4,7 @@ from flatland.Flatland import Flatland
 
 
 class FlatlandAgent(AnnIndividual):
-    source = ANN(neurons=[
+    source = [
         {"name": "ff", "pre_update": None, "data": None},
         {"name": "fl", "pre_update": None, "data": None},
         {"name": "fr", "pre_update": None, "data": None},
@@ -14,7 +14,7 @@ class FlatlandAgent(AnnIndividual):
         {"name": "f", "weights": {"ff": 0, "pf": 0}, "post_update": None, "data": None},
         {"name": "l", "weights": {"fl": 0, "pl": 0}, "post_update": None, "data": None},
         {"name": "r", "weights": {"fr": 0, "pr": 0}, "post_update": None, "data": None}
-    ])
+    ]
 
     def __init__(self, mutation_rate, genotype=None):
         AnnIndividual.__init__(self, mutation_rate, genotype)
@@ -28,7 +28,6 @@ class FlatlandAgent(AnnIndividual):
             self.ann.neurons[node].output = 0.0
             self.ann.neurons[node].stepcounter = step
 
-
         if smell[0] and smell[0] != '0':
             self.ann.neurons[smell[0] + "f"].output = 1.0
         if smell[1] and smell[1] != '0':
@@ -38,7 +37,6 @@ class FlatlandAgent(AnnIndividual):
 
         move = "n"
         best = 0.5
-        print step, smell,[self.ann.neurons[i].update(step) for i in ["f", "l", "r"]]
 
         if self.ann.neurons["f"].update(step) > best:
             move = "f"

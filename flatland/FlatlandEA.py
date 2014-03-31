@@ -23,7 +23,7 @@ class FlatlandEA(EA):
 
         individuals = self.children if not self.dynamic else self.children + self.adults
         for individual in individuals:
-            print "lol", len(self.children)
+            # print "lol", len(self.children)
             temp_hist = []
             temp_food_gathered = []
             temp_poisoned = []
