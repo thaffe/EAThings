@@ -12,35 +12,32 @@ $(function(){
    $("#puzzle").trigger('change');
    $("#parentStrategy").trigger('change');
 
-   $(".popup").click(function(e){
+   $(".popup .container").click(function(e){
         e.stopPropagation();
    });
 
-   $("html").click(function(){
-        $(".popup.show").removeClass("show");
-   });
+   $("html").click(closePopup);
 
    $(".chart-toggle").click(function(e){
-        $("#chartHolder").addClass('show');
+        showPopup(e,"chartHolder");
         setTimeout(function(){
             $(window).resize();
         },500);
-
-        e.stopPropagation();
-   });
-   $(".settings-toggle").click(function(e){
-        $("#settings").addClass("show");
-        e.stopPropagation();
    });
 
    $(".showpopup").click(showPopup);
 });
 
-function showPopup(e){
-      $("#"+$(this).attr("data-target")).addClass("show");
-      e.stopPropagation();
+function showPopup(e, target){
+    closePopup();
+    $("#"+(target ? target : $(this).attr("data-target"))).addClass("show");
+    e.stopPropagation();
 }
 
+
+function closePopup(){
+    $(".popup.show").removeClass("show");
+}
 
 function show(id, hide){
 console.log(id)
