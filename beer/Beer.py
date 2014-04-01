@@ -15,11 +15,13 @@ class Beer:
         return [self.object_pos <= self.agent_pos + i <= self.object_pos + self.object_size for i in xrange(self.AgentSize)]
 
     def timestep(self, step):
-        self.agent_pos = (self.agent_pos + int(self.agent.getmove(self.shadows(), step)*4)) % self.Width
+        
+        self.agent_pos = (self.agent_pos + self.agent.getmove(self.shadows(), step)) % self.Width
         self.object_pos = (self.object_pos + self.vx) % self.Width
         self.history.save_pos(self.object_pos, self.agent_pos)
 
     def runTest(self, test):
+        self.shadow_sum = 0
         self.agent_pos = test.agent_pos
         self.object_pos = test.object_pos
         self.object_size = test.object_size
@@ -27,17 +29,19 @@ class Beer:
 
         for step in xrange(0, 15):
             self.timestep(step)
+
         res = 0
-        if self.object_size < 5:
-            if self.agent_pos <= self.object_pos <= self.agent_pos + self.AgentSize - self.object_size:
-                self.catches += 1
-                res = 1
+        self.total += 1/(1+(abs((self.agent_pos + self.AgentSize/2.0) - (self.object_pos + self.object_size/2.0)))**0.333)
+        if self.agent_pos <= self.object_pos <= self.agent_pos + self.AgentSize - self.object_size:
+            self.catches += 1
+            res = 1
         elif (self.agent_pos - self.object_size) < self.object_pos < self.agent_pos + self.AgentSize + self.object_size:
             self.crashes += 1
             res = -1
         self.history.save_state(self.object_size, res)
 
     def run(self, agent):
+        self.total = 0
         self.catches = 0
         self.crashes = 0
         self.agent = agent
@@ -45,7 +49,7 @@ class Beer:
         for test in self.tests:
             self.runTest(test)
 
-        return self.catches, self.crashes
+        return self.total
 
 
 class BeerTest:

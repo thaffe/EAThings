@@ -1,4 +1,4 @@
-from beer.Beer import Beer
+from beer.Beer import *
 from beer.BeerAgent import BeerAgent
 from core.EA import EA
 
@@ -14,9 +14,9 @@ class BeerEA(EA):
         return BeerAgent(genotype)
 
     def run_fitness_tests(self):
-        for individual in self.children:
-            res = self.beer.run(individual)
+        self.beer.tests = [BeerTest() for _ in xrange(40)]
 
-            individual.fitness = max(0.01,res[0] - res[1])
+        for individual in self.children:
+            individual.fitness = self.beer.run(individual)
             if individual.fitness > self.best_individual.fitness or not self.best_history:
                 self.best_history = self.beer.history
