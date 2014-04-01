@@ -77,6 +77,16 @@ $if hidden:
 
         <legend><small>Crossover</small></legend>
         $:getNormalDist('crossover')
+
+        $if settings['game'] == "flatland":
+            <div class="form-group">
+                <label>
+                    <input name="flatland" value="1" type="checkbox"
+                        $if settings['flatland']:
+                            checked
+                    > Dynamic map
+                </label>
+            </div>
         <button type="submit" class="btn btn-primary btn-lg">Run Evolution</button>
     </form>
     </div>
