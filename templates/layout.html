@@ -25,26 +25,26 @@ $def with (content)
 </head>
 <body>
 $:content
-
-<div id="chartHolder" class="popup">
-    <div class="container">
-        <div class="chart">
-            <canvas id="chart"></canvas>
+$if content.jsfiles:
+    <div id="chartHolder" class="popup">
+        <div class="container">
+            <div class="chart">
+                <canvas id="chart"></canvas>
+            </div>
+            <center>
+                <span class="label label-primary">SD</span>
+                <span class="label label-success">Mean</span>
+                <span class="label label-danger">Best</span>
+            </center>
         </div>
-        <center>
-            <span class="label label-primary">SD</span>
-            <span class="label label-success">Mean</span>
-            <span class="label label-danger">Best</span>
-        </center>
     </div>
-</div>
-<div id="progress" class="popup">
-    <div class="container">
-        <center>
-            <h3><i class="fa fa-spinner"></i><span id="progressText">Starting up</span></h3>
-        </center>
+    <div id="progress" class="popup">
+        <div class="container">
+            <center>
+                <h3><i class="fa fa-spinner"></i><span id="progressText">Starting up</span></h3>
+            </center>
+        </div>
     </div>
-</div>
 
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>

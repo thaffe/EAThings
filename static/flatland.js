@@ -12,7 +12,7 @@ function initGame(game){
      map.css({maxWidth:currentGame.maps[0].length*100});
     $("#maps").html("");
     for(var i = 0; i < game.mapRes.length; i++){
-        var a = '<a href="#" class="list-group-item" id="map-$loop.index0"><h4 class="list-group-item-heading">Map ';
+        var a = '<a class="list-group-item" id="map-$loop.index0"><h4 class="list-group-item-heading">Map ';
         a+= (i+1)+'</h4><p class="list-group-item-text">Best result food:';
         a+= game.mapRes[i][0]+'poison:'+game.mapRes[i][1]+'</p></a>';
         $("#maps").append(a);

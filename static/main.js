@@ -30,7 +30,9 @@ $(function(){
 
     $(".showpopup").click(showPopup);
 
-
+    $(".restart-btn").click(function(){
+        $("form").submit();
+    });
      $("form").submit(function(e){
         e.preventDefault();
         var params = $(this).serialize();

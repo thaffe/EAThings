@@ -3,7 +3,9 @@ var chartData;
 var options;
 
 window.onbeforeunload = function(){
-    return "Sure you want to reload settings and run will be reset";
+    var page = window.location.href.split("/");
+    if(page[page.length-1].length > 3)
+        return "Sure you want to reload settings and run will be reset";
 }
 function initChart(sds, means, bests, similarities){
     $chart = $("#chart");
