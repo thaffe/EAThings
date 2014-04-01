@@ -1,17 +1,18 @@
 var heightStep = 100/15.0;
 var widthStep = 100/30.0;
 var timePrStep = 150;
-var object,catcher;
+var object,catcher,objectholder;
 var playback = 1;
 var currentIndex = 0;
 
 $(function(){
     catcher = $("#catcher");
     object = $("#object");
+    objectholder = $("#objectholder");
 
     $(".controller button").click(function(){
         $(this).siblings().removeClass("active");
-        actions[$(this).attr("data-type")](true);
+        actions[$(this).attr("data-type")]();
      });
 
     updateStats();
@@ -32,15 +33,10 @@ $(function(){
     $("#miss-total").text(m);
 });
 
-
-function resetObject(startIndex,size){
-    object.css({bottom:(heightStep*14)+"%",left:(startIndex*widthStep)+"%",width:(widthStep*size)+"%"});
-}
-
 function playState(index, callback){
     var s = window.gameState[index];
-    resetObject(s.o[0],s.size);
-    animate(s.c,s.o, function(){
+    updateStats();
+    animate(s, function(){
         updateStats();
         callback();
     });
@@ -66,45 +62,62 @@ function h3(l,v){
     return "<h3>"+l+": "+v+"</h3>";
 }
 
-function animate(catchSteps,objectSteps, callback){
-    for(var i = 0; i < catchSteps.length; i++){
-        catcher.animate({left:(catchSteps[i]*widthStep)+"%"}, timePrStep/playback, i == catchSteps.length -1 ? callback : null);
-        object.animate({bottom:(heightStep*(14-i))+"%",left:(objectSteps[i]*widthStep)+"%"},timePrStep/playback)
+function animate(r, callback){
+    actions.stop();
+    var time = timePrStep/playback;
+
+    catcher.css(getLeft(r.c[0]));
+    object.css({bottom:(heightStep*15)+"%"});
+    objectholder.css({left:(r.o[0]*widthStep)+"%",width:(widthStep*r.size)+"%"});
+
+    for(var i = 1; i < r.c.length; i++){
+        var wrap = Math.abs(r.c[i-1] - r.c[i]) > 4
+        catcher.animate(getLeft(r.c[i]) ,wrap ? 0 : time,"linear");
+        objectholder.animate(getLeft(r.o[i]),wrap ? 0 : time,"linear");
     }
+    object.animate({bottom:0+"%"},time * r.c.length, "linear",callback);
+
+}
+
+function getLeft(index){
+    return {left:(index * widthStep)+"%"};
 }
 
 
 var actions = {
     play:function(forcePlay){
-        actions.stop();
         var $p =  $("#play");
-        if(!forcePlay && $p.hasClass("fa fa-pause active")){
+        if(forcePlay !== true && $p.hasClass("fa-pause")){
             $p.attr("class","fa fa-play");
+            actions.stop();
+            console.log("stop");
         }else{
             $p.attr("class","fa fa-pause");
             this.step();
         }
+        updateStats();
     },
 
     step : function(){
-        playState(currentIndex++, actions.step);
+        playState(currentIndex, actions.step);
+        currentIndex++;
     },
 
     forward:function(){
-        if(currentIndex >= 15) return;
-        currentIndex++;
+        if(currentIndex >= 40) return;
         actions.play(true);
     },
 
     back:function(){
         if(currentIndex <= 0) return;
-        currentIndex--;
+        currentIndex-=2;
         if(actions.timeout) clearTimeout(actions.timeout);
 
         timeout = setTimeout(function(){
             actions.play(true);
         }, 700);
     },
+
     timeout : null,
     begin:function(){
         currentIndex = 0;
@@ -116,7 +129,8 @@ var actions = {
     },
 
     stop : function(){
-       catcher.stop(true);
-       object.stop(true);
+       catcher.finish();
+       object.finish();
+       objectholder.finish();
     }
 }

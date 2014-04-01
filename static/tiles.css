@@ -25,7 +25,7 @@ body{
     z-index:10000;
     position:absolute;
     left:50%;
-    top:-100%;
+    top:-2000px;
     height:auto;
     transition:top 0.5s, opacity 0.3s;
 }
@@ -139,4 +139,14 @@ background:#EFEFEF;
     position:absolute;
     bottom:0;
     left:0;
+    width:100%;
+}
+
+#objectholder{
+    position:absolute;
+    background:url(imgs/shadow.png) no-repeat;
+    background-size: 100% 30px;
+    background-position: bottom center;
+    top:0;
+    bottom:0;
 }
