@@ -1,3 +1,4 @@
+from random import random
 from core.AnnIndividual import AnnIndividual
 from core.GeneFloat import GeneFloatSource
 from flatland.Flatland import Flatland
@@ -12,11 +13,10 @@ class FlatlandAgent(AnnIndividual):
         {"name": "pf"},
         {"name": "pl"},
         {"name": "pr"},
-        {"name": "hl", "weights": {"pl": 0}},
-        {"name": "hr", "weights": {"pr": 0}},
-        {"name": "f", "weights": {"ff": 0, "pf": 0}},
-        {"name": "l", "weights": {"fl": 0, "pl": 0}},
-        {"name": "r", "weights": {"fr": 0, "pr": 0}}
+        {"name": "rand"},
+        {"name": "f", "weights": {"ff": 0, "pf": 0, "rand": 0}},
+        {"name": "l", "weights": {"fl": 0, "pl": 0, "rand": 0}},
+        {"name": "r", "weights": {"fr": 0, "pr": 0, "rand": 0}}
     ]
 
     source_appends = [
@@ -42,7 +42,8 @@ class FlatlandAgent(AnnIndividual):
         for node in ["ff", "fl", "fr", "pf", "pr", "pl"]:
             self.ann.neurons[node].output = 0.0
             self.ann.neurons[node].step_counter = step
-
+        self.ann.neurons["rand"].output = random()*0.2
+        self.ann.neurons["rand"].step_counter = step
         if smell[0] and smell[0] != '0':
             self.ann.neurons[smell[0] + "f"].output = 1.0
         if smell[1] and smell[1] != '0':

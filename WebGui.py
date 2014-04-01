@@ -19,14 +19,14 @@ adultStrat = [
 ]
 
 defaults = {
-    'generations': 100,
-    'adultStrategy': 0,
-    'parentStrategy': 0, #Rank sel, see array over
-    'childPool': 50,
-    'adultPool': 25,
-    'parentPool': 10,
-    'mutation': [0.1, 0.1, 0.0, 1.0],
-    'crossover': [0.1, 0.1, 0.0, 1.0],
+    'generations': 20,
+    'adultStrategy': 1,
+    'parentStrategy': 3, #Rank sel, see array over
+    'childPool': 100,
+    'adultPool': 50,
+    'parentPool': 30,
+    'mutation': [-0.2, 0.4, 0.0, 1.0],
+    'crossover': [0.3, 0.2, 0.0, 1.0],
     'rank': [0.5, 1.5],
     'tournament': [5, 0.1],
     'flatland': 0

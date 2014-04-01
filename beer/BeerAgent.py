@@ -35,7 +35,9 @@ class BeerAgent(AnnIndividual):
 
     def getmove(self, shadows, step):
         for i in xrange(5):
-            self.ann.neurons["s" + str(i)].output = shadows[i]
+            n = self.ann.neurons["s" + str(i)]
+            n.output = shadows[i]
+            n.step_counter = step
 
         right = self.ann.neurons["o0"].update(step)
         left = self.ann.neurons["o1"].update(step)
