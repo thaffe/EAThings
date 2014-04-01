@@ -59,7 +59,6 @@ def setup_ea(input):
 
     EA.mutation_rate = NormDist(float(input.mutation[0]), float(input.mutation[1]),
                                 float(input.mutation[2]), float(input.mutation[3]))
-
     Strategies.rank_min = float(input.rank[0])
     Strategies.rank_max = float(input.rank[1])
     Strategies.tournament_k = int(input.tournament[0])
