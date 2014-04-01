@@ -141,6 +141,9 @@ background:#EFEFEF;
     left:0;
     width:100%;
 }
+#object img{
+    width:100%;
+}
 
 #objectholder{
     position:absolute;

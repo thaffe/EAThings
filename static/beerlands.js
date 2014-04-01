@@ -65,17 +65,28 @@ function h3(l,v){
 function animate(r, callback){
     actions.stop();
     var time = timePrStep/playback;
-
+    object.children(r.size >= 5 ? ".big" : ".small").show().siblings().hide();
     catcher.css(getLeft(r.c[0]));
     object.css({bottom:(heightStep*15)+"%"});
     objectholder.css({left:(r.o[0]*widthStep)+"%",width:(widthStep*r.size)+"%"});
 
     for(var i = 1; i < r.c.length; i++){
-        var wrap = Math.abs(r.c[i-1] - r.c[i]) > 4
-        catcher.animate(getLeft(r.c[i]) ,wrap ? 0 : time,"linear");
-        objectholder.animate(getLeft(r.o[i]),wrap ? 0 : time,"linear");
+        var move = r.c[i-1] - r.c[i];
+        if(move > 4){
+            index = move > 0 ? -1 : r.c.length;
+            catcher.animate(getLeft(index),0);
+        }
+
+        move = r.o[i-1] - r.o[i];
+        if(move > 4){
+            index = move > 0 ? -1 : r.c.length;
+            objectholder.animate(getLeft(index),0);
+            console.log("wrap object");
+        }
+        catcher.animate(getLeft(r.c[i]) ,time,"linear");
+        objectholder.animate(getLeft(r.o[i]), time,"linear");
     }
-    object.animate({bottom:0+"%"},time * r.c.length, "linear",callback);
+    object.animate({bottom:"0%"},time * r.c.length, "linear",callback);
 
 }
 

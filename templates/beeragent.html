@@ -11,7 +11,12 @@ $var jsfiles: static/beerlands.js
             $for i in range(15*30):
                 <div class="brick index$(loop.index0 % 2 + (loop.index0/30) % 2)"></div>
             <img id="catcher" src="/static/imgs/beercatcher.png" alt=""/>
-            <div id="objectholder"><img id="object" src="/static/imgs/poison.png" alt=""></div>
+            <div id="objectholder">
+                <div id="object">
+                    <img class="big" src="/static/imgs/tobig.png" alt="">
+                    <img class="small" src="/static/imgs/poison.png" alt="">
+                </div>
+            </div>
         </div>
        <div class="controllers block">
         <center>
