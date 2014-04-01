@@ -1,7 +1,5 @@
-$def with(ea, settings)
+$def with(settings)
 $:render.settings(settings,True)
-$:render.chart(ea)
-$:render.ann(ea)
 
 $var title: Flatland Agent
 $var cssfiles: static/tiles.css
@@ -61,15 +59,9 @@ $var jsfiles: static/flatland.js
                 </p>
             </center>
             <div class="list-group" id="maps">
-                $for map in ea.best_maps:
-                <a href="#" class="list-group-item" id="map-$loop.index0">
-                    <h4 class="list-group-item-heading">Map $loop.index</h4>
 
-                    <p class="list-group-item-text">Best result food:$map.food_gathered poison:$map.poisoned</p>
-                </a>
             </div>
             <center>
-                <h3>Individual Fittness: $ea.best_individual.fitness</h3>
             </center>
             <center>
                 <button class="btn btn-primary btn-lg showpopup" data-target="settings"><i class="fa fa-gear"></i></button>
@@ -78,38 +70,8 @@ $var jsfiles: static/flatland.js
                 <button class="btn btn-primary btn-lg showpopup" data-target="annHolder"><i class="fa fa-eye"></i></button>
             </center>
         </div>
-        <div id="historyPopup" class="popup">
-            <div class="container">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Map #</th>
-                            <th>Food</th>
-                            <th>Poison</th>
-                            $for h in ea.best_maps[0].history:
-                                <th>$loop.index</th>
-                        </tr>
-                    </thead>
-                $for map in ea.maps:
-                    <tr>
-                        <td>Map $loop.index</td>
-                        <td>$map.food_gathered </td>
-                        <td>$map.poisoned </td>
-                        $for h in map.history:
-                            <td>$h</td>
-                    </tr>
-                </table>
 
-
-            </div>
-        </div>
     </div>
 </div>
-<script>
-   window.maps = $:[flatland.map.tolist() for flatland in ea.best_maps];
-   window.botPos = $:[list(flatland.agent_pos) for flatland in ea.best_maps];
-   window.hists = $:[flatland.history for flatland in ea.best_maps];
-   window.botDir = $:[flatland.agent_direction.val.tolist() for flatland in ea.best_maps];
 
-</script>
 

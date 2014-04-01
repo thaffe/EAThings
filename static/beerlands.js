@@ -5,7 +5,10 @@ var object,catcher,objectholder;
 var playback = 1;
 var currentIndex = 0;
 
-$(function(){
+
+function initGame(states){
+    currentIndex = 0;
+    window.gameState = states;
     catcher = $("#catcher");
     object = $("#object");
     objectholder = $("#objectholder");
@@ -31,7 +34,7 @@ $(function(){
     $("#fail-total").text(f);
     $("#success-total").text(s);
     $("#miss-total").text(m);
-});
+}
 
 function playState(index, callback){
     var s = window.gameState[index];

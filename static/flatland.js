@@ -6,14 +6,17 @@ var moveHist;
 var counter = {
     food:0,poison:0,time:0
 }
-$(function(){
-     map = $("#map");
-     map.css({maxWidth:window.maps[0].length*100});
-     $(window).resize(function(){
-            map.height(map.width());
-            updateBot();
-     });
-
+var currentGame;
+function initGame(game){
+    currentGame = game;
+     map.css({maxWidth:currentGame.maps[0].length*100});
+    $("#maps").html("");
+    for(var i = 0; i < game.mapRes.length; i++){
+        var a = '<a class="list-group-item" id="map-$loop.index0"><h4 class="list-group-item-heading">Map ';
+        a+= (i+1)+'</h4><p class="list-group-item-text">Best result food:';
+        a+= game.mapRes[i][0]+'poison:'+game.mapRes[i][1]+'</p></a>';
+        $("#maps").append(a);
+    }
      $("#maps a").click(function(){
         var index = $("#maps a").index(this);
         setMap(index);
@@ -28,19 +31,29 @@ $(function(){
             playback = parseInt(this.value);
      });
 
-    bot = $("<div class='tile bot'><div>").css({width:blockWidth+"%",height:blockHeight+"%"});
-
-    tiles = createMap(map, window.maps.length, window.maps.length);
-    map.append(bot);
     setMap(0);
     $(window).resize();
 
-});
+}
+
+$(function(){
+    currentPos = {dir:[1,0],pos:[0,0]};
+    bot = $("<div class='tile bot'><div>").css({width:blockWidth+"%",height:blockHeight+"%"});
+    map = $("#map");
+    tiles = createMap(map, 8, 8);
+    map.append(bot);
+
+    $(window).resize(function(){
+            map.height(map.width());
+            updateBot();
+     });
+    $(window).resize();
+})
 
 function setMap(index){
     $("#maps a:eq("+index+")").addClass("active").siblings().removeClass("active");
     counter.time = 0;
-    activeMap = window.maps[index].slice(0);
+    activeMap = currentGame.maps[index].slice(0);
     moveHist = getHistSteps(index);
     currentPos = moveHist[0];
     currentMapIndex = index;
@@ -51,9 +64,9 @@ function setMap(index){
 
 function getHistSteps(index){
     var max = 7;
-    var h = window.hists[index];
-    var l = window.botDir[index].slice(0);
-    var p = window.botPos[index].slice(0);
+    var h = currentGame.hists[index];
+    var l = currentGame.botDir[index].slice(0);
+    var p = currentGame.botPos[index].slice(0);
     var res = [{pos:p.slice(0),dir:"dir"+l[0]+""+l[1]}];
     console.log("StartLook:"+l, "StartPos:"+p, "Histlength:"+h.length);
     for(var i = 0; i < h.length; i++){
@@ -118,8 +131,8 @@ function updateStats(){
     $("#food-counter").text($(".food:hidden").length);
     $("#poison-counter").text($(".poison:hidden").length);
     $("#time-counter").text(counter.time);
-    var done = counter.time - 1 >= 0 ? window.hists[currentMapIndex][counter.time - 1] : "First";
-    var next = window.hists[currentMapIndex][counter.time];
+    var done = counter.time - 1 >= 0 ? currentGame.hists[currentMapIndex][counter.time - 1] : "First";
+    var next = currentGame.hists[currentMapIndex][counter.time];
     $("#movedone").text("Move:"+done+" Next:"+next);
 }
 
@@ -140,9 +153,9 @@ function updateBot(){
 
 function createMap(mapholder){
     var m = [];
-    for(var i = 0; i < window.maps[0].length; i++){
+    for(var i = 0; i < 8; i++){
         row = [];
-        for(var j = 0; j < window.maps[0][0].length; j++){
+        for(var j = 0; j < 8; j++){
             div = $("<div class='tile grass' style='width:"+blockWidth+"%;height:"+blockHeight+"%'></div>");
             row.push(div);
             mapholder.append(div);

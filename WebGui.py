@@ -1,3 +1,6 @@
+import json
+from threading import Thread
+
 import web
 
 from beer.BeerEA import BeerEA
@@ -36,7 +39,9 @@ urls = (
     '/', 'index',
     '/settings', 'settings',
     '/flatland', 'flatland_web',
-    '/beeragent', 'beeragent_web'
+    '/beeragent', 'beeragent_web',
+    '/start', 'starter',
+    '/progress', 'progress'
 )
 app = web.application(urls, globals())
 render = web.template.render('templates/', base='layout')
@@ -67,6 +72,16 @@ def setup_ea(input):
     return "T"
 
 
+current_ea = None
+ea_thread = None
+current_game = None
+
+
+def start_ea(ea):
+    print("startingEA")
+    ea.run()
+
+
 class index:
     def GET(self):
         return render.index()
@@ -79,24 +94,66 @@ class settings:
         return render.settings(defaults, False)
 
 
-class flatland_web:
+class starter:
     def GET(self):
+        global ea_thread, current_ea, current_game
+        if current_ea:
+            current_ea.current_generation = EA.max_generations +1
         i = web.input(tournament=[], rank=[], mutation=[], crossover=[])
         setup_ea(i)
-        FlatlandEA.dynamic = i.has_key('flatland')
-        i.setdefault('flatland', False)
-        ea = FlatlandEA()
-        ea.run()
-        return render.flatland(ea, i)
+        current_game = i.game
+        current_ea = FlatlandEA() if i.game == "flatland" else BeerEA()
+
+        ea_thread = Thread(target=start_ea, args=[current_ea])
+        ea_thread.start()
+        web.header('Content-Type', 'application/json')
+        return json.dumps({'start': True})
+
+
+class progress:
+    def GET(self):
+        global ea_thread, current_ea, current_game
+        web.header('Content-Type', 'application/json')
+        complete = current_ea.current_generation == EA.max_generations
+        res = {
+            'complete': complete
+        }
+        if complete:
+            res['means'] = current_ea.means
+            res['sds'] = current_ea.sds
+            res['bests'] = current_ea.bests
+            res['similarity'] = current_ea.best_similarities
+            res['fitness'] = current_ea.best_individual.fitness
+
+            if current_game == 'beeragent':
+                res['game'] = current_ea.best_history.states
+            else:
+                res['game'] ={
+                    'maps':[flatland.map.tolist() for flatland in current_ea.best_maps],
+                    'botPos':[list(flatland.agent_pos) for flatland in current_ea.best_maps],
+                    'hists':[flatland.history for flatland in current_ea.best_maps],
+                    'botDir':[flatland.agent_direction.val.tolist() for flatland in current_ea.best_maps],
+                    'mapRes':[[flatland.food_gathered,flatland.poisoned] for flatland in current_ea.best_maps]
+                }
+
+        else:
+            best_fitness = current_ea.best_individual.fitness if current_ea.best_individual else 0
+            res = {
+                'm': "Generation: %d of %d Best:%2.f" % (current_ea.current_generation, EA.max_generations, best_fitness)}
+
+        return json.dumps(res)
+
+
+class flatland_web:
+    def GET(self):
+        defaults['game'] = "flatland"
+        return render.flatland(defaults)
 
 
 class beeragent_web:
     def GET(self):
-        i = web.input(tournament=[], rank=[], mutation=[], crossover=[])
-        setup_ea(i)
-        ea = BeerEA()
-        ea.run()
-        return render.beeragent(ea, i)
+        defaults['game'] = "beeragent"
+        return render.beeragent(defaults)
 
 
 if __name__ == "__main__":

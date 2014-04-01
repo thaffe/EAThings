@@ -1,7 +1,5 @@
-$def with(ea, settings)
+$def with(settings)
 $:render.settings(settings,True)
-$:render.chart(ea)
-$:render.ann(ea)
 
 $var title: BeerAgent
 $var cssfiles: static/tiles.css
@@ -60,7 +58,7 @@ $var jsfiles: static/beerlands.js
                     <option value="5">5x</option>
                 </select>
             </p>
-            <h3>Individual Fittness: $ea.best_individual.fitness</h3>
+            <h3>Individual Fittness: <span id="fitness"></span></h3>
             <h3>
 
               <span class="text-success"><i class="fa fa-check-circle"></i>: <span
@@ -77,10 +75,14 @@ $var jsfiles: static/beerlands.js
             <button class="btn btn-primary btn-lg showpopup" data-target="historyPopup"><i class="fa fa-book"></i></button>
             <button class="btn btn-primary btn-lg showpopup" data-target="annHolder"><i class="fa fa-eye"></i></button>
         </center>
+           <br>
+        <center>
+            <button class="restart-btn btn btn-primary btn-lg showpopup" data-target="settings">Run again</button>
+            <a href="/" class="btn btn-primary btn-lg showpopup" data-target="settings">Main Menu</a>
+        </center>
     </div>
-
+    <script>
+        window.game = "flatland";
+    </script>
 
 </div>
-<script>
-    window.gameState = $:ea.best_history.states
-</script>

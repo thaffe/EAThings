@@ -1,5 +1,13 @@
-$(function () {
 
+var chartData;
+var options;
+
+window.onbeforeunload = function(){
+    var page = window.location.href.split("/");
+    if(page[page.length-1].length > 3)
+        return "Sure you want to reload settings and run will be reset";
+}
+function initChart(sds, means, bests, similarities){
     $chart = $("#chart");
 
     if(!$chart.length) return;
@@ -20,7 +28,7 @@ $(function () {
     for (var i = 1; i <= bests.length; i++) {
         labels.push(i % steps == 0 ? i : "");
     }
-    var data = {
+    chartData = {
         labels: labels,
         datasets: [
             {
@@ -53,12 +61,11 @@ $(function () {
             }
         ]
     };
-    var options = {
-        pointDot: false,
-        scaleOverride: true,
-        scaleSteps: 15,
-        scaleStepWidth: stepsize
-
+    options = {
+      pointDot: false,
+      scaleOverride: true,
+      scaleSteps: 15,
+      scaleStepWidth: stepsize
     };
     var ctx = $chart.get(0).getContext("2d");
 
@@ -71,11 +78,12 @@ $(function () {
         drawChart();
     });
 
-    function drawChart() {
-        var ctx = $("#chart");
-        var width = Math.min(ctx.parent().width(), 800);
+}
 
-        ctx.attr({"width": width, "height": width / 1.3});
-        new Chart(ctx.get(0).getContext("2d")).Line(data, options);
-    }
-});
+function drawChart() {
+    var ctx = $("#chart");
+    var width = Math.min(ctx.parent().width(), 800);
+
+    ctx.attr({"width": width, "height": width / 1.3});
+    new Chart(ctx.get(0).getContext("2d")).Line(chartData, options);
+}
