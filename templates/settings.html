@@ -27,7 +27,10 @@ $if hidden:
     <div class="container">
     <h1>Evolution Algorithm</h1>
 
-    <form role="form" method="get" action="/$settings['game']">
+    <form role="form" method="get" action="/$settings['game']"
+            $if hidden:
+                class="jsonForm"
+        >
         <input type="hidden" value="$settings['game']" name="game"/>
         <div class="row">
             $:inputField('Max generation steps', 'generations',settings['generations'], 4, 'Max generations')

@@ -1,4 +1,8 @@
+var progText;
 $(function(){
+
+    progText = $("#progressText");
+
    $("#parentStrategy").change(function(){
     id = this.value+"-parent-opts";
     show("#"+id,"[id$=parent-opts]");
@@ -9,7 +13,6 @@ $(function(){
        show("#"+id,"[id$=puzzle-opts]");
    });
 
-   $("#puzzle").trigger('change');
    $("#parentStrategy").trigger('change');
 
    $(".popup .container").click(function(e){
@@ -25,13 +28,45 @@ $(function(){
         },500);
    });
 
-   $(".showpopup").click(showPopup);
+    $(".showpopup").click(showPopup);
+
+
+     $("form").submit(function(e){
+        e.preventDefault();
+        var params = $(this).serialize();
+        progText.text("Starting up");
+        showPopup(null, "progress");
+
+        $.getJSON("/start?"+params,function(data){
+            setTimeout(trackProgress,200);
+        });
+        return false;
+    });
+
+    showPopup(null, "settings");
+
 });
+
+
+function trackProgress(){
+    $.getJSON("/progress",function(data){
+        if(data.complete){
+            closePopup();
+            initGame(data.game);
+            initChart(data.sds,data.means,data.bests, data.similarity);
+
+        }else{
+            progText.text(data.m);
+            setTimeout(trackProgress, 200);
+        }
+    })
+}
 
 function showPopup(e, target){
     closePopup();
     $("#"+(target ? target : $(this).attr("data-target"))).addClass("show");
-    e.stopPropagation();
+    if(e)
+        e.stopPropagation();
 }
 
 
