@@ -13,7 +13,7 @@ class Beer:
         self.tests = [BeerTest() for _ in xrange(40)]
 
     def shadows(self):
-        return [self.object_pos <= self.agent_pos + i <= self.object_pos + self.object_size for i in xrange(self.AgentSize)]
+        return [self.object_pos <= self.agent_pos + i < self.object_pos + self.object_size for i in xrange(self.AgentSize)]
 
     def timestep(self, step):
         
@@ -30,7 +30,10 @@ class Beer:
 
         for step in xrange(0, 15):
             self.timestep(step)
-
+            # if step < 11 or self.object_size < 5:
+            #     self.total += self.shadows().count(True) / 30
+            # else:
+            #     self.total -= self.shadows().count(True) / 30
         res = 0
         self.total += 1/(1+(abs((self.agent_pos + self.AgentSize/2.0) - (self.object_pos + self.object_size/2.0)))**0.33)
         # self.total -= self.shadows().count(True)
@@ -39,16 +42,18 @@ class Beer:
             if self.object_pos >= self.agent_pos and self.object_pos + self.object_size <= self.agent_pos + self.AgentSize:
                 self.catches += 1
                 res = 1
+                self.total -= max(self.agent_pos - self.object_pos, 0) + max((self.object_pos + self.object_size) - (self.agent_pos + self.AgentSize), 0)
         else:
             if not (self.agent_pos + self.AgentSize <= self.object_pos or self.agent_pos >= self.object_pos + self.object_size):
                 self.crashes += 1
-                res = -2
+                res = -1
+                self.total += 3 * (max(self.agent_pos - (self.object_pos + self.object_size), 0) + max(self.object_pos - (self.agent_pos + self.AgentSize), 0))
 
         self.history.save_state(self.object_size, res)
         self.total += res
 
     def run(self, agent):
-        self.total = 10
+        self.total = 60
         self.catches = 0
         self.crashes = 0
         self.agent = agent

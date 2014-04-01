@@ -20,7 +20,7 @@ class EA():
     mean = 0
 
     def __init__(self, fitness_goal=0):
-        self.similarity_weight = 0.4
+        self.similarity_weight = 1
         self.similarity_groupings = 0
         self.parent_selection_strategy = Strategies.fitness
         self.fitness_goal = fitness_goal
@@ -47,14 +47,6 @@ class EA():
         self.update_stats()
         print("Starting Evolution")
         while self.current_generation < self.max_generations and (not self.fitness_goal or self.fitness_goal > self.best_individual.fitness):
-            # diff = 0
-            # for i in xrange(self.child_pool_size):
-            #     for j in xrange(self.child_pool_size):
-            #         if not i == j:
-            #             diff += self.children[i].compare(self.children[j])
-            # diff /= (self.child_pool_size * (self.child_pool_size - 1))
-            # if diff == 0:
-            #     raise AttributeError
             sys.stdout.write(
                 "\r Generation:%d/%d BestFittness:%f ... Testing fitness" % (
                 self.current_generation, self.max_generations, self.best_individual.fitness))
@@ -146,6 +138,7 @@ class EA():
         self.sd = (sum((i.fitness - self.mean) ** 2 for i in individuals) / len(individuals)) ** 0.5
 
         for i in xrange(self.similarity_groupings):
+            print "OMG!!!!"
             self.similarity_mean = 0
             min_similarity = 0
             for individual in individuals:

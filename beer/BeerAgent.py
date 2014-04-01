@@ -1,4 +1,3 @@
-from ann.ANN import ANN
 from core.AnnIndividual import AnnIndividual
 from core.GeneFloat import GeneFloatSource
 
@@ -6,15 +5,15 @@ from core.GeneFloat import GeneFloatSource
 class BeerAgent(AnnIndividual):
 
     source = [
-        {"name": "s0", "pre_update": None, "data": None},
-        {"name": "s1", "pre_update": None, "data": None},
-        {"name": "s2", "pre_update": None, "data": None},
-        {"name": "s3", "pre_update": None, "data": None},
-        {"name": "s4", "pre_update": None, "data": None},
-        {"name": "h0", "weights": {"s0": 0, "s1": 0, "s2": 0, "s3": 0, "s4": 0}, "post_update": None, "data": None},
-        {"name": "h1", "weights": {"s0": 0, "s1": 0, "s2": 0, "s3": 0, "s4": 0, "h0": 0}, "post_update": None, "data": None},
-        {"name": "o0", "weights": {"h0": 0, "h1": 0}, "post_update": None, "data": None},
-        {"name": "o1", "weights": {"h0": 0, "h1": 0, "o0": 0}, "post_update": None, "data": None}
+        {"name": "s0"},
+        {"name": "s1"},
+        {"name": "s2"},
+        {"name": "s3"},
+        {"name": "s4"},
+        {"name": "h0", "weights": {"s0": 0, "s1": 0, "s2": 0, "s3": 0, "s4": 0}},
+        {"name": "h1", "weights": {"s0": 0, "s1": 0, "s2": 0, "s3": 0, "s4": 0, "h0": 0}},
+        {"name": "o0", "weights": {"h0": 0, "h1": 0}},
+        {"name": "o1", "weights": {"h0": 0, "h1": 0, "o0": 0}}
     ]
 
     source_appends = [

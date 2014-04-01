@@ -15,7 +15,7 @@ class BeerEA(EA):
         return BeerAgent(genotype)
 
     def run_fitness_tests(self):
-        self.beer.tests = [BeerTest(1 + floor(i/7)) for i in xrange(40)]
+        self.beer.tests = [BeerTest(1 + floor(i/6.666)) for i in xrange(40)]
 
         individuals = self.children if not self.adults else self.children + self.adults
         for individual in individuals:
