@@ -21,7 +21,7 @@ class Flatland:
         self.best_fitness = 0
 
     def play(self, agent):
-        while len(self.history) < self.step_count and self.poisoned < 3:
+        while len(self.history) < self.step_count and self.poisoned < 1:
             self.move(agent.get_move_from_smell(self.smell(), len(self.history)))
 
     def move(self, move):

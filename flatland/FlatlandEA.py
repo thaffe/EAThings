@@ -22,10 +22,9 @@ class FlatlandEA(EA):
             self.old_maps.append(self.maps)
             self.maps = [Flatland() for _ in xrange(5)]
 
-        individuals = self.children if not self.dynamic else self.children + self.adults
+        individuals = self.children if not self.dynamic or not self.adults else self.children + self.adults
         for individual in individuals:
-
-            # print "lol", len(self.children)
+            individual.fitness = 0
             temp_maps = []
             for map in self.maps:
                 test_map = deepcopy(map)

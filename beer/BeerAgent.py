@@ -22,7 +22,7 @@ class BeerAgent(AnnIndividual):
         {"name": "o0", "weights": {"o1": 0}}
     ]
 
-    tau_source = GeneFloatSource(1, 2, False)
+    tau_source = GeneFloatSource(1, 2, True)
     g_source = GeneFloatSource(1, 5, False)
     bias_source = GeneFloatSource(-10, 0, False)
     weight_source = GeneFloatSource(-5, 5, False)

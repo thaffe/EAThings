@@ -61,9 +61,8 @@ class EA():
                 "\r Generation:%d/%d  BestFittness:%f ... Adult selection" % (
                 self.current_generation, self.max_generations, self.best_individual.fitness))
             sys.stdout.flush()
-            self.adults = self.parent_selection(
-                self.adult_selection()
-            )
+            self.adult_selection()
+            self.parent_selection()
             sys.stdout.write(
                 "\r Generation:%d/%d BestFittness:%f ... Reproduction" % (
                 self.current_generation, self.max_generations, self.best_individual.fitness))
@@ -74,22 +73,22 @@ class EA():
 
         print(self.best_individual)
 
-    def parent_selection(self, individuals):
+    def parent_selection(self):
         self.update_stats()
-        exp_sum = self.parent_selection_strategy(self, individuals)
+        exp_sum = self.parent_selection_strategy(self, self.adults)
 
         #if parent selection strategy returns list then no need to spin roulette wheel
         if isinstance(exp_sum, list): return exp_sum
 
-        return [x for x in roulette(individuals, self.parent_pool_size, exp_sum)]
+        return [x for x in roulette(self.adults, self.parent_pool_size, exp_sum)]
 
     def adult_selection(self):
         if self.adult_selection_mode == Strategies.GENERATION_REPLACEMENT or self.adults is None:
             #over producion
-            return self.get_best(self.children, self.adult_pool_size)
+            self.adults = self.get_best(self.children, self.adult_pool_size)
         else:
             #generation mixing
-            return self.get_best(self.adults + self.children, self.adult_pool_size)
+            self.adults = self.get_best(self.adults + self.children, self.adult_pool_size)
 
     def reproduction(self, individuals):
         childpool = []
