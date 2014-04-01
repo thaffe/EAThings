@@ -21,6 +21,7 @@ class FlatlandEA(EA):
         if self.dynamic or not self.maps:
             self.old_maps.append(self.maps)
             self.maps = [Flatland() for _ in xrange(5)]
+            self.old_maps = deepcopy(self.maps)
 
         individuals = self.children if not self.dynamic or not self.adults else self.children + self.adults
         for individual in individuals:
@@ -41,6 +42,8 @@ class FlatlandEA(EA):
             individual.fitness = max(individual.fitness, 0.01)
             # print individual.fitness
             if individual.fitness > self.best_individual.fitness:
+                if self.dynamic:
+                    self.best_maps = self.old_maps
                 for i in xrange(len(self.maps)):
                     self.best_maps[i].history = temp_maps[i].history
                     self.best_maps[i].food_gathered = temp_maps[i].food_gathered
