@@ -29,7 +29,8 @@ defaults = {
     'mutation': [0.1, 0.1, 0.0, 1.0],
     'crossover': [0.1, 0.1, 0.0, 1.0],
     'rank': [0.5, 1.5],
-    'tournament': [5, 0.1]
+    'tournament': [5, 0.1],
+    'flatland': 0
 }
 
 urls = (
@@ -84,6 +85,8 @@ class flatland_web:
     def GET(self):
         i = web.input(tournament=[], rank=[], mutation=[], crossover=[])
         setup_ea(i)
+        FlatlandEA.dynamic = i.has_key('flatland')
+        i.setdefault('flatland',False)
         ea = FlatlandEA()
         ea.run()
         return render.flatland(ea, i)
