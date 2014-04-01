@@ -1,20 +1,28 @@
-from ann.ANN import ANN
 from core.AnnIndividual import AnnIndividual
 from core.GeneFloat import GeneFloatSource
 from flatland.Flatland import Flatland
 
 
 class FlatlandAgent(AnnIndividual):
+
     source = [
-        {"name": "ff", "pre_update": None, "data": None},
-        {"name": "fl", "pre_update": None, "data": None},
-        {"name": "fr", "pre_update": None, "data": None},
-        {"name": "pf", "pre_update": None, "data": None},
-        {"name": "pl", "pre_update": None, "data": None},
-        {"name": "pr", "pre_update": None, "data": None},
-        {"name": "f", "weights": {"ff": 0, "pf": 0}, "post_update": None, "data": None},
-        {"name": "l", "weights": {"fl": 0, "pl": 0}, "post_update": None, "data": None},
-        {"name": "r", "weights": {"fr": 0, "pr": 0}, "post_update": None, "data": None}
+        {"name": "ff"},
+        {"name": "fl"},
+        {"name": "fr"},
+        {"name": "pf"},
+        {"name": "pl"},
+        {"name": "pr"},
+        {"name": "hl", "weights": {"pl": 0}},
+        {"name": "hr", "weights": {"pr": 0}},
+        {"name": "f", "weights": {"ff": 0, "pf": 0}},
+        {"name": "l", "weights": {"fl": 0, "pl": 0}},
+        {"name": "r", "weights": {"fr": 0, "pr": 0}}
+    ]
+
+    source_appends = [
+        {"name": "f", "weights": {"f": 0}},
+        {"name": "l", "weights": {"l": 0}},
+        {"name": "r", "weights": {"r": 0}},
     ]
 
     tau_source = GeneFloatSource(1, 1, False)
