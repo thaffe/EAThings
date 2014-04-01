@@ -5,7 +5,7 @@ from numpy import array, remainder
 class Flatland:
     N = 8
     M = 8
-    step_count = 100
+    step_count = 50
 
     def __init__(self, N=8, M=8, f=0.5, p=0.5):
         self.map = array([
