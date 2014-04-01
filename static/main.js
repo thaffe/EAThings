@@ -19,7 +19,7 @@ $(function(){
         e.stopPropagation();
    });
 
-   $("html").click(closePopup);
+
 
    $(".chart-toggle").click(function(e){
         showPopup(e,"chartHolder");
@@ -36,7 +36,7 @@ $(function(){
         var params = $(this).serialize();
         progText.text("Starting up");
         showPopup(null, "progress");
-
+        $("html").unbind('click',closePopup);
         $.getJSON("/start?"+params,function(data){
             setTimeout(trackProgress,200);
         });
@@ -51,6 +51,7 @@ $(function(){
 function trackProgress(){
     $.getJSON("/progress",function(data){
         if(data.complete){
+            $("html").click(closePopup);
             closePopup();
             initGame(data.game);
             initChart(data.sds,data.means,data.bests, data.similarity);

@@ -98,10 +98,13 @@ class settings:
 class starter:
     def GET(self):
         global ea_thread, current_ea, current_game
+        if current_ea:
+            current_ea.current_generation = EA.max_generations +1
         i = web.input(tournament=[], rank=[], mutation=[], crossover=[])
         setup_ea(i)
         current_game = i.game
         current_ea = FlatlandEA() if i.game == "flatland" else BeerEA()
+
         ea_thread = Thread(target=start_ea, args=[current_ea])
         ea_thread.start()
         web.header('Content-Type', 'application/json')

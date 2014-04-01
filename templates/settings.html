@@ -42,7 +42,7 @@ $if hidden:
                 <select class="form-control" name="adultStrategy" id="adultStrategy">
                     $for i in adultStrat:
                         <option value="$loop.index0"
-                        $if settings['adultStrategy'] == str(loop.index0):
+                        $if settings['adultStrategy'] == loop.index0:
                             selected
                         > $i</option>
                 </select>
@@ -54,7 +54,7 @@ $if hidden:
                 <select class="form-control" name="parentStrategy" id="parentStrategy">
                     $for i in parentStrat:
                         <option value="$loop.index0"
-                        $if settings['parentStrategy'] == str(loop.index0):
+                        $if settings['parentStrategy'] == loop.index0:
                             selected="selected"
                         >$i[0]</option>
                 </select>
