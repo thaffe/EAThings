@@ -44,6 +44,13 @@ $(function () {
                 pointStrokeColor: "#fff",
                 data: sds
             },
+            {
+                fillColor: "rgba(0, 83, 79,0.2)",
+                strokeColor: "rgba(0, 83, 79,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                data: similarities
+            }
         ]
     };
     var options = {

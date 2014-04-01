@@ -25,6 +25,7 @@ class EA():
         self.means = []
         self.sds = []
         self.bests = []
+        self.best_similarities = [0]
         self.best_individual = None
         self.current_generation = 0
 
@@ -132,6 +133,8 @@ class EA():
             if i.fitness > best.fitness:
                 best = i
 
+        if self.best_individual:
+            self.best_similarities.append(self.best_individual.compare(best) * 100)
         if not self.best_individual or self.best_individual.fitness < best.fitness:
             self.best_individual = best
 
