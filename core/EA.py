@@ -45,14 +45,14 @@ class EA():
         self.update_stats()
         print("Starting Evolution")
         while self.current_generation < self.max_generations and (not self.fitness_goal or self.fitness_goal > self.best_individual.fitness):
-            diff = 0
-            for i in xrange(self.child_pool_size):
-                for j in xrange(self.child_pool_size):
-                    if not i == j:
-                        diff += self.children[i].compare(self.children[j])
-            diff /= (self.child_pool_size * (self.child_pool_size - 1))
-            if diff == 0:
-                raise AttributeError
+            # diff = 0
+            # for i in xrange(self.child_pool_size):
+            #     for j in xrange(self.child_pool_size):
+            #         if not i == j:
+            #             diff += self.children[i].compare(self.children[j])
+            # diff /= (self.child_pool_size * (self.child_pool_size - 1))
+            # if diff == 0:
+            #     raise AttributeError
             sys.stdout.write(
                 "\r Generation:%d/%d BestFittness:%f ... Testing fitness" % (
                 self.current_generation, self.max_generations, self.best_individual.fitness))

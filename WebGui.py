@@ -1,8 +1,7 @@
 import web
-from beer.BeerEA import BeerEA
 
+from beer.BeerEA import BeerEA
 from flatland.FlatlandEA import *
-from core.Individual import Individual
 
 
 parentStrat = [
@@ -41,7 +40,7 @@ urls = (
 )
 app = web.application(urls, globals())
 render = web.template.render('templates/', base='layout')
-web.template.Template.globals['render'] =  web.template.render('templates/')
+web.template.Template.globals['render'] = web.template.render('templates/')
 web.template.Template.globals['str'] = str
 
 web.template.Template.globals['adultStrat'] = adultStrat
@@ -58,8 +57,8 @@ def setup_ea(input):
     EA.crossover_rate = NormDist(float(input.crossover[0]), float(input.crossover[1]),
                                  float(input.crossover[2]), float(input.crossover[3]))
 
-    Individual.mutation_rate = NormDist(float(input.mutation[0]), float(input.mutation[1]),
-                                        float(input.mutation[2]), float(input.mutation[3]))
+    EA.mutation_rate = NormDist(float(input.mutation[0]), float(input.mutation[1]),
+                                float(input.mutation[2]), float(input.mutation[3]))
 
     Strategies.rank_min = float(input.rank[0])
     Strategies.rank_max = float(input.rank[1])
@@ -67,6 +66,7 @@ def setup_ea(input):
     Strategies.tournament_e = float(input.tournament[1])
 
     return "T"
+
 
 class index:
     def GET(self):
@@ -81,25 +81,23 @@ class settings:
 
 
 class flatland_web:
-
     def GET(self):
         i = web.input(tournament=[], rank=[], mutation=[], crossover=[])
         setup_ea(i)
         FlatlandEA.dynamic = i.has_key('flatland')
-        i.setdefault('flatland',False)
+        i.setdefault('flatland', False)
         ea = FlatlandEA()
         ea.run()
         return render.flatland(ea, i)
 
 
 class beeragent_web:
-
     def GET(self):
         i = web.input(tournament=[], rank=[], mutation=[], crossover=[])
         setup_ea(i)
         ea = BeerEA()
         ea.run()
-        return render.beeragent(ea,i)
+        return render.beeragent(ea, i)
 
 
 if __name__ == "__main__":
