@@ -21,7 +21,7 @@ class EA():
 
     def __init__(self, fitness_goal=0):
         self.similarity_weight = 1
-        self.similarity_groupings = 10
+        self.similarity_groupings = 0
         self.parent_selection_strategy = Strategies.fitness
         self.fitness_goal = fitness_goal
         self.means = []

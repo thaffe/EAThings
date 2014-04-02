@@ -19,6 +19,7 @@ class Flatland:
         self.poisoned = 0
         self.history = []
         self.best_fitness = 0
+        self.max_food = sum(sum(i == 'f' for i in self.map))
 
     def play(self, agent):
         while len(self.history) < self.step_count and self.poisoned < 1:

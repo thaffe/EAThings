@@ -3,11 +3,13 @@ var blockWidth = 100.0/8,blockHeight = 100.0/8 * 1.69;
 var activeMap, currentPos, currentMapIndex, lookDir;
 var playback = 1;
 var moveHist;
-var counter = {
-    food:0,poison:0,time:0
-}
+var counter;
 var currentGame;
 function initGame(game){
+    counter = {
+          food:0,poison:0,time:0
+      }
+
     currentGame = game;
      map.css({maxWidth:currentGame.maps[0].length*100});
     $("#maps").html("");

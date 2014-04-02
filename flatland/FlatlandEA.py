@@ -32,14 +32,14 @@ class FlatlandEA(EA):
                 temp_maps.append(test_map)
                 test_map.play(individual)
                 map_fitness = test_map.food_gathered - test_map.poisoned
-                individual.fitness += map_fitness
+                individual.fitness += 1.0 * map_fitness/ map.max_food
 
                 if map_fitness > map.best_fitness:
                     map.best_solution = test_map.history
                     map.food_gathered_by_best = test_map.food_gathered
                     map.poisoned_by_best = test_map.poisoned
 
-            individual.fitness = max(individual.fitness, 0.01)
+            individual.fitness = max(individual.fitness/len(self.maps), 0.001)
             # print individual.fitness
             if individual.fitness > self.best_individual.fitness:
                 if self.dynamic:

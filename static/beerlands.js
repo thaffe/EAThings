@@ -8,6 +8,7 @@ var currentIndex = 0;
 
 function initGame(states){
     currentIndex = 0;
+    console.log(states);
     window.gameState = states;
     catcher = $("#catcher");
     object = $("#object");

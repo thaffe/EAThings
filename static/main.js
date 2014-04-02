@@ -57,7 +57,7 @@ function trackProgress(){
             closePopup();
             initGame(data.game);
             initChart(data.sds,data.means,data.bests, data.similarity);
-
+            $("#fitness").text(data.fitness);
         }else{
             progText.text(data.m);
             setTimeout(trackProgress, 200);
