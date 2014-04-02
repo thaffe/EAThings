@@ -43,4 +43,4 @@ class BeerAgent(AnnIndividual):
 
         right = self.ann.neurons["o0"].update(step)
         left = self.ann.neurons["o1"].update(step)
-        return max(-4, min(4, (left-right)*10))
+        return max(-4, min(4, int(round(left-right)*10)))

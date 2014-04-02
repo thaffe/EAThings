@@ -20,8 +20,7 @@ class EA():
     mean = 0
 
     def __init__(self, fitness_goal=0):
-        self.similarity_weight = 1
-        self.similarity_groupings = 0
+        self.similarity_weight = 0
         self.parent_selection_strategy = Strategies.fitness
         self.fitness_goal = fitness_goal
         self.means = []
@@ -138,24 +137,25 @@ class EA():
         self.mean /= (len(individuals) * 1.0)
         self.sd = (sum((i.fitness - self.mean) ** 2 for i in individuals) / len(individuals)) ** 0.5
 
-        for i in xrange(self.similarity_groupings):
-            self.similarity_mean = 0
-            min_similarity = 0
-            for individual in individuals:
-                if individual != individuals[i]:
-                    individual.similarity = individual.compare(individuals[i])
-                    min_similarity = min(min_similarity, individual.similarity)
-                    self.similarity_mean += individual.similarity
-            individuals[i].similarity = min_similarity
-            self.similarity_mean += min_similarity
-            self.similarity_mean /= len(individuals)
-            self.similarity_sd = (sum((i.similarity - self.similarity_mean) ** 2 for i in individuals) / len(individuals)) ** 0.5
+        if self.similarity_weight > 0:
+            for i in xrange(self.adult_pool_size):
+                self.similarity_mean = 0
+                min_similarity = 0
+                for individual in individuals:
+                    if individual != individuals[i]:
+                        individual.similarity = individual.compare(individuals[i])
+                        min_similarity = min(min_similarity, individual.similarity)
+                        self.similarity_mean += individual.similarity
+                individuals[i].similarity = min_similarity
+                self.similarity_mean += min_similarity
+                self.similarity_mean /= len(individuals)
+                self.similarity_sd = (sum((i.similarity - self.similarity_mean) ** 2 for i in individuals) / len(individuals)) ** 0.5
 
-            for individual in individuals:
-                individual.fitness += (self.similarity_mean - individual.similarity) / self.similarity_sd \
-                                      * self.sd * self.similarity_weight / self.similarity_groupings
+                for individual in individuals:
+                    individual.fitness += (self.similarity_mean - individual.similarity) / self.similarity_sd * \
+                                          self.sd * self.similarity_weight / self.adult_pool_size
 
-            individuals = self.sort(individuals[i + 1:])
+                individuals = individuals[0:i + 1] + self.sort(individuals[i + 1:])
 
         self.bests.append(best.fitness)
         self.means.append(self.mean)

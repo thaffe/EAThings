@@ -56,16 +56,16 @@ class Beer:
         res = 0
         if Beer.avoid_objects:
             if self.object_size <= 4:
-                self.fitness += 1 - (min(
+                self.fitness += 0.5 * (1 - (min(
                     abs((self.agent_start + self.AgentSize/2.0) - (self.object_start + self.object_size/2.0)),
                     abs((self.agent_end - self.AgentSize/2.0) - (self.object_start + self.object_size/2.0))
-                ) / (self.Width/2))**2
+                ) / (self.Width/2))**2)
                 if small_catch:
                     res = 1
             elif big_catch:
                 res = -1
             else:
-                self.fitness += 2
+                self.fitness += 1
 
         else:
             self.fitness += 1 - (min(
@@ -74,7 +74,7 @@ class Beer:
             ) / (self.Width/2))**2
             res = 1 if big_catch or small_catch else 0
 
-        self.fitness += res
+        self.fitness += res * 0.5
         self.history.save_state(self.object_size, res)
 
     def run(self, agent):
@@ -84,17 +84,19 @@ class Beer:
         for test in self.tests:
             self.runTest(test)
 
-        # while i < len(self.tests)*(2.0/3.0):
-        #     self.runTest(self.tests[i])
+        # i = 0
+        # while i < len(self.tests)*(1.0/3.0):
+        #     self.runTest(self.tests[len(self.tests) - i - 1])
         #     i += 1
-        # if self.fitness > len(self.tests)*(2.0/3.0)*0.8:
+        # if self.fitness > len(self.tests)*(1.0/3.0)*0.7:
         #     temp = self.fitness
-        #     while i < len(self.tests):
+        #     i = 0
+        #     while i < len(self.tests)*(2.0/3.0):
         #         self.runTest(self.tests[i])
         #         i += 1
         #     self.fitness = max(self.fitness, temp)
 
-        return self.fitness
+        return self.fitness / 40 * 100
 
 
 class BeerTest:
