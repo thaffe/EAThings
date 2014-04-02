@@ -1,4 +1,3 @@
-from math import floor
 from beer.Beer import *
 from beer.BeerAgent import BeerAgent
 from core.EA import EA

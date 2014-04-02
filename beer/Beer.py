@@ -10,7 +10,7 @@ class Beer:
     AgentSize = 5
     avoid_objects = True
     def __init__(self, random=True):
-        self.total = 0
+        self.fitness = 0
         self.object_size = None
         self.object_start = None
         self.object_end = None
@@ -51,31 +51,34 @@ class Beer:
         for step in xrange(0, Beer.Height):
             self.timestep(step)
 
-        # big_catch = not (self.agent_pos + self.AgentSize <= self.object_pos or self.agent_pos >= self.object_pos + self.object_size)
-        # small_catch =not big_catch and self.object_pos >= self.agent_pos and self.object_pos + self.object_size <= self.agent_pos + self.AgentSize
         big_catch = self.object_size >= 5 and sum(self.shadow_array) > 0
         small_catch = not big_catch and sum(self.shadow_array) == self.object_size
         res = 0
         if Beer.avoid_objects:
             if self.object_size <= 4:
-                # self.total += 1/(1+(abs((self.agent_pos + self.AgentSize/2.0) - (self.object_pos + self.object_size/2.0)))**0.5)
+                self.fitness += 1 - (min(
+                    abs((self.agent_start + self.AgentSize/2.0) - (self.object_start + self.object_size/2.0)),
+                    abs((self.agent_end - self.AgentSize/2.0) - (self.object_start + self.object_size/2.0))
+                ) / (self.Width/2))**2
                 if small_catch:
                     res = 1
             elif big_catch:
                 res = -1
             else:
-                self.total += 2
+                self.fitness += 2
 
-            res = 1 if small_catch else -1 if big_catch else 0
         else:
-            # self.total += 1/(1+(abs((self.agent_pos + self.AgentSize/2.0) - (self.object_pos + self.object_size/2.0)))**0.5)
+            self.fitness += 1 - (min(
+                abs((self.agent_start + self.AgentSize/2.0) - (self.object_start + self.object_size/2.0)),
+                abs((self.agent_end - self.AgentSize/2.0) - (self.object_start + self.object_size/2.0))
+            ) / (self.Width/2))**2
             res = 1 if big_catch or small_catch else 0
 
-        self.total += res
+        self.fitness += res
         self.history.save_state(self.object_size, res)
 
     def run(self, agent):
-        self.total = 0
+        self.fitness = 0
         self.agent = agent
         self.history = BeerStates()
         for test in self.tests:
@@ -84,14 +87,14 @@ class Beer:
         # while i < len(self.tests)*(2.0/3.0):
         #     self.runTest(self.tests[i])
         #     i += 1
-        # if self.total > len(self.tests)*(2.0/3.0)*0.8:
-        #     temp = self.total
+        # if self.fitness > len(self.tests)*(2.0/3.0)*0.8:
+        #     temp = self.fitness
         #     while i < len(self.tests):
         #         self.runTest(self.tests[i])
         #         i += 1
-        #     self.total = max(self.total, temp)
+        #     self.fitness = max(self.fitness, temp)
 
-        return self.total
+        return self.fitness
 
 
 class BeerTest:
