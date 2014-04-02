@@ -12,7 +12,7 @@ $(function(){
 
     $(".controller button").click(function(){
         $(this).siblings().removeClass("active");
-        actions[$(this).attr("data-type")]();
+            actions[$(this).attr("data-type")]();
      });
 
      $("#playback").change(function(){
@@ -27,7 +27,6 @@ function initGame(states){
     heightStep = 100/states[0].c.length;
 
     updateStats();
-    $("#play").parent().click();
     var s = 0,m = 0, f = 0;
     for(var i = 0; i < window.gameState.length; i++){
         var res = window.gameState[i].res;
@@ -51,7 +50,6 @@ function playState(index, callback){
 
 function updateStats(){
     var s = 0, m = 0, f = 0;
-
     for(var i = 0; i < currentIndex; i++){
         var res = window.gameState[i].res;
         if(res == 0) m++;
@@ -113,7 +111,6 @@ var actions = {
             $p.attr("class","fa fa-pause");
             this.step();
         }
-        updateStats();
     },
 
     step : function(){
@@ -123,7 +120,7 @@ var actions = {
 
     forward:function(){
         if(currentIndex >= 40) return;
-        actions.play(true);
+        currentIndex++;
     },
 
     back:function(){

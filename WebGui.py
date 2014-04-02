@@ -105,6 +105,7 @@ class starter:
         setup_ea(i)
         current_game = i.game
         current_ea = FlatlandEA() if i.game == "flatland" else BeerEA()
+        if i.game == "beeragent": current_ea.fitness_goal = 99
 
         ea_thread = Thread(target=start_ea, args=[current_ea])
         ea_thread.start()
@@ -116,11 +117,13 @@ class progress:
     def GET(self):
         global ea_thread, current_ea, current_game
         web.header('Content-Type', 'application/json')
-        complete = current_ea.current_generation == EA.max_generations
+        complete = current_ea.current_generation == EA.max_generations \
+            or current_ea.best_individual.fitness > current_ea.fitness_goal
         res = {
             'complete': complete
         }
-        if complete:
+        input = web.input()
+        if complete or input.has_key('requestupdate'):
             res['means'] = current_ea.means
             res['sds'] = current_ea.sds
             res['bests'] = current_ea.bests
