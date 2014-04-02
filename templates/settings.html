@@ -90,6 +90,15 @@ $if hidden:
                     > Dynamic map
                 </label>
             </div>
+        $else:
+            <div class="form-group">
+                <label>
+                    <input name="beeragent" value="1" type="checkbox"
+                    $if settings['beeragent']:
+                        checked
+                    > Avoid objects
+                </label>
+            </div>
         <button type="submit" class="btn btn-primary btn-lg">Run Evolution</button>
     </form>
     </div>

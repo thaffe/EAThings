@@ -39,7 +39,7 @@ class FlatlandEA(EA):
                     map.food_gathered_by_best = test_map.food_gathered
                     map.poisoned_by_best = test_map.poisoned
 
-            individual.fitness = max(individual.fitness/len(self.maps), 0.001)
+            individual.fitness = max(100.0* individual.fitness/len(self.maps), 0.01)
             # print individual.fitness
             if individual.fitness > self.best_individual.fitness:
                 if self.dynamic:

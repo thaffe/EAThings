@@ -11,7 +11,7 @@ function initGame(game){
       }
 
     currentGame = game;
-     map.css({maxWidth:currentGame.maps[0].length*100});
+    map.css({maxWidth:currentGame.maps[0].length*100});
     $("#maps").html("");
     for(var i = 0; i < game.mapRes.length; i++){
         var a = '<a class="list-group-item" id="map-$loop.index0"><h4 class="list-group-item-heading">Map ';
@@ -22,15 +22,6 @@ function initGame(game){
      $("#maps a").click(function(){
         var index = $("#maps a").index(this);
         setMap(index);
-     });
-
-     $(".controller button").click(function(){
-        $(this).siblings().removeClass("active");
-        actions[$(this).attr("data-type")](true);
-     });
-
-     $("#playback").change(function(){
-            playback = parseInt(this.value);
      });
 
     setMap(0);
@@ -50,6 +41,15 @@ $(function(){
             updateBot();
      });
     $(window).resize();
+
+     $(".controller button").click(function(){
+        $(this).siblings().removeClass("active");
+        actions[$(this).attr("data-type")](true);
+     });
+
+     $("#playback").change(function(){
+            playback = parseInt(this.value);
+     });
 })
 
 function setMap(index){

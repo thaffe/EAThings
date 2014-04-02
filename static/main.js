@@ -50,6 +50,12 @@ $(function(){
 });
 
 
+function initNeural(net){
+    var canvas = $(canvas).get(0)
+    var ctx = canvas.getContext("2d");
+    var particleSystem
+}
+
 function trackProgress(){
     $.getJSON("/progress",function(data){
         if(data.complete){
@@ -58,6 +64,8 @@ function trackProgress(){
             initGame(data.game);
             initChart(data.sds,data.means,data.bests, data.similarity);
             $("#fitness").text(data.fitness);
+            initNet(data.net);
+            console.log(data.net);
         }else{
             progText.text(data.m);
             setTimeout(trackProgress, 200);

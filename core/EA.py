@@ -100,6 +100,7 @@ class EA():
             parent_index = 0
             prev_crossover = 0
             next_crossover = int(self.crossover_rate.next()*gene_count)
+
             while prev_crossover < gene_count:
                 for j in xrange(self.number_of_parents):
                     for i in xrange(prev_crossover, min(next_crossover, gene_count)):

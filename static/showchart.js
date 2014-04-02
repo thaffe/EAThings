@@ -52,20 +52,20 @@ function initChart(sds, means, bests, similarities){
                 pointStrokeColor: "#fff",
                 data: sds
             },
-            {
-                fillColor: "rgba(0, 83, 79,0.2)",
-                strokeColor: "rgba(0, 83, 79,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                data: similarities
-            }
+//            {
+//                fillColor: "rgba(0, 83, 79,0.2)",
+//                strokeColor: "rgba(0, 83, 79,1)",
+//                pointColor: "rgba(151,187,205,1)",
+//                pointStrokeColor: "#fff",
+//                data: similarities
+//            }
         ]
     };
     options = {
       pointDot: false,
       scaleOverride: true,
       scaleSteps: 15,
-      scaleStepWidth: stepsize
+      scaleStepWidth: Math.ceil(stepsize)
     };
     var ctx = $chart.get(0).getContext("2d");
 

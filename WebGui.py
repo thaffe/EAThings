@@ -3,9 +3,8 @@ from threading import Thread
 
 import web
 
-from beer.BeerEA import BeerEA
+from beer.BeerEA import *
 from flatland.FlatlandEA import *
-
 
 parentStrat = [
     ('Fitness Proportionate', Strategies.fitness),
@@ -32,7 +31,8 @@ defaults = {
     'crossover': [0.3, 0.2, 0.0, 1.0],
     'rank': [0.5, 1.5],
     'tournament': [5, 0.1],
-    'flatland': 0
+    'flatland': 0,
+    'beeragent':0
 }
 
 urls = (
@@ -68,6 +68,8 @@ def setup_ea(input):
     Strategies.rank_max = float(input.rank[1])
     Strategies.tournament_k = int(input.tournament[0])
     Strategies.tournament_e = float(input.tournament[1])
+    FlatlandEA.dynamic = input.has_key("flatland")
+    Beer.avoid_objects = input.has_key("beeragent")
 
     return "T"
 
@@ -124,6 +126,14 @@ class progress:
             res['bests'] = current_ea.bests
             res['similarity'] = current_ea.best_similarities
             res['fitness'] = current_ea.best_individual.fitness
+
+            network = {}
+            for key,n in current_ea.best_individual.ann.neurons.items():
+                network[key] = {}
+                for iKey,inp in n.inputs.items():
+                    network[key][iKey] = inp.weight
+
+            res['net'] = network
 
             if current_game == 'beeragent':
                 res['game'] = current_ea.best_history.states

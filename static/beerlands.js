@@ -5,11 +5,7 @@ var object,catcher,objectholder;
 var playback = 1;
 var currentIndex = 0;
 
-
-function initGame(states){
-    currentIndex = 0;
-    console.log(states);
-    window.gameState = states;
+$(function(){
     catcher = $("#catcher");
     object = $("#object");
     objectholder = $("#objectholder");
@@ -19,12 +15,19 @@ function initGame(states){
         actions[$(this).attr("data-type")]();
      });
 
-    updateStats();
-    $("#playback").change(function(){
-        playback = parseInt(this.value);
-     });
-    $("#play").parent().click();
+     $("#playback").change(function(){
+         playback = parseInt(this.value);
+      });
+})
 
+function initGame(states){
+    currentIndex = 0;
+    window.gameState = states;
+    console.log(states);
+    heightStep = 100/states[0].c.length;
+
+    updateStats();
+    $("#play").parent().click();
     var s = 0,m = 0, f = 0;
     for(var i = 0; i < window.gameState.length; i++){
         var res = window.gameState[i].res;
@@ -76,13 +79,13 @@ function animate(r, callback){
 
     for(var i = 1; i < r.c.length; i++){
         var move = r.c[i-1] - r.c[i];
-        if(move > 4){
+        if(Math.abs(move) > 4){
             index = move > 0 ? -1 : r.c.length;
             catcher.animate(getLeft(index),0);
         }
 
         move = r.o[i-1] - r.o[i];
-        if(move > 4){
+        if(Math.abs(move) > 4){
             index = move > 0 ? -1 : r.c.length;
             objectholder.animate(getLeft(index),0);
             console.log("wrap object");
