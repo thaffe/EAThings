@@ -139,7 +139,7 @@ class progress:
         else:
             best_fitness = current_ea.best_individual.fitness if current_ea.best_individual else 0
             res = {
-                'm': "Generation: %d of %d Best:%2.f" % (current_ea.current_generation, EA.max_generations, best_fitness)}
+                'm': "Generation: %d of %d Best:%.4f" % (current_ea.current_generation, EA.max_generations, best_fitness)}
 
         return json.dumps(res)
 
