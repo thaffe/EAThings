@@ -9,7 +9,10 @@ class GeneFloat(Gene):
     def mutate(self, mutation_rate):
         sign = 1 if random() > 0.5 else -1
         if self.source.logarithmic:
-            self.value = min(max(self.value + (self.source.max - self.source.min) * sign * mutation_rate.next(), self.source.min), self.source.max)
+            ln = math.log(self.value)
+            ln_change = (self.source.ln_max - self.source.ln_min) * sign * mutation_rate.next()
+            ln_new = min(max(ln + ln_change, self.source.ln_min), self.source.ln_max)
+            self.value = math.exp(ln_new)
         else:
             self.value = min(max(self.value + (self.source.max - self.source.min) * sign * mutation_rate.next(), self.source.min), self.source.max)
 
@@ -31,5 +34,7 @@ class GeneFloatSource():
         self.max = max
         self.logarithmic = logarithmic
         if logarithmic:
+            if min * max < 0:
+                raise AttributeError
             self.ln_min = math.log(min)
             self.ln_max = math.log(max)

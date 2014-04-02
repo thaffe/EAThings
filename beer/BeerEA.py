@@ -10,12 +10,13 @@ class BeerEA(EA):
         EA.__init__(self)
         self.beer = Beer()
         self.best_history = None
-        self.beer.tests = [BeerTest(1 + floor(i/16.66)) for i in xrange(100)]
 
     def create_individual(self, genotype=None):
         return BeerAgent(genotype)
 
     def run_fitness_tests(self):
+        self.beer.tests = [BeerTest(1 + floor(i/16.66)) for i in xrange(100)]
+
         individuals = self.children if not self.adults else self.children + self.adults
         for individual in individuals:
             individual.fitness = self.beer.run(individual)

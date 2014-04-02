@@ -34,7 +34,7 @@ class Beer:
         res = 0
 
         if self.object_size <= 4:
-            # self.total += 1/(1+(abs((self.agent_pos + self.AgentSize/2.0) - (self.object_pos + self.object_size/2.0)))**0.5)
+            self.total += 1/(1+(abs((self.agent_pos + self.AgentSize/2.0) - (self.object_pos + self.object_size/2.0)))**0.5)
             if self.object_pos >= self.agent_pos and self.object_pos + self.object_size <= self.agent_pos + self.AgentSize:
                 self.catches += 1
                 res = 1
@@ -59,7 +59,8 @@ class Beer:
         while i < len(self.tests)*(2.0/3.0):
             self.runTest(self.tests[i])
             i += 1
-        if self.total > len(self.tests)*(2.0/3.0)*0.8:
+        if self.total > len(self.tests)*(2.0/3.0):
+            print "lol"
             temp = self.total
             while i < len(self.tests):
                 self.runTest(self.tests[i])
