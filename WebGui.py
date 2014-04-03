@@ -58,7 +58,7 @@ def setup_ea(input):
     EA.child_pool_size = int(input.childPool)
     EA.parent_pool_size = int(input.parentPool)
     EA.adult_selection_mode = int(input.adultStrategy)
-    EA.parent_selection_strategy = parentStrat[int(input.parentStrategy)]
+    EA.parent_selection_strategy = parentStrat[int(input.parentStrategy)][1]
     EA.crossover_rate = NormDist(float(input.crossover[0]), float(input.crossover[1]),
                                  float(input.crossover[2]), float(input.crossover[3]))
 
@@ -105,6 +105,8 @@ class starter:
         setup_ea(i)
         current_game = i.game
         current_ea = FlatlandEA() if i.game == "flatland" else BeerEA()
+
+        print current_ea.parent_selection_strategy
         if i.game == "beeragent": current_ea.fitness_goal = 99
 
         ea_thread = Thread(target=start_ea, args=[current_ea])
@@ -117,8 +119,7 @@ class progress:
     def GET(self):
         global ea_thread, current_ea, current_game
         web.header('Content-Type', 'application/json')
-        complete = current_ea.current_generation == EA.max_generations \
-            or current_ea.best_individual.fitness > current_ea.fitness_goal
+        complete = current_ea.current_generation == EA.max_generations or current_ea.best_individual.fitness > current_ea.fitness_goal
         res = {
             'complete': complete
         }

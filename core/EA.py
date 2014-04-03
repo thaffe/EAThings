@@ -21,7 +21,6 @@ class EA():
 
     def __init__(self, fitness_goal=0):
         self.similarity_weight = 0
-        self.parent_selection_strategy = Strategies.fitness
         self.fitness_goal = fitness_goal
         self.means = []
         self.sds = []
@@ -68,7 +67,7 @@ class EA():
         print(self.best_individual)
 
     def parent_selection(self):
-        exp_sum = self.parent_selection_strategy(self, self.adults)
+        exp_sum = EA.parent_selection_strategy(self, self.adults)
 
         #if parent selection strategy returns list then no need to spin roulette wheel
         if isinstance(exp_sum, list): return exp_sum
