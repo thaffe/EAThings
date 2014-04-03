@@ -6,7 +6,7 @@ from BeerStates import BeerStates
 class Beer:
 
     Width = 30
-    Height = 23
+    Height = 15
     AgentSize = 5
     avoid_objects = True
     def __init__(self, random=True):
@@ -64,6 +64,7 @@ class Beer:
                     res = 1
             elif big_catch:
                 res = -1
+                self.fitness += 0.5 * (len(self.shadow_array) - sum(self.shadow_array)) * 1.0 / len(self.shadow_array)
             else:
                 self.fitness += 1
 
@@ -81,20 +82,19 @@ class Beer:
         self.fitness = 0
         self.agent = agent
         self.history = BeerStates()
-        for test in self.tests:
-            self.runTest(test)
+        # for test in self.tests:
+        #     self.runTest(test)
 
-        # i = 0
-        # while i < len(self.tests)*(1.0/3.0):
-        #     self.runTest(self.tests[len(self.tests) - i - 1])
-        #     i += 1
-        # if self.fitness > len(self.tests)*(1.0/3.0)*0.7:
-        #     temp = self.fitness
-        #     i = 0
-        #     while i < len(self.tests)*(2.0/3.0):
-        #         self.runTest(self.tests[i])
-        #         i += 1
-        #     self.fitness = max(self.fitness, temp)
+        i = 0
+        while i < len(self.tests)*(2.0/3.0):
+            self.runTest(self.tests[i])
+            i += 1
+        if self.fitness > len(self.tests)*(2.0/3.0)*0.7:
+            temp = self.fitness
+            while i < len(self.tests):
+                self.runTest(self.tests[i])
+                i += 1
+            self.fitness = max(self.fitness, temp)
 
         return self.fitness / 40 * 100
 

@@ -66,18 +66,14 @@ tournament_e = 0.1
 
 
 def tournament(ea, individuals):
-    tour_index = 0
-    l = len(individuals)
     k = tournament_k
     parents = []
-    # shuffle(individuals)
     temp = individuals
     while len(parents) < ea.parent_pool_size:
         for individual in individuals:
             individual.similarity = individual.compare(individuals[0])
         individuals = sorted(individuals, lambda x, y: cmp(y.similarity, x.similarity))
         contenders = individuals[0:max(k, len(individuals))]
-        # contenders = individuals[tour_index:max(tour_index + k, l)]
 
         parents.append(
             max(contenders, key=attrgetter("fitness"))
@@ -90,11 +86,6 @@ def tournament(ea, individuals):
         if len(individuals) == 0:
             individuals = temp[:]
             shuffle(individuals)
-
-        # tour_index += k
-        # if tour_index >= l:
-        #     tour_index = 0
-            # shuffle(individuals)
 
     return parents
 

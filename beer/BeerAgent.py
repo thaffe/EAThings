@@ -18,7 +18,7 @@ class BeerAgent(AnnIndividual):
     ]
 
     source_appends = [
-        # {"name": "h0", "weights": {"h1": 0}}, #"h2": 0}},
+        {"name": "h0", "weights": {"h1": 0}}, #"h2": 0}},
         # {"name": "h1", "weights": {"h2": 0}},
         {"name": "o0", "weights": {"o1": 0}}
     ]
