@@ -27,6 +27,9 @@ class ANN:
     def add_input(self, neuron_name, input_name, weight=0, use_previous=False):
         self.neurons[neuron_name].inputs[input_name] = Input(self.neurons[input_name], weight, use_previous)
 
+    def reset(self):
+        for _, neuron in self.neurons.items():
+            neuron.reset()
 
 class Neuron:
 
@@ -67,6 +70,9 @@ class Neuron:
             self.post_update(self)
         return self.output
 
+    def reset(self):
+        self.y = self.bias
+        self.output = 0
 
 class Input:
     def __init__(self, neuron, weight, use_previous=False):

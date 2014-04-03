@@ -65,6 +65,8 @@ class EA():
             self.current_generation += 1
 
         print(self.best_individual)
+        
+        self.run_finals()
 
     def parent_selection(self):
         exp_sum = EA.parent_selection_strategy(self, self.adults)
@@ -163,6 +165,9 @@ class EA():
     def run_fitness_tests(self):
         for child in self.children:
             child.calculate_fitness()
+
+    def run_finals(self):
+        pass
 
 
 def roulette(individuals, n, total):

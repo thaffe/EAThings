@@ -44,3 +44,91 @@ class BeerAgent(AnnIndividual):
         right = self.ann.neurons["o0"].update(step)
         left = self.ann.neurons["o1"].update(step)
         return max(-4, min(4, int(round(left-right)*10)))
+
+    def test_ann(self, shadows, step):
+        for i in xrange(5):
+            n = self.ann.neurons["s" + str(i)]
+            n.output = shadows[i]
+            n.step_counter = step
+
+        right = self.ann.neurons["o0"].update(step)
+        left = self.ann.neurons["o1"].update(step)
+
+        return left, right
+
+    def do_tests_on_ann(self):
+
+        self.ann.reset()
+        shadows = [True, True, True, True, True]
+        left, right = self.test_ann(shadows, 1)
+        print "shadows:", shadows, "o1:", left, "o2:", right
+
+        print ""
+        self.ann.reset()
+        shadows = [True, True, True, True, False]
+        left, right = self.test_ann(shadows, 1)
+        print "shadows:", shadows, "o1:", left, "o2:", right
+
+        self.ann.reset()
+        shadows = [True, True, True, False, False]
+        left, right = self.test_ann(shadows, 1)
+        print "shadows:", shadows, "o1:", left, "o2:", right
+
+        self.ann.reset()
+        shadows = [True, True, False, False, False]
+        left, right = self.test_ann(shadows, 1)
+        print "shadows:", shadows, "o1:", left, "o2:", right
+
+        self.ann.reset()
+        shadows = [True, False, False, False, False]
+        left, right = self.test_ann(shadows, 1)
+        print "shadows:", shadows, "o1:", left, "o2:", right
+
+        self.ann.reset()
+        shadows = [False, False, False, False, False]
+        left, right = self.test_ann(shadows, 1)
+        print "shadows:", shadows, "o1:", left, "o2:", right
+
+        print ""
+        self.ann.reset()
+        shadows = [False, False, False, False, True]
+        left, right = self.test_ann(shadows, 1)
+        print "shadows:", shadows, "o1:", left, "o2:", right
+
+        self.ann.reset()
+        shadows = [False, False, False, True, True]
+        left, right = self.test_ann(shadows, 1)
+        print "shadows:", shadows, "o1:", left, "o2:", right
+
+        self.ann.reset()
+        shadows = [False, False, True, True, True]
+        left, right = self.test_ann(shadows, 1)
+        print "shadows:", shadows, "o1:", left, "o2:", right
+
+        self.ann.reset()
+        shadows = [False, True, True, True, True]
+        left, right = self.test_ann(shadows, 1)
+        print "shadows:", shadows, "o1:", left, "o2:", right
+
+        print ""
+
+        print ""
+        self.ann.reset()
+        for i in xrange(5):
+            self.test_ann([False, False, False, False, False], i)
+        self.test_ann([True, True, False, False, False], 5)
+        print "event:", "sudden shadow left", "o1:", left, "o2:", right
+
+        print ""
+        self.ann.reset()
+        for i in xrange(5):
+            self.test_ann([False, False, False, False, False], i)
+        self.test_ann([False, False, False, True, True], 5)
+        print "event:", "sudden shadow right", "o1:", left, "o2:", right
+
+        print ""
+        self.ann.reset()
+        for i in xrange(5):
+            self.test_ann([False, False, False, False, False], i)
+        self.test_ann([False, True, True, True, False], 5)
+        print "event:", "sudden shadow middle", "o1:", left, "o2:", right

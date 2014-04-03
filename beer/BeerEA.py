@@ -22,3 +22,5 @@ class BeerEA(EA):
             if individual.fitness > self.best_individual.fitness or not self.best_history:
                 self.best_history = self.beer.history
 
+    def run_finals(self):
+        self.best_individual.do_tests_on_ann()

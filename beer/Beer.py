@@ -89,12 +89,12 @@ class Beer:
         while i < len(self.tests)*(2.0/3.0):
             self.runTest(self.tests[i])
             i += 1
-        if self.fitness > len(self.tests)*(2.0/3.0)*0.7:
-            temp = self.fitness
+        if self.fitness > len(self.tests)*(2.0/3.0)*0.8:
+            # temp = self.fitness
             while i < len(self.tests):
                 self.runTest(self.tests[i])
                 i += 1
-            self.fitness = max(self.fitness, temp)
+            # self.fitness = max(self.fitness, temp)
 
         return self.fitness / 40 * 100
 
