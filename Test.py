@@ -1,6 +1,18 @@
 from ann.ANN import *
 from beer.BeerAgent import BeerAgent
-test = {'s0': {'tau': 1.988571454601034, 'bias': -2.244161235601923, 'g': 3.932027195588722}, 's3': {'tau': 1.0, 'bias': -1.408723751838008, 'g': 3.5308372949290234}, 's2': {'tau': 1.6605502064934443, 'bias': -8.934511197452917, 'g': 3.8778827896795027}, 's1': {'tau': 1.0, 'bias': -9.846381308105592, 'g': 2.6061419297570434}, 'h1': {'tau': 1.015627935615344, 'g': 2.5177744441694285, 's3': -2.811366359852115, 's2': -6.206259491762082, 's1': -6.934009945638012, 's0': 1.9828191104209667, 's4': -8.301339775602505, 'bias': 0, 'h0': 10.0}, 's4': {'tau': 1.909040717433604, 'bias': -10.0, 'g': 4.968817524481219}, 'h0': {'tau': 1.4454516705298184, 's0': 4.261323462408344, 'g': 4.908992798324103, 's3': -2.0944636572891295, 's2': -5.798317857548165, 's1': 0.8815238974979644, 'h1': -10.0, 's4': 10, 'bias': -4.825933337282132}, 'o1': {'tau': 1.0015347955427532, 'g': 4.196254969962199, 'h0': 3.370449644215906, 'h1': 6.044221206140363, 'bias': -0.7321309369955775, 'o0': 3.1099483929105958}, 'o0': {'tau': 1.4416210697131109, 'g': 1.6147841850004412, 'h0': -4.648085840785148, 'h1': 6.9369105907578605, 'bias': -8.250303667519583, 'o1': -8.973884682275566}}
+
+def test_ann(shadows, step):
+    global ann
+    for i in xrange(5):
+        n = ann.neurons["s" + str(i)]
+        n.output = shadows[i]
+        n.step_counter = step
+
+    right = ann.neurons["o0"].update(step)
+    left = ann.neurons["o1"].update(step)
+
+    return left, right
+test = {'s0': {'tau': 1.592686147215389, 'bias': -2.615998446020173, 'g': 4.064259823298805}, 's3': {'tau': 2.0, 'bias': -9.596911713770295, 'g': 2.699219833009929}, 's2': {'tau': 2.0, 'bias': -7.9381838205981925, 'g': 1.196180415897641}, 's1': {'tau': 1.7131650362733641, 'bias': -9.800554266312117, 'g': 5}, 'h1': {'tau': 1.4759850492782784, 'g': 4.169964788304448, 's3': 10, 's2': -7.597575378784047, 's1': -7.30851842034613, 's0': -5.515947610513402, 's4': 10, 'bias': 0, 'h0': -9.161215598682354}, 's4': {'tau': 1.719469269868766, 'bias': -10, 'g': 1.5148042062097178}, 'h0': {'tau': 1.9805457921140477, 's0': 3.8498836747822374, 'g': 1.1918849794755142, 's3': 0.19606976014775368, 's2': 1.2234104157931345, 's1': -3.9816290689941063, 'h1': -1.752762947517268, 's4': 7.843733074806298, 'bias': -6.082985820301836}, 'o1': {'tau': 1.1177444179110503, 'g': 4.156539205282791, 'h0': 0.5183605142731278, 'h1': 9.884145727513904, 'bias': -3.094239221093069, 'o0': -10}, 'o0': {'tau': 1.5704922925516338, 'g': 4.8005459803723385, 'h0': 10.0, 'h1': -5.936363488987634, 'bias': -2.338789992756717, 'o1': -5.317834057912171}}
 
 ann = ANN(BeerAgent.source)
 for neuron in BeerAgent.source_appends:
@@ -21,7 +33,81 @@ for key, node in test.items():
             neu.inputs[t].weight = n
 
 
-for i in xrange(5):
-    ann.neurons['s'+str(i)].output = 1
 
-print ann.neurons['o0'].update(0), ann.neurons['o1'].update(0)
+print ann.neurons['o0'].update(0), ann.neurons['o1'].update(1)
+
+
+ann.reset()
+shadows = [True, True, True, True, True]
+left, right = test_ann(shadows, 1)
+print "shadows:", shadows, "o1:", left, "o2:", right
+
+print ""
+ann.reset()
+shadows = [True, True, True, True, False]
+left, right = test_ann(shadows, 1)
+print "shadows:", shadows, "o1:", left, "o2:", right
+
+ann.reset()
+shadows = [True, True, True, False, False]
+left, right = test_ann(shadows, 1)
+print "shadows:", shadows, "o1:", left, "o2:", right
+
+ann.reset()
+shadows = [True, True, False, False, False]
+left, right = test_ann(shadows, 1)
+print "shadows:", shadows, "o1:", left, "o2:", right
+
+ann.reset()
+shadows = [True, False, False, False, False]
+left, right = test_ann(shadows, 1)
+print "shadows:", shadows, "o1:", left, "o2:", right
+
+ann.reset()
+shadows = [False, False, False, False, False]
+left, right = test_ann(shadows, 1)
+print "shadows:", shadows, "o1:", left, "o2:", right
+
+print ""
+ann.reset()
+shadows = [False, False, False, False, True]
+left, right = test_ann(shadows, 1)
+print "shadows:", shadows, "o1:", left, "o2:", right
+
+ann.reset()
+shadows = [False, False, False, True, True]
+left, right = test_ann(shadows, 1)
+print "shadows:", shadows, "o1:", left, "o2:", right
+
+ann.reset()
+shadows = [False, False, True, True, True]
+left, right = test_ann(shadows, 1)
+print "shadows:", shadows, "o1:", left, "o2:", right
+
+ann.reset()
+shadows = [False, True, True, True, True]
+left, right = test_ann(shadows, 1)
+print "shadows:", shadows, "o1:", left, "o2:", right
+
+print ""
+
+print ""
+ann.reset()
+for i in xrange(5):
+    test_ann([False, False, False, False, False], i)
+test_ann([True, True, False, False, False], 5)
+print "event:", "sudden shadow left", "o1:", left, "o2:", right
+
+print ""
+ann.reset()
+for i in xrange(5):
+    test_ann([False, False, False, False, False], i)
+left, right = test_ann([False, False, False, True, True], 5)
+print "event:", "sudden shadow right", "o1:", left, "o2:", right
+
+print ""
+ann.reset()
+for i in xrange(5):
+    test_ann([False, False, False, False, False], i)
+left, right = test_ann([False, True, True, True, False], 5)
+print "event:", "sudden shadow middle", "o1:", left, "o2:", right
