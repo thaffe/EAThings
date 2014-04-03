@@ -6,7 +6,7 @@ from BeerStates import BeerStates
 class Beer:
 
     Width = 30
-    Height = 15
+    Height = 30
     AgentSize = 5
     avoid_objects = True
     def __init__(self, random=True):

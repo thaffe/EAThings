@@ -3,7 +3,7 @@ from random import *
 
 class NormDist():
 
-    def __init__(self, mu, sigma, min=0.0, max=1.0, rand=0.03, clamp=True):
+    def __init__(self, mu, sigma, min=0.0, max=1.0, rand=0.05, clamp=True):
         self.mu = mu
         self.sigma = sigma
         self.min = min
