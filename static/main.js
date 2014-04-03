@@ -1,4 +1,5 @@
 var progText;
+var testCurrent = false;
 $(function(){
 
     progText = $("#progressText");
@@ -18,7 +19,9 @@ $(function(){
    $(".popup .container").click(function(e){
         e.stopPropagation();
    });
-
+    $("#test-current").click(function(){
+        testCurrent = true;
+    })
 
 
    $(".chart-toggle").click(function(e){
@@ -33,12 +36,13 @@ $(function(){
     $(".restart-btn").click(function(){
         $("form").submit();
     });
+
+    $("html").click(closePopup);
      $("form").submit(function(e){
         e.preventDefault();
         var params = $(this).serialize();
         progText.text("Starting up");
         showPopup(null, "progress");
-        $("html").unbind('click',closePopup);
         $.getJSON("/start?"+params,function(data){
             setTimeout(trackProgress,200);
         });
@@ -57,20 +61,29 @@ function initNeural(net){
 }
 
 function trackProgress(){
-    $.getJSON("/progress",function(data){
-        if(data.complete){
-            $("html").click(closePopup);
-            closePopup();
+    p = {}
+    if(testCurrent){
+        testCurrent = false;
+        p['requestupdate'] = true;
+    }
+    $.getJSON("/progress",p,function(data){
+        if(data.game){
             initGame(data.game);
             initChart(data.sds,data.means,data.bests, data.similarity);
-            $("#fitness").text(data.fitness);
             initNet(data.net);
-            console.log(data.net);
+            $("#fitness").text(data.fitness);
+        }
+        if(data.complete){
+            closePopup();
+            $("#progress")
         }else{
             progText.text(data.m);
-            setTimeout(trackProgress, 200);
+            setTimeout(trackProgress, 500);
         }
-    })
+    }).fail(function() {
+       console.log( "error" );
+      setTimeout(trackProgress, 500);
+     })
 }
 
 function showPopup(e, target){
