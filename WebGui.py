@@ -107,7 +107,8 @@ class starter:
         current_ea = FlatlandEA() if i.game == "flatland" else BeerEA()
 
         print current_ea.parent_selection_strategy
-        if i.game == "beeragent": current_ea.fitness_goal = 99
+        current_ea.fitness_goal = 100
+
 
         ea_thread = Thread(target=start_ea, args=[current_ea])
         ea_thread.start()
@@ -134,14 +135,9 @@ class progress:
             network = {}
             for key,n in current_ea.best_individual.ann.neurons.items():
                 network[key] = {
-                    'bias':n.bias,
-                    'g':n.g,
-                    'tau':n.tau
                 }
                 for iKey,inp in n.inputs.items():
                     network[key][iKey] = inp.weight
-
-            print network
 
             res['net'] = network
             if current_game == 'beeragent':
