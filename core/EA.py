@@ -12,6 +12,7 @@ class EA():
     child_pool_size = 100
     adult_selection_mode = Strategies.GENERATION_REPLACEMENT
     number_of_parents = 2
+    parent_selection_strategy = None
     crossover_rate = NormDist(2, 5, 1, 20)
     mutation_rate = NormDist(0.3, 0.1, 0.0, 0.5)
     max_generations = 100
@@ -31,9 +32,6 @@ class EA():
 
         self.adults = None
         self.children = None
-
-    def set_parent_strategy(self, strategy):
-        self.parent_selection_strategy = strategy
 
     @abstractmethod
     def create_individual(self, genotype=None):

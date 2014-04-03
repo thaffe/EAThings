@@ -16,7 +16,7 @@ class BeerEA(EA):
         return BeerAgent(self.mutation_rate, genotype)
 
     def run_fitness_tests(self):
-        individuals = self.children # if not self.adults else self.children + self.adults
+        individuals = self.children #if not self.adults else self.children + self.adults
         for individual in individuals:
             individual.fitness = max(0.001, self.beer.run(individual))
             if individual.fitness > self.best_individual.fitness or not self.best_history:

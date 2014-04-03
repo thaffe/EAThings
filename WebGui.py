@@ -133,12 +133,17 @@ class progress:
 
             network = {}
             for key,n in current_ea.best_individual.ann.neurons.items():
-                network[key] = {}
+                network[key] = {
+                    'bias':n.bias,
+                    'g':n.g,
+                    'tau':n.tau
+                }
                 for iKey,inp in n.inputs.items():
                     network[key][iKey] = inp.weight
 
-            res['net'] = network
+            print network
 
+            res['net'] = network
             if current_game == 'beeragent':
                 res['game'] = current_ea.best_history.states
             else:

@@ -80,10 +80,7 @@ function trackProgress(){
             progText.text(data.m);
             setTimeout(trackProgress, 500);
         }
-    }).fail(function() {
-       console.log( "error" );
-      setTimeout(trackProgress, 500);
-     })
+    });
 }
 
 function showPopup(e, target){
