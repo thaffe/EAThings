@@ -123,12 +123,12 @@ class BeerAgent(AnnIndividual):
         self.ann.reset()
         for i in xrange(5):
             self.test_ann([False, False, False, False, False], i)
-        self.test_ann([False, False, False, True, True], 5)
+        left, right = self.test_ann([False, False, False, True, True], 5)
         print "event:", "sudden shadow right", "o1:", left, "o2:", right
 
         print ""
         self.ann.reset()
         for i in xrange(5):
             self.test_ann([False, False, False, False, False], i)
-        self.test_ann([False, True, True, True, False], 5)
+        left, right = self.test_ann([False, True, True, True, False], 5)
         print "event:", "sudden shadow middle", "o1:", left, "o2:", right
